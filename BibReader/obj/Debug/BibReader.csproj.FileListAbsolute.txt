@@ -1,0 +1,13 @@
+C:\Users\subbo\source\repos\BibReader\BibReader\bin\Debug\BibReader.exe.config
+C:\Users\subbo\source\repos\BibReader\BibReader\bin\Debug\BibReader.exe
+C:\Users\subbo\source\repos\BibReader\BibReader\bin\Debug\BibReader.pdb
+C:\Users\subbo\source\repos\BibReader\BibReader\obj\Debug\BibReader.Properties.Resources.resources
+C:\Users\subbo\source\repos\BibReader\BibReader\obj\Debug\BibReader.csproj.GenerateResource.cache
+C:\Users\subbo\source\repos\BibReader\BibReader\obj\Debug\BibReader.csproj.CoreCompileInputs.cache
+C:\Users\subbo\source\repos\BibReader\BibReader\obj\Debug\BibReader.exe
+C:\Users\subbo\source\repos\BibReader\BibReader\obj\Debug\BibReader.pdb
+C:\Users\subbo\source\repos\BibReader\BibReader\obj\Debug\BibReader.csprojAssemblyReference.cache
+C:\Users\subbo\source\repos\BibReader\BibReader\obj\Debug\BibReader.Form1.resources
+C:\Users\subbo\source\repos\BibReader\BibReader\bin\Debug\BibReaderLibrary.dll
+C:\Users\subbo\source\repos\BibReader\BibReader\bin\Debug\BibReaderLibrary.pdb
+C:\Users\subbo\source\repos\BibReader\BibReader\obj\Debug\BibReader.csproj.CopyComplete
