@@ -15,7 +15,6 @@ namespace BibReader
 {
     public partial class Form1 : Form
     {
-        //Dictionary<string, string> currTitles = new Dictionary<string, string>();
         HashSet<string> currTitles = new HashSet<string>();
         Statistic statistic = new Statistic();
 
@@ -85,14 +84,6 @@ namespace BibReader
             var scienceDirectBibReader = new ScienceDirectBibReader();
             var readAll = new ReadAllHeaders();
 
-            //var dict = readAll.Reader(reader);
-            //foreach (var d in dict)
-            //{
-            //    textBox1.Text += d.Key + " = " + d.Value + "\r\n";
-            //}
-
-
-
         }
 
         private void AddLibItemsInLv(List<LibItem> libItems, bool useLev)
@@ -135,11 +126,8 @@ namespace BibReader
 
         private void lvItems_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
         {
-            //MessageBox.Show("ROFL");
             if (e.IsSelected)
             {
-                //MessageBox.Show(((LibItem)lvItems.SelectedItems[0].Tag).Keywords);
-
                 tbAbstract.Text = ((LibItem)lvItems.SelectedItems[0].Tag).Abstract;
                 tbAffiliation.Text = ((LibItem)lvItems.SelectedItems[0].Tag).Affiliation;
                 tbAuthors.Text = ((LibItem)lvItems.SelectedItems[0].Tag).Authors;
@@ -154,7 +142,7 @@ namespace BibReader
                 tbUrl.Text = ((LibItem)lvItems.SelectedItems[0].Tag).Url;
                 tbVolume.Text = ((LibItem)lvItems.SelectedItems[0].Tag).Volume;
                 tbYear.Text = ((LibItem)lvItems.SelectedItems[0].Tag).Year;
-                lbCurrSelectedItem.Text = $"{lvItems.SelectedIndices[0]}/{statistic.LibItemsAfterFirstResearch}";
+                lbCurrSelectedItem.Text = $"{lvItems.SelectedIndices[0]}/{statistic.libItemCountAfterFirstResearch}";
             }
         }
 
@@ -205,15 +193,6 @@ namespace BibReader
             lvYearStatistic.Columns.Add("Количество");
             lvYearStatistic.Items.AddRange(statistic.dictOfYears.OrderBy(i => i.Key).Select(i => new ListViewItem(new string[] { i.Key, i.Value.ToString() })).ToArray());
             
-            //foreach (var d in statistic.dictOfYears.OrderBy(i => i.Key))
-            //{
-            //    var lvi = new ListViewItem(new string[]
-            //    {
-            //        (d.Key=="")?"Без года":d.Key,
-            //        d.Value.ToString()
-            //    });
-            //    lvYearStatistic.Items.Add(lvi);
-            //}
         }
     }
 }
