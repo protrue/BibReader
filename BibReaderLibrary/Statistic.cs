@@ -22,6 +22,14 @@ namespace BibReaderLibrary
                 dictOfYears.Add(libItem.Year, 1);
         }
 
+        public void SetSourseStatictic(LibItem libItem)
+        {
+            if (dictOfSourses.ContainsKey(libItem.Sourсe))
+                dictOfSourses[libItem.Sourсe]++;
+            else
+                dictOfSourses.Add(libItem.Sourсe, 1);
+        }
+
         public void AddLibItemsCount() => libItemCountFirst++;
 
         public void AddLibItemsCountAfterFirstResearch() => libItemCountAfterFirstResearch++;

@@ -1,6 +1,0 @@
-C:\Users\subbo\source\repos\BibReader\BibReaderLibrary\bin\Debug\BibReaderLibrary.dll
-C:\Users\subbo\source\repos\BibReader\BibReaderLibrary\bin\Debug\BibReaderLibrary.pdb
-C:\Users\subbo\source\repos\BibReader\BibReaderLibrary\obj\Debug\BibReaderLibrary.csprojAssemblyReference.cache
-C:\Users\subbo\source\repos\BibReader\BibReaderLibrary\obj\Debug\BibReaderLibrary.csproj.CoreCompileInputs.cache
-C:\Users\subbo\source\repos\BibReader\BibReaderLibrary\obj\Debug\BibReaderLibrary.dll
-C:\Users\subbo\source\repos\BibReader\BibReaderLibrary\obj\Debug\BibReaderLibrary.pdb

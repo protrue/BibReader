@@ -64,7 +64,7 @@
             this.rtbBib = new System.Windows.Forms.RichTextBox();
             this.tpYearStatistic = new System.Windows.Forms.TabPage();
             this.lvYearStatistic = new System.Windows.Forms.ListView();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tpSourceStatistic = new System.Windows.Forms.TabPage();
             this.lvItems = new System.Windows.Forms.ListView();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -72,11 +72,13 @@
             this.сохранитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.добавитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lbCurrSelectedItem = new System.Windows.Forms.Label();
+            this.lvSourceStatistic = new System.Windows.Forms.ListView();
             this.groupBox1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tpData.SuspendLayout();
             this.tpBib.SuspendLayout();
             this.tpYearStatistic.SuspendLayout();
+            this.tpSourceStatistic.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -103,7 +105,7 @@
             this.tabControl.Controls.Add(this.tpData);
             this.tabControl.Controls.Add(this.tpBib);
             this.tabControl.Controls.Add(this.tpYearStatistic);
-            this.tabControl.Controls.Add(this.tabPage2);
+            this.tabControl.Controls.Add(this.tpSourceStatistic);
             this.tabControl.Location = new System.Drawing.Point(6, 21);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
@@ -412,15 +414,16 @@
             this.lvYearStatistic.UseCompatibleStateImageBehavior = false;
             this.lvYearStatistic.View = System.Windows.Forms.View.Details;
             // 
-            // tabPage2
+            // tpSourceStatistic
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(586, 472);
-            this.tabPage2.TabIndex = 3;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.tpSourceStatistic.Controls.Add(this.lvSourceStatistic);
+            this.tpSourceStatistic.Location = new System.Drawing.Point(4, 25);
+            this.tpSourceStatistic.Name = "tpSourceStatistic";
+            this.tpSourceStatistic.Padding = new System.Windows.Forms.Padding(3);
+            this.tpSourceStatistic.Size = new System.Drawing.Size(586, 472);
+            this.tpSourceStatistic.TabIndex = 3;
+            this.tpSourceStatistic.Text = "Source statistic";
+            this.tpSourceStatistic.UseVisualStyleBackColor = true;
             // 
             // lvItems
             // 
@@ -485,6 +488,15 @@
             this.lbCurrSelectedItem.Size = new System.Drawing.Size(0, 29);
             this.lbCurrSelectedItem.TabIndex = 4;
             // 
+            // lvSourceStatistic
+            // 
+            this.lvSourceStatistic.Location = new System.Drawing.Point(6, 6);
+            this.lvSourceStatistic.Name = "lvSourceStatistic";
+            this.lvSourceStatistic.Size = new System.Drawing.Size(574, 460);
+            this.lvSourceStatistic.TabIndex = 0;
+            this.lvSourceStatistic.UseCompatibleStateImageBehavior = false;
+            this.lvSourceStatistic.View = System.Windows.Forms.View.Details;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -504,6 +516,7 @@
             this.tpData.PerformLayout();
             this.tpBib.ResumeLayout(false);
             this.tpYearStatistic.ResumeLayout(false);
+            this.tpSourceStatistic.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -554,9 +567,10 @@
         private System.Windows.Forms.ToolStripMenuItem сохранитьToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem добавитьToolStripMenuItem;
         private System.Windows.Forms.TabPage tpYearStatistic;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tpSourceStatistic;
         private System.Windows.Forms.ListView lvYearStatistic;
         private System.Windows.Forms.Label lbCurrSelectedItem;
+        private System.Windows.Forms.ListView lvSourceStatistic;
     }
 }
 

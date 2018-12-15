@@ -37,7 +37,7 @@ namespace BibReader
             int m = s.Length, n = t.Length;
             int[,] ed = new int[m, n];
 
-            ed[0,0] = (s[0] == t[0]) ? 0 : 1;
+            ed[0, 0] = (s[0] == t[0]) ? 0 : 1;
             for (int i = 1; i < m; i++)
             {
                 ed[i, 0] = ed[i - 1, 0] + 1;
@@ -120,7 +120,7 @@ namespace BibReader
         private List<LibItem> GetLibItemsFromLv()
         {
             var libItems = new List<LibItem>();
-            foreach(ListViewItem item in lvItems.Items)
+            foreach (ListViewItem item in lvItems.Items)
                 libItems.Add((LibItem)item.Tag);
             return libItems;
         }
@@ -153,7 +153,19 @@ namespace BibReader
             var reader = Read();
             var listOfItems = univReader.Read(reader);
             reader.Close();
+            ClearDataBeforeLoad();
             LoadLibItemsInLv(listOfItems);
+            
+        }
+
+        private void ClearDataBeforeLoad()
+        {
+            lvSourceStatistic.Clear();
+            lvYearStatistic.Clear();
+            lbCurrSelectedItem.Text = "";
+            var tbs = tabControl.TabPages["tpData"].Controls.OfType<TextBox>();
+            foreach (var tb in tbs)
+                tb.Text = string.Empty;
         }
 
         private void сохранитьToolStripMenuItem_Click(object sender, EventArgs e)
@@ -185,15 +197,31 @@ namespace BibReader
 
         private void tabControl_Selected(object sender, TabControlEventArgs e)
         {
-            lvYearStatistic.Clear();
             var listOfLibItems = new List<LibItem>();
-            statistic.dictOfYears = new Dictionary<string, int>();
-            foreach (ListViewItem item in lvItems.Items)
-                statistic.SetYearStatistic((LibItem)item.Tag);
-            lvYearStatistic.Columns.Add("Год");
-            lvYearStatistic.Columns.Add("Количество");
-            lvYearStatistic.Items.AddRange(statistic.dictOfYears.OrderBy(i => i.Key).Select(i => new ListViewItem(new string[] { i.Key, i.Value.ToString() })).ToArray());
-            
+            switch (e.TabPage.Name)
+            {
+
+                case "tpYearStatistic":
+                    lvYearStatistic.Clear();
+                    listOfLibItems = new List<LibItem>();
+                    statistic.dictOfYears = new Dictionary<string, int>();
+                    foreach (ListViewItem item in lvItems.Items)
+                        statistic.SetYearStatistic((LibItem)item.Tag);
+                    lvYearStatistic.Columns.Add("Год");
+                    lvYearStatistic.Columns.Add("Количество");
+                    lvYearStatistic.Items.AddRange(statistic.dictOfYears.OrderBy(i => i.Key).Select(i => new ListViewItem(new string[] { (i.Key == "") ? "Без года" : i.Key, i.Value.ToString() })).ToArray());
+                    break;
+                case "tpSourceStatistic":
+                    lvSourceStatistic.Clear();
+                    listOfLibItems = new List<LibItem>();
+                    statistic.dictOfSourses = new Dictionary<string, int>();
+                    foreach (ListViewItem item in lvItems.Items)
+                        statistic.SetSourseStatictic((LibItem)item.Tag);
+                    lvSourceStatistic.Columns.Add("Источник");
+                    lvSourceStatistic.Columns.Add("Количество");
+                    lvSourceStatistic.Items.AddRange(statistic.dictOfSourses.OrderBy(i => i.Key).Select(i => new ListViewItem(new string[] { (i.Key == "") ? "Неизв источник" : i.Key, i.Value.ToString() })).ToArray());
+                    break;
+            }
         }
     }
 }
