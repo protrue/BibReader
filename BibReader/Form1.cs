@@ -113,6 +113,7 @@ namespace BibReader
         {
             lvItems.Items.Clear();
             statistic = new Statistic();
+            currTitles.Clear();
             AddLibItemsInLv(libItems, false);
         }
 

@@ -649,6 +649,20 @@ namespace BibReaderLibrary
 
     public class UniversalBibReader
     {
+        private string WhereFrom(string str)
+        {
+            switch(str.Substring(0, "title".Length))
+            {
+                case " titl":
+                    return "ACMDL";
+                case "title":
+                    return (str[5] != ' ') ? "Scopus" : "Science direct";
+                case "Title":
+                    return "Web of science";
+            }
+            return "";
+        }
+
         public List<LibItem> Read(StreamReader reader)
         {
             var Items = new List<LibItem>();
@@ -660,9 +674,11 @@ namespace BibReaderLibrary
             {
                 MyDictinaries s = new MyDictinaries();
                 s.Init();
+                while ((currstr = reader.ReadLine()).Length>0 && currstr[0] != '@')
+                    currstr = reader.ReadLine();
                 while ((currstr = reader.ReadLine()) != "}")
                 {
-                    if (currstr!= null && currstr != "")
+                    if (currstr != null && currstr != "")
                     {
                         if (currstr[0] != '@')
                             str += currstr;
@@ -675,6 +691,8 @@ namespace BibReaderLibrary
                             var value = regex.Match(str, 0).Groups[3].Value;
                             if (s.dict.ContainsKey(key))
                                 s.mainDict[s.dict[key]] = value;
+                            if (key == "title" || key == "Title")
+                                s.mainDict["source"] = WhereFrom(str);
                             str = "";
                         }
                     }
