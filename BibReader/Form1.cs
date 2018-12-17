@@ -73,6 +73,7 @@ namespace BibReader
         {
             lvItems.Columns.Add("Название");
             lvItems.Columns.Add("Авторы");
+            
         }
 
         public Form1()
@@ -84,6 +85,21 @@ namespace BibReader
             var scienceDirectBibReader = new ScienceDirectBibReader();
             var readAll = new ReadAllHeaders();
 
+        }
+
+        private string Normalize(string sentence)
+        {
+            var resultContainer = new StringBuilder(100);
+            var lowerSentece = sentence.ToLower();
+            foreach (var c in lowerSentece)
+            {
+                if (char.IsLetterOrDigit(c) || c == ' ')
+                {
+                    resultContainer.Append(c);
+                }
+            }
+
+            return resultContainer.ToString();
         }
 
         private void AddLibItemsInLv(List<LibItem> libItems, bool useLev)
@@ -104,9 +120,11 @@ namespace BibReader
                     });
                     i.Tag = item;
                     lvItems.Items.Add(i);
-                    currTitles.Add(item.Title.ToLower());
+                    currTitles.Add(Normalize(item.Title.ToLower()));
                 }
             }
+            lvItems.Sorting = SortOrder.Ascending;
+            lvItems.Sort();
         }
 
         private void LoadLibItemsInLv(List<LibItem> libItems)

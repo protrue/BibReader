@@ -670,13 +670,13 @@ namespace BibReaderLibrary
             var regex = new Regex(template);
             string str = "", currstr="";
             const string endStr = "\",";
+            while ((currstr = reader.ReadLine()) != null && currstr[0] != '@')
+                currstr = reader.ReadLine();
             while (!reader.EndOfStream)
             {
                 MyDictinaries s = new MyDictinaries();
                 s.Init();
-                while ((currstr = reader.ReadLine()).Length>0 && currstr[0] != '@')
-                    currstr = reader.ReadLine();
-                while ((currstr = reader.ReadLine()) != "}")
+                while ((currstr = reader.ReadLine())[currstr.Length-1] != '}')
                 {
                     if (currstr != null && currstr != "")
                     {
