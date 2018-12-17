@@ -110,7 +110,7 @@ namespace BibReader
                 var ed = 0;
                 if (useLev)
                     ed = EditDistance("", "");
-                if (!currTitles.Contains(item.Title.ToLower()) && ed < 5)
+                if (!currTitles.Contains(Normalize(item.Title.ToLower())) && ed < 5)
                 {
                     statistic.AddLibItemsCountAfterFirstResearch();
                     var i = new ListViewItem(new string[]
