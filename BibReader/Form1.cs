@@ -120,24 +120,38 @@ namespace BibReader
             lvItems.Sort();
         }
 
+        private int LevenshteinDistance(string word)
+        {
+            var min = 10000;
+            foreach(var item in currTitles)
+            {
+                var ed = EditDistance(word, item);
+                if (ed < min)
+                    min = ed;
+            }
+            return min;
+        }
+
         private void Unique()
         {
             foreach(ListViewItem item in lvItems.Items)
             {
-                var ed = 100;
-                //var ed = EditDistance("", "");
-                if (!currTitles.Contains(Normalize(((LibItem)item.Tag).Title.ToLower())) && ed > 5)
+                //var ed = 100;
+                var title = Normalize(((LibItem)item.Tag).Title.ToLower());
+                if (!currTitles.Contains(title) && LevenshteinDistance(title) > 5)
                 {
-                    currTitles.Add(Normalize(((LibItem)item.Tag).Title.ToLower()));
+                    currTitles.Add(title);
                     statistic.AddLibItemsCountAfterFirstResearch();
                     item.SubItems[2].Text = "2";
                 }
                 else
                 {
                     item.Remove();
+                    item.SubItems[2].Text = "1";
                     deletedItems.Add(item);
                 }
             }
+            currTitles.Clear();
         }
 
         private void Relevance()
@@ -169,6 +183,7 @@ namespace BibReader
                 else
                 {
                     item.Remove();
+                    item.SubItems[2].Text = "1";
                     deletedItems.Add(item);
                 }
             }
@@ -217,7 +232,6 @@ namespace BibReader
             var univReader = new UniversalBibReader();
             var reader = Read();
             var listOfItems = univReader.Read(reader);
-            reader.Close();
             ClearDataBeforeLoad();
             LoadLibItemsInLv(listOfItems);
             
@@ -315,13 +329,7 @@ namespace BibReader
                     lvItems.Items.Add(item);
                 }
             }
-            foreach (var item in deletedItems)
-            {
-                if (item.SubItems[2].Text == "2")
-                {
-                    deletedItems.Remove(item);
-                }
-            }
+            deletedItems = deletedItems.Where(item => item.SubItems[2].Text != "2").ToList();
             lvItems.Sorting = SortOrder.Ascending;
             lvItems.Sort();
         }

@@ -126,6 +126,8 @@ namespace BibReaderLibrary
             var regex = new Regex(template);
             string str = "", currstr="";
             const string endStr = "\",";
+            if (reader == null)
+                return Items;
             while ((currstr = reader.ReadLine()) != null && currstr!="" && currstr[0] != '@')
                 currstr = reader.ReadLine();
             while (!reader.EndOfStream)
@@ -157,6 +159,7 @@ namespace BibReaderLibrary
                 var newItem = new LibItem(s.mainDict);
                 Items.Add(newItem);
             }
+            reader.Close();
             return Items;
         }
     }
