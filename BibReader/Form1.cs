@@ -13,11 +13,11 @@ using BibReaderLibrary;
 
 namespace BibReader
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         HashSet<string> currTitles = new HashSet<string>();
         Statistic statistic = new Statistic();
-
+        List<ListViewItem> deletedItems = new List<ListViewItem>();
 
         public StreamReader Read()
         {
@@ -73,16 +73,15 @@ namespace BibReader
         {
             lvItems.Columns.Add("Название");
             lvItems.Columns.Add("Авторы");
-            
+            lvItems.Columns[0].Width = lvItems.Width / 2;
+            lvItems.Columns[1].Width = lvItems.Width / 2;
+
         }
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
             InitListView();
-            var scopusBibReader = new ScopusBibReader();
-            var webOfScienceReder = new WebOfScienceBibReader();
-            var scienceDirectBibReader = new ScienceDirectBibReader();
             var readAll = new ReadAllHeaders();
 
         }
@@ -107,24 +106,72 @@ namespace BibReader
             foreach (var item in libItems)
             {
                 statistic.AddLibItemsCount();
-                var ed = 0;
-                if (useLev)
-                    ed = EditDistance("", "");
-                if (!currTitles.Contains(Normalize(item.Title.ToLower())) && ed < 5)
+               
+                var i = new ListViewItem(new string[]
                 {
-                    statistic.AddLibItemsCountAfterFirstResearch();
-                    var i = new ListViewItem(new string[]
-                    {
-                        item.Title,
-                        item.Authors
-                    });
-                    i.Tag = item;
-                    lvItems.Items.Add(i);
-                    currTitles.Add(Normalize(item.Title.ToLower()));
-                }
+                    item.Title,
+                    item.Authors
+                });
+                i.Tag = item;
+                i.SubItems.Add("1");
+                lvItems.Items.Add(i);
             }
             lvItems.Sorting = SortOrder.Ascending;
             lvItems.Sort();
+        }
+
+        private void Unique()
+        {
+            foreach(ListViewItem item in lvItems.Items)
+            {
+                var ed = 100;
+                //var ed = EditDistance("", "");
+                if (!currTitles.Contains(Normalize(((LibItem)item.Tag).Title.ToLower())) && ed > 5)
+                {
+                    currTitles.Add(Normalize(((LibItem)item.Tag).Title.ToLower()));
+                    statistic.AddLibItemsCountAfterFirstResearch();
+                    item.SubItems[2].Text = "2";
+                }
+                else
+                {
+                    item.Remove();
+                    deletedItems.Add(item);
+                }
+            }
+        }
+
+        private void Relevance()
+        {
+            foreach (ListViewItem item in lvItems.Items)
+            {
+                var ed = 100;
+                //var ed = EditDistance("", "");
+                var pages = ((LibItem)item.Tag).Pages;
+                if (pages == "" || pages == string.Empty)
+                {
+                    item.Remove();
+                    deletedItems.Add(item);
+                    continue;
+                }
+                string p1="", p2="";
+                int i = 0;
+                while (i<pages.Length && char.IsDigit(pages[i]))
+                { p1 += pages[i]; i++; }
+                while (i < pages.Length && !char.IsDigit(pages[i]))
+                    i++;
+                while (i < pages.Length)
+                { p2 += pages[i]; i++; }
+                int pageCount;
+                if (p2!="" && ((pageCount = Convert.ToInt32(p2) - Convert.ToInt32(p1)) > 3) && ((LibItem)item.Tag).Authors != "")
+                {
+                    item.SubItems[2].Text = "3";
+                }
+                else
+                {
+                    item.Remove();
+                    deletedItems.Add(item);
+                }
+            }
         }
 
         private void LoadLibItemsInLv(List<LibItem> libItems)
@@ -161,7 +208,7 @@ namespace BibReader
                 tbUrl.Text = ((LibItem)lvItems.SelectedItems[0].Tag).Url;
                 tbVolume.Text = ((LibItem)lvItems.SelectedItems[0].Tag).Volume;
                 tbYear.Text = ((LibItem)lvItems.SelectedItems[0].Tag).Year;
-                lbCurrSelectedItem.Text = $"{lvItems.SelectedIndices[0]}/{statistic.libItemCountAfterFirstResearch}";
+                lbCurrSelectedItem.Text = $"{lvItems.SelectedIndices[0] + 1}/{lvItems.Items.Count}";
             }
         }
 
@@ -227,6 +274,8 @@ namespace BibReader
                         statistic.SetYearStatistic((LibItem)item.Tag);
                     lvYearStatistic.Columns.Add("Год");
                     lvYearStatistic.Columns.Add("Количество");
+                    lvYearStatistic.Columns[0].Width = lvYearStatistic.Width / 2;
+                    lvYearStatistic.Columns[1].Width = lvYearStatistic.Width / 2;
                     lvYearStatistic.Items.AddRange(statistic.dictOfYears.OrderBy(i => i.Key).Select(i => new ListViewItem(new string[] { (i.Key == "") ? "Без года" : i.Key, i.Value.ToString() })).ToArray());
                     break;
                 case "tpSourceStatistic":
@@ -237,9 +286,66 @@ namespace BibReader
                         statistic.SetSourseStatictic((LibItem)item.Tag);
                     lvSourceStatistic.Columns.Add("Источник");
                     lvSourceStatistic.Columns.Add("Количество");
+                    lvSourceStatistic.Columns[0].Width = lvSourceStatistic.Width / 2;
+                    lvSourceStatistic.Columns[1].Width = lvSourceStatistic.Width / 2;
                     lvSourceStatistic.Items.AddRange(statistic.dictOfSourses.OrderBy(i => i.Key).Select(i => new ListViewItem(new string[] { (i.Key == "") ? "Неизв источник" : i.Key, i.Value.ToString() })).ToArray());
                     break;
             }
+        }
+
+        private void btFirst_Click(object sender, EventArgs e)
+        {
+            // вернуть все на место
+            foreach(var item in deletedItems)
+            {
+                lvItems.Items.Add(item);
+            }
+            deletedItems.Clear();
+            lvItems.Sorting = SortOrder.Ascending;
+            lvItems.Sort();
+        }
+
+        private void btUnique_Click(object sender, EventArgs e)
+        {
+            Unique();
+            foreach(var item in deletedItems)
+            {
+                if (item.SubItems[2].Text == "2")
+                {
+                    lvItems.Items.Add(item);
+                }
+            }
+            foreach (var item in deletedItems)
+            {
+                if (item.SubItems[2].Text == "2")
+                {
+                    deletedItems.Remove(item);
+                }
+            }
+            lvItems.Sorting = SortOrder.Ascending;
+            lvItems.Sort();
+        }
+
+        private void btRelevance_Click(object sender, EventArgs e)
+        {
+            Relevance();
+        }
+
+        private void lvItems_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                if (lvItems.FocusedItem.Bounds.Contains(e.Location) == true)
+                {
+                    contextMenuStrip1.Show(Cursor.Position);
+                }
+            }
+        }
+
+        private void contextMenuStrip1_Click(object sender, EventArgs e)
+        {
+            lvItems.SelectedItems[0].Remove();
+            ClearDataBeforeLoad();
         }
     }
 }
