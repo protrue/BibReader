@@ -141,8 +141,8 @@ namespace BibReaderLibrary
                         if (currstr[0] != '@')
                             str += currstr;
 
-                        if (currstr.Length >= 2 && currstr.Substring(currstr.Length - 2, 2) == "}," ||
-                            currstr.Length >= 2 && currstr.Substring(currstr.Length - 2, 2) == endStr ||
+                        if (currstr.Length >= 2 && (currstr.Substring(currstr.Length - 2, 2) == "}," ||
+                            currstr.Substring(currstr.Length - 2, 2) == endStr) ||
                             currstr.Length >= "abstract = ".Length + 1 && currstr.Substring(0, "abstract = ".Length + 1) == "abstract = \"")
                         {
                             var key = regex.Match(str, 0).Groups[1].Value;

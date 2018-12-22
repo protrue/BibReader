@@ -106,7 +106,7 @@ namespace BibReader
             foreach (var item in libItems)
             {
                 statistic.AddLibItemsCount();
-               
+
                 var i = new ListViewItem(new string[]
                 {
                     item.Title,
@@ -118,14 +118,23 @@ namespace BibReader
             }
             lvItems.Sorting = SortOrder.Ascending;
             lvItems.Sort();
+            if (lvItems.Items.Count != 0)
+            {
+                lvItems.Items[0].Selected = true;
+                lbCurrSelectedItem.Text = $"1/{lvItems.Items.Count}";
+            }
         }
 
         private int LevenshteinDistance(string word)
         {
             var min = 10000;
-            foreach(var item in currTitles)
+            int ed;
+            foreach (var item in currTitles)
             {
-                var ed = EditDistance(word, item);
+                if (item == "" || item == null)
+                    ed = 10000;
+                else
+                    ed = EditDistance(word, item);
                 if (ed < min)
                     min = ed;
             }
@@ -167,6 +176,11 @@ namespace BibReader
                     deletedItems.Add(item);
                     continue;
                 }
+                var pagesClone = "";
+                for (int j = 0; j < pages.Length; j++)
+                    if (!char.IsLetter(pages[j]))
+                        pagesClone += pages[j];
+                pages = pagesClone;
                 string p1="", p2="";
                 int i = 0;
                 while (i<pages.Length && char.IsDigit(pages[i]))
@@ -176,15 +190,22 @@ namespace BibReader
                 while (i < pages.Length)
                 { p2 += pages[i]; i++; }
                 int pageCount;
-                if (p2!="" && ((pageCount = Convert.ToInt32(p2) - Convert.ToInt32(p1)) > 3) && ((LibItem)item.Tag).Authors != "")
+                try
+                {
+                    if (p2 != "" && ((pageCount = Convert.ToInt32(p2) - Convert.ToInt32(p1)) > 3) && ((LibItem)item.Tag).Authors != "")
+                    {
+                        item.SubItems[2].Text = "3";
+                    }
+                    else
+                    {
+                        item.Remove();
+                        item.SubItems[2].Text = "1";
+                        deletedItems.Add(item);
+                    }
+                }
+                catch(Exception ex)
                 {
                     item.SubItems[2].Text = "3";
-                }
-                else
-                {
-                    item.Remove();
-                    item.SubItems[2].Text = "1";
-                    deletedItems.Add(item);
                 }
             }
         }
@@ -332,11 +353,21 @@ namespace BibReader
             deletedItems = deletedItems.Where(item => item.SubItems[2].Text != "2").ToList();
             lvItems.Sorting = SortOrder.Ascending;
             lvItems.Sort();
+            if (lvItems.Items.Count != 0)
+            {
+                lvItems.Items[0].Selected = true;
+                lbCurrSelectedItem.Text = $"1/{lvItems.Items.Count}";
+            }
         }
 
         private void btRelevance_Click(object sender, EventArgs e)
         {
             Relevance();
+            if (lvItems.Items.Count != 0)
+            {
+                lvItems.Items[0].Selected = true;
+                lbCurrSelectedItem.Text = $"1/{lvItems.Items.Count}";
+            }
         }
 
         private void lvItems_MouseClick(object sender, MouseEventArgs e)
@@ -354,6 +385,78 @@ namespace BibReader
         {
             lvItems.SelectedItems[0].Remove();
             ClearDataBeforeLoad();
+        }
+
+        private void tbTitle_TextChanged(object sender, EventArgs e)
+        {
+            ((LibItem)lvItems.SelectedItems[0].Tag).Title = tbTitle.Text;
+            lvItems.SelectedItems[0].SubItems[0].Text = tbTitle.Text;
+        }
+
+        private void tbAbstract_TextChanged(object sender, EventArgs e)
+        {
+            ((LibItem)lvItems.SelectedItems[0].Tag).Abstract = tbAbstract.Text;
+        }
+
+        private void tbJournalName_TextChanged(object sender, EventArgs e)
+        {
+            ((LibItem)lvItems.SelectedItems[0].Tag).JournalName = tbJournalName.Text;
+        }
+
+        private void tbYear_TextChanged(object sender, EventArgs e)
+        {
+            ((LibItem)lvItems.SelectedItems[0].Tag).Year = tbYear.Text;
+        }
+
+        private void tbVolume_TextChanged(object sender, EventArgs e)
+        {
+            ((LibItem)lvItems.SelectedItems[0].Tag).Volume = tbVolume.Text;
+        }
+
+        private void tbPublisher_TextChanged(object sender, EventArgs e)
+        {
+            ((LibItem)lvItems.SelectedItems[0].Tag).Publisher = tbPublisher.Text;
+        }
+
+        private void tbNumber_TextChanged(object sender, EventArgs e)
+        {
+            ((LibItem)lvItems.SelectedItems[0].Tag).Number = tbNumber.Text;
+        }
+
+        private void tbPages_TextChanged(object sender, EventArgs e)
+        {
+            ((LibItem)lvItems.SelectedItems[0].Tag).Pages = tbPages.Text;
+        }
+
+        private void tbDoi_TextChanged(object sender, EventArgs e)
+        {
+            ((LibItem)lvItems.SelectedItems[0].Tag).Doi = tbDoi.Text;
+        }
+
+        private void tbUrl_TextChanged(object sender, EventArgs e)
+        {
+            ((LibItem)lvItems.SelectedItems[0].Tag).Url = tbUrl.Text;
+        }
+
+        private void tbAffiliation_TextChanged(object sender, EventArgs e)
+        {
+            ((LibItem)lvItems.SelectedItems[0].Tag).Affiliation = tbAffiliation.Text;
+        }
+
+        private void tbKeywords_TextChanged(object sender, EventArgs e)
+        {
+            ((LibItem)lvItems.SelectedItems[0].Tag).Keywords = tbKeywords.Text;
+        }
+
+        private void tbSourсe_TextChanged(object sender, EventArgs e)
+        {
+            ((LibItem)lvItems.SelectedItems[0].Tag).Sourсe = tbSourсe.Text;
+        }
+
+        private void tbAuthors_TextChanged(object sender, EventArgs e)
+        {
+            ((LibItem)lvItems.SelectedItems[0].Tag).Authors = tbAuthors.Text;
+            lvItems.SelectedItems[0].SubItems[1].Text = tbAuthors.Text;
         }
     }
 }

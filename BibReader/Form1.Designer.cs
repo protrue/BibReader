@@ -163,6 +163,7 @@
             this.tbSourсe.Name = "tbSourсe";
             this.tbSourсe.Size = new System.Drawing.Size(471, 22);
             this.tbSourсe.TabIndex = 27;
+            this.tbSourсe.TextChanged += new System.EventHandler(this.tbSourсe_TextChanged);
             // 
             // tbKeywords
             // 
@@ -171,8 +172,10 @@
             this.tbKeywords.Location = new System.Drawing.Point(179, 578);
             this.tbKeywords.Multiline = true;
             this.tbKeywords.Name = "tbKeywords";
+            this.tbKeywords.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbKeywords.Size = new System.Drawing.Size(471, 55);
             this.tbKeywords.TabIndex = 26;
+            this.tbKeywords.TextChanged += new System.EventHandler(this.tbKeywords_TextChanged);
             // 
             // tbAffiliation
             // 
@@ -181,8 +184,10 @@
             this.tbAffiliation.Location = new System.Drawing.Point(179, 512);
             this.tbAffiliation.Multiline = true;
             this.tbAffiliation.Name = "tbAffiliation";
+            this.tbAffiliation.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbAffiliation.Size = new System.Drawing.Size(471, 60);
             this.tbAffiliation.TabIndex = 25;
+            this.tbAffiliation.TextChanged += new System.EventHandler(this.tbAffiliation_TextChanged);
             // 
             // tbUrl
             // 
@@ -191,8 +196,10 @@
             this.tbUrl.Location = new System.Drawing.Point(179, 447);
             this.tbUrl.Multiline = true;
             this.tbUrl.Name = "tbUrl";
+            this.tbUrl.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbUrl.Size = new System.Drawing.Size(471, 59);
             this.tbUrl.TabIndex = 24;
+            this.tbUrl.TextChanged += new System.EventHandler(this.tbUrl_TextChanged);
             // 
             // tbDoi
             // 
@@ -202,6 +209,7 @@
             this.tbDoi.Name = "tbDoi";
             this.tbDoi.Size = new System.Drawing.Size(471, 22);
             this.tbDoi.TabIndex = 23;
+            this.tbDoi.TextChanged += new System.EventHandler(this.tbDoi_TextChanged);
             // 
             // tbPages
             // 
@@ -211,6 +219,7 @@
             this.tbPages.Name = "tbPages";
             this.tbPages.Size = new System.Drawing.Size(471, 22);
             this.tbPages.TabIndex = 22;
+            this.tbPages.TextChanged += new System.EventHandler(this.tbPages_TextChanged);
             // 
             // tbNumber
             // 
@@ -220,6 +229,7 @@
             this.tbNumber.Name = "tbNumber";
             this.tbNumber.Size = new System.Drawing.Size(471, 22);
             this.tbNumber.TabIndex = 21;
+            this.tbNumber.TextChanged += new System.EventHandler(this.tbNumber_TextChanged);
             // 
             // tbPublisher
             // 
@@ -229,6 +239,7 @@
             this.tbPublisher.Name = "tbPublisher";
             this.tbPublisher.Size = new System.Drawing.Size(471, 22);
             this.tbPublisher.TabIndex = 20;
+            this.tbPublisher.TextChanged += new System.EventHandler(this.tbPublisher_TextChanged);
             // 
             // tbVolume
             // 
@@ -238,6 +249,7 @@
             this.tbVolume.Name = "tbVolume";
             this.tbVolume.Size = new System.Drawing.Size(471, 22);
             this.tbVolume.TabIndex = 19;
+            this.tbVolume.TextChanged += new System.EventHandler(this.tbVolume_TextChanged);
             // 
             // tbYear
             // 
@@ -247,6 +259,7 @@
             this.tbYear.Name = "tbYear";
             this.tbYear.Size = new System.Drawing.Size(471, 22);
             this.tbYear.TabIndex = 18;
+            this.tbYear.TextChanged += new System.EventHandler(this.tbYear_TextChanged);
             // 
             // tbJournalName
             // 
@@ -256,6 +269,7 @@
             this.tbJournalName.Name = "tbJournalName";
             this.tbJournalName.Size = new System.Drawing.Size(471, 22);
             this.tbJournalName.TabIndex = 17;
+            this.tbJournalName.TextChanged += new System.EventHandler(this.tbJournalName_TextChanged);
             // 
             // tbAbstract
             // 
@@ -264,8 +278,10 @@
             this.tbAbstract.Location = new System.Drawing.Point(179, 141);
             this.tbAbstract.Multiline = true;
             this.tbAbstract.Name = "tbAbstract";
+            this.tbAbstract.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbAbstract.Size = new System.Drawing.Size(471, 96);
             this.tbAbstract.TabIndex = 16;
+            this.tbAbstract.TextChanged += new System.EventHandler(this.tbAbstract_TextChanged);
             // 
             // tbTitle
             // 
@@ -276,6 +292,7 @@
             this.tbTitle.Name = "tbTitle";
             this.tbTitle.Size = new System.Drawing.Size(471, 22);
             this.tbTitle.TabIndex = 15;
+            this.tbTitle.TextChanged += new System.EventHandler(this.tbTitle_TextChanged);
             // 
             // tbAuthors
             // 
@@ -284,8 +301,10 @@
             this.tbAuthors.Location = new System.Drawing.Point(179, 20);
             this.tbAuthors.Multiline = true;
             this.tbAuthors.Name = "tbAuthors";
+            this.tbAuthors.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbAuthors.Size = new System.Drawing.Size(471, 84);
             this.tbAuthors.TabIndex = 14;
+            this.tbAuthors.TextChanged += new System.EventHandler(this.tbAuthors_TextChanged);
             // 
             // lbNumber
             // 
@@ -551,9 +570,9 @@
             // 
             this.btFirst.Location = new System.Drawing.Point(12, 65);
             this.btFirst.Name = "btFirst";
-            this.btFirst.Size = new System.Drawing.Size(126, 51);
+            this.btFirst.Size = new System.Drawing.Size(126, 64);
             this.btFirst.TabIndex = 5;
-            this.btFirst.Text = "первичное представление";
+            this.btFirst.Text = "Корпус первичных документов";
             this.btFirst.UseVisualStyleBackColor = true;
             this.btFirst.Click += new System.EventHandler(this.btFirst_Click);
             // 
@@ -561,9 +580,9 @@
             // 
             this.btUnique.Location = new System.Drawing.Point(168, 65);
             this.btUnique.Name = "btUnique";
-            this.btUnique.Size = new System.Drawing.Size(126, 51);
+            this.btUnique.Size = new System.Drawing.Size(126, 64);
             this.btUnique.TabIndex = 6;
-            this.btUnique.Text = "уникальные экземпляры";
+            this.btUnique.Text = "Корпус уникальных документов";
             this.btUnique.UseVisualStyleBackColor = true;
             this.btUnique.Click += new System.EventHandler(this.btUnique_Click);
             // 
@@ -571,9 +590,9 @@
             // 
             this.btRelevance.Location = new System.Drawing.Point(323, 65);
             this.btRelevance.Name = "btRelevance";
-            this.btRelevance.Size = new System.Drawing.Size(126, 51);
+            this.btRelevance.Size = new System.Drawing.Size(126, 64);
             this.btRelevance.TabIndex = 7;
-            this.btRelevance.Text = "релевантные экземпляры";
+            this.btRelevance.Text = "Корпус релевантных документов";
             this.btRelevance.UseVisualStyleBackColor = true;
             this.btRelevance.Click += new System.EventHandler(this.btRelevance_Click);
             // 
@@ -583,13 +602,13 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripMenuItem1});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(211, 56);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(133, 28);
             this.contextMenuStrip1.Click += new System.EventHandler(this.contextMenuStrip1_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(210, 24);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(132, 24);
             this.toolStripMenuItem1.Text = "удалить";
             // 
             // MainForm
