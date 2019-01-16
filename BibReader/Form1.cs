@@ -14,16 +14,22 @@ namespace BibReader
         HashSet<string> currTitles = new HashSet<string>();
         Statistic statistic = new Statistic();
         List<ListViewItem> deletedNotUniqueItems = new List<ListViewItem>();
+        string lastOpenedFileName = string.Empty;
 
-        public StreamReader Read()
+        public StreamReader[] GetStreamReaders()
         {
             OpenFileDialog opd = new OpenFileDialog();
+            opd.Multiselect = true;
             opd.Filter = "Файлы bib|*.bib";
             if (opd.ShowDialog() == DialogResult.OK)
             {
-                var stream = opd.OpenFile();
-                StreamReader reader = new StreamReader(stream);
-                return reader;
+                StreamReader[] streamReaders = new StreamReader[opd.FileNames.Length];
+                for(var i =0;i<opd.FileNames.Length;i++)
+                {
+                    var reader = new StreamReader(opd.FileNames[i]);
+                    streamReaders[i] = reader;
+                }
+                return streamReaders;
             }
             return null;
         }
@@ -140,7 +146,11 @@ namespace BibReader
 
         private void UniqueTitles()
         {
-            foreach(ListViewItem item in lvLibItems.Items)
+            var libItemsCount = lvLibItems.Items.Count;
+            double step = libItemsCount / 100;
+            pbLoadUniqueData.Step = (int)step;
+
+            foreach (ListViewItem item in lvLibItems.Items)
             {
                 //var ed = 100;
                 var title = Normalize(((LibItem)item.Tag).Title.ToLower());
@@ -156,7 +166,10 @@ namespace BibReader
                     item.SubItems[2].Text = "1";
                     deletedNotUniqueItems.Add(item);
                 }
+                if (pbLoadUniqueData.Value + step <= 100)
+                    pbLoadUniqueData.Value += (int)step;
             }
+            pbLoadUniqueData.Value = 100;
             currTitles.Clear();
         }
 
@@ -253,11 +266,11 @@ namespace BibReader
         private void открытьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var univReader = new UniversalBibReader();
-            var reader = Read();
+            var reader = GetStreamReaders();
             var listOfItems = univReader.Read(reader);
             ClearDataBeforeLoad();
             LoadLibItemsInLv(listOfItems);
-            
+            toolStripStatusLabel1.Text = "Last opened file name: " + lastOpenedFileName;
         }
 
         private void ClearDataBeforeLoad()
@@ -290,11 +303,9 @@ namespace BibReader
         private void добавитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var univReader = new UniversalBibReader();
-            var reader = Read();
+            var reader = GetStreamReaders();
             var listOfItems = univReader.Read(reader);
-            reader.Close();
             AddLibItemsInLvItems(listOfItems);
-
         }
 
         private void tabControl_Selected(object sender, TabControlEventArgs e)
@@ -344,6 +355,7 @@ namespace BibReader
 
         private void btUnique_Click(object sender, EventArgs e)
         {
+            pbLoadUniqueData.Value = 0;
             UniqueTitles();
             foreach(var item in deletedNotUniqueItems)
             {

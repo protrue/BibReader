@@ -105,6 +105,10 @@ namespace BibReaderLibrary
 
     public class UniversalBibReader
     {
+        const string codeStar = "amp;#x2014;";
+        MyDictinaries myDictinaries = new MyDictinaries();
+
+
         private string WhereFrom(string str)
         {
             switch(str.Substring(0, "title".Length))
@@ -119,47 +123,83 @@ namespace BibReaderLibrary
             return "";
         }
 
-        public List<LibItem> Read(StreamReader reader)
+        private string pretreatmentTitle(string title)
+        {
+            if(title.Contains(codeStar))
+            {
+                var index = title.IndexOf(codeStar);
+                title = title.Remove(index, codeStar.Length);
+            }
+
+            title = FindOriginalTitle(title);
+
+            return title;
+        }
+
+        private string FindOriginalTitle(string title)
+        {
+            var template = @".*\[(.+)\].*";
+            var regex = new Regex(template);
+
+            var value = regex.Match(title).Groups[1].Value;
+            if (value != "")
+            {
+                myDictinaries.mainDict["OriginalTitle"] = value;
+                var index = title.IndexOf(value);
+                title = title.Remove(index - 1, value.Length + 2);
+            }
+
+            return title;
+        }
+
+        public List<LibItem> Read(StreamReader[] readers)
         {
             var Items = new List<LibItem>();
             var template = @"([^=\s]+)\s?=\s?""?({{?)?([^{}""]+)(}}?)?""?,";
             var regex = new Regex(template);
             string str = "", currstr="";
             const string endStr = "\",";
-            if (reader == null)
-                return Items;
-            while ((currstr = reader.ReadLine()) != null && currstr!="" && currstr[0] != '@')
-                currstr = reader.ReadLine();
-            while (!reader.EndOfStream)
+            foreach (var reader in readers)
             {
-                MyDictinaries s = new MyDictinaries();
-                s.Init();
-                while ((currstr = reader.ReadLine())[currstr.Length-1] != '}')
+                if (reader == null)
+                    return Items;
+                while ((currstr = reader.ReadLine()) != null && currstr != "" && currstr[0] != '@')
+                    currstr = reader.ReadLine();
+                while (!reader.EndOfStream)
                 {
-                    if (currstr != null && currstr != "")
+                    myDictinaries = new MyDictinaries();
+                    myDictinaries.Init();
+                    while ((currstr = reader.ReadLine())[currstr.Length - 1] != '}')
                     {
-                        if (currstr[0] != '@')
-                            str += currstr;
-
-                        if (currstr.Length >= 2 && (currstr.Substring(currstr.Length - 2, 2) == "}," ||
-                            currstr.Substring(currstr.Length - 2, 2) == endStr) ||
-                            currstr.Length >= "abstract = ".Length + 1 && currstr.Substring(0, "abstract = ".Length + 1) == "abstract = \"")
+                        if (currstr != null && currstr != "")
                         {
-                            var key = regex.Match(str, 0).Groups[1].Value;
-                            var value = regex.Match(str, 0).Groups[3].Value;
-                            if (s.dict.ContainsKey(key))
-                                s.mainDict[s.dict[key]] = value;
-                            if (key == "title" || key == "Title")
-                                s.mainDict["source"] = WhereFrom(str);
-                            str = "";
+                            if (currstr[0] != '@')
+                                str += currstr;
+
+                            if (currstr.Length >= 2 && (currstr.Substring(currstr.Length - 2, 2) == "}," ||
+                                currstr.Substring(currstr.Length - 2, 2) == endStr) ||
+                                currstr.Length >= "abstract = ".Length + 1 && currstr.Substring(0, "abstract = ".Length + 1) == "abstract = \"")
+                            {
+                                var key = regex.Match(str).Groups[1].Value;
+                                var value = regex.Match(str).Groups[3].Value;
+                                if (key == "title" || key == "Title")
+                                {
+                                    // TODO: обработку заголовка убрать коды и названия на оригинальном языке
+                                    value = pretreatmentTitle(value);
+                                    myDictinaries.mainDict["source"] = WhereFrom(str);
+                                }
+                                if (myDictinaries.dict.ContainsKey(key))
+                                    myDictinaries.mainDict[myDictinaries.dict[key]] = value;
+                                str = "";
+                            }
                         }
                     }
+                    reader.ReadLine();
+                    var newItem = new LibItem(myDictinaries.mainDict);
+                    Items.Add(newItem);
                 }
-                reader.ReadLine();
-                var newItem = new LibItem(s.mainDict);
-                Items.Add(newItem);
+                reader.Close();
             }
-            reader.Close();
             return Items;
         }
     }

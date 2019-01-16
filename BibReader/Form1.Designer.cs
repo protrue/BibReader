@@ -78,6 +78,9 @@
             this.btRelevance = new System.Windows.Forms.Button();
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.pbLoadUniqueData = new System.Windows.Forms.ProgressBar();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.groupBox1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tpData.SuspendLayout();
@@ -86,6 +89,7 @@
             this.tpSourceStatistic.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -96,7 +100,7 @@
             this.groupBox1.Controls.Add(this.tabControl);
             this.groupBox1.Location = new System.Drawing.Point(848, 33);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(676, 723);
+            this.groupBox1.Size = new System.Drawing.Size(676, 755);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Информация";
@@ -113,7 +117,7 @@
             this.tabControl.Location = new System.Drawing.Point(6, 21);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(664, 696);
+            this.tabControl.Size = new System.Drawing.Size(664, 728);
             this.tabControl.TabIndex = 0;
             this.tabControl.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl_Selected);
             // 
@@ -150,7 +154,7 @@
             this.tpData.Location = new System.Drawing.Point(4, 25);
             this.tpData.Name = "tpData";
             this.tpData.Padding = new System.Windows.Forms.Padding(3);
-            this.tpData.Size = new System.Drawing.Size(656, 667);
+            this.tpData.Size = new System.Drawing.Size(656, 699);
             this.tpData.TabIndex = 0;
             this.tpData.Text = "Данные";
             this.tpData.UseVisualStyleBackColor = true;
@@ -438,7 +442,7 @@
             this.tpBib.Location = new System.Drawing.Point(4, 25);
             this.tpBib.Name = "tpBib";
             this.tpBib.Padding = new System.Windows.Forms.Padding(3);
-            this.tpBib.Size = new System.Drawing.Size(656, 667);
+            this.tpBib.Size = new System.Drawing.Size(656, 699);
             this.tpBib.TabIndex = 1;
             this.tpBib.Text = "Библ. описания";
             this.tpBib.UseVisualStyleBackColor = true;
@@ -460,7 +464,7 @@
             this.tpYearStatistic.Location = new System.Drawing.Point(4, 25);
             this.tpYearStatistic.Name = "tpYearStatistic";
             this.tpYearStatistic.Padding = new System.Windows.Forms.Padding(3);
-            this.tpYearStatistic.Size = new System.Drawing.Size(656, 667);
+            this.tpYearStatistic.Size = new System.Drawing.Size(656, 699);
             this.tpYearStatistic.TabIndex = 2;
             this.tpYearStatistic.Text = "Statistic";
             this.tpYearStatistic.UseVisualStyleBackColor = true;
@@ -483,7 +487,7 @@
             this.tpSourceStatistic.Location = new System.Drawing.Point(4, 25);
             this.tpSourceStatistic.Name = "tpSourceStatistic";
             this.tpSourceStatistic.Padding = new System.Windows.Forms.Padding(3);
-            this.tpSourceStatistic.Size = new System.Drawing.Size(656, 667);
+            this.tpSourceStatistic.Size = new System.Drawing.Size(656, 699);
             this.tpSourceStatistic.TabIndex = 3;
             this.tpSourceStatistic.Text = "Source statistic";
             this.tpSourceStatistic.UseVisualStyleBackColor = true;
@@ -508,7 +512,7 @@
             this.lvLibItems.Location = new System.Drawing.Point(12, 189);
             this.lvLibItems.MultiSelect = false;
             this.lvLibItems.Name = "lvLibItems";
-            this.lvLibItems.Size = new System.Drawing.Size(776, 557);
+            this.lvLibItems.Size = new System.Drawing.Size(776, 560);
             this.lvLibItems.TabIndex = 2;
             this.lvLibItems.UseCompatibleStateImageBehavior = false;
             this.lvLibItems.View = System.Windows.Forms.View.Details;
@@ -611,11 +615,38 @@
             this.toolStripMenuItem1.Size = new System.Drawing.Size(132, 24);
             this.toolStripMenuItem1.Text = "удалить";
             // 
+            // pbLoadUniqueData
+            // 
+            this.pbLoadUniqueData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.pbLoadUniqueData.Location = new System.Drawing.Point(12, 755);
+            this.pbLoadUniqueData.Name = "pbLoadUniqueData";
+            this.pbLoadUniqueData.Size = new System.Drawing.Size(776, 23);
+            this.pbLoadUniqueData.TabIndex = 8;
+            // 
+            // statusStrip1
+            // 
+            this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 765);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(1536, 25);
+            this.statusStrip1.TabIndex = 9;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(90, 20);
+            this.toolStripStatusLabel1.Text = "random text";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1536, 765);
+            this.ClientSize = new System.Drawing.Size(1536, 790);
+            this.Controls.Add(this.statusStrip1);
+            this.Controls.Add(this.pbLoadUniqueData);
             this.Controls.Add(this.btRelevance);
             this.Controls.Add(this.btUnique);
             this.Controls.Add(this.btFirst);
@@ -637,6 +668,8 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -692,6 +725,9 @@
         private System.Windows.Forms.Button btRelevance;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+        private System.Windows.Forms.ProgressBar pbLoadUniqueData;
+        private System.Windows.Forms.StatusStrip statusStrip1;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     }
 }
 
