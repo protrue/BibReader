@@ -66,7 +66,7 @@
             this.lvYearStatistic = new System.Windows.Forms.ListView();
             this.tpSourceStatistic = new System.Windows.Forms.TabPage();
             this.lvSourceStatistic = new System.Windows.Forms.ListView();
-            this.lvItems = new System.Windows.Forms.ListView();
+            this.lvLibItems = new System.Windows.Forms.ListView();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.открытьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -500,20 +500,20 @@
             this.lvSourceStatistic.UseCompatibleStateImageBehavior = false;
             this.lvSourceStatistic.View = System.Windows.Forms.View.Details;
             // 
-            // lvItems
+            // lvLibItems
             // 
-            this.lvItems.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.lvLibItems.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.lvItems.FullRowSelect = true;
-            this.lvItems.Location = new System.Drawing.Point(12, 189);
-            this.lvItems.MultiSelect = false;
-            this.lvItems.Name = "lvItems";
-            this.lvItems.Size = new System.Drawing.Size(776, 557);
-            this.lvItems.TabIndex = 2;
-            this.lvItems.UseCompatibleStateImageBehavior = false;
-            this.lvItems.View = System.Windows.Forms.View.Details;
-            this.lvItems.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.lvItems_ItemSelectionChanged);
-            this.lvItems.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lvItems_MouseClick);
+            this.lvLibItems.FullRowSelect = true;
+            this.lvLibItems.Location = new System.Drawing.Point(12, 189);
+            this.lvLibItems.MultiSelect = false;
+            this.lvLibItems.Name = "lvLibItems";
+            this.lvLibItems.Size = new System.Drawing.Size(776, 557);
+            this.lvLibItems.TabIndex = 2;
+            this.lvLibItems.UseCompatibleStateImageBehavior = false;
+            this.lvLibItems.View = System.Windows.Forms.View.Details;
+            this.lvLibItems.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.lvItems_ItemSelectionChanged);
+            this.lvLibItems.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lvItems_MouseClick);
             // 
             // menuStrip1
             // 
@@ -620,7 +620,7 @@
             this.Controls.Add(this.btUnique);
             this.Controls.Add(this.btFirst);
             this.Controls.Add(this.lbCurrSelectedItem);
-            this.Controls.Add(this.lvItems);
+            this.Controls.Add(this.lvLibItems);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
@@ -662,7 +662,7 @@
         private System.Windows.Forms.Label lbAbstract;
         private System.Windows.Forms.Label lbAffiliation;
         private System.Windows.Forms.Label lbUrl;
-        private System.Windows.Forms.ListView lvItems;
+        private System.Windows.Forms.ListView lvLibItems;
         private System.Windows.Forms.TextBox tbYear;
         private System.Windows.Forms.TextBox tbJournalName;
         private System.Windows.Forms.TextBox tbAbstract;
