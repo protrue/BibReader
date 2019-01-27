@@ -15,6 +15,8 @@ namespace BibReader
         Statistic statistic = new Statistic();
         List<ListViewItem> deletedNotUniqueItems = new List<ListViewItem>();
         string lastOpenedFileName = string.Empty;
+        List<int> indexesOfLibItems;
+        int currIndex = 0;
 
         public StreamReader[] GetStreamReaders()
         {
@@ -230,6 +232,7 @@ namespace BibReader
             lvLibItems.Items.Clear();
             statistic = new Statistic();
             currTitles.Clear();
+            currIndex = 0;
             AddLibItemsInLvItems(libItems);
         }
 
@@ -471,6 +474,48 @@ namespace BibReader
         {
             ((LibItem)lvLibItems.SelectedItems[0].Tag).Authors = tbAuthors.Text;
             lvLibItems.SelectedItems[0].SubItems[1].Text = tbAuthors.Text;
+        }
+
+        private void tbFind_TextChanged(object sender, EventArgs e)
+        {
+            //lvLibItems.Items[40].Selected = true;
+        }
+
+        private void btNextFindedLibItem_Click(object sender, EventArgs e)
+        {
+            indexesOfLibItems = new List<int>();
+            indexesOfLibItems.Clear();
+            foreach (ListViewItem libItem in lvLibItems.Items)
+            {
+                if (libItem.SubItems[0].Text.ToLower().IndexOf(tbFind.Text.ToLower())>=0)
+                    indexesOfLibItems.Add(libItem.Index);
+            }
+            if (indexesOfLibItems.Count > 0)
+            {
+                lvLibItems.Select();
+                lvLibItems.EnsureVisible(indexesOfLibItems[0]);
+                // currIndex = indexesOfLibItems[0];
+                lvLibItems.Items[currIndex].Selected = true;
+            }
+            else
+                MessageBox.Show("Элементы не найдены!");
+            foreach (var index in indexesOfLibItems)
+            {
+                if (index > currIndex)
+                {
+                    currIndex = index;
+                    break;
+                }
+            }
+            if (indexesOfLibItems.Count > 0 && currIndex == indexesOfLibItems.Last())
+                currIndex = indexesOfLibItems.First();
+            if (indexesOfLibItems.Count > 0)
+            {
+                lvLibItems.Select();
+                lvLibItems.Items[currIndex].Selected = true;
+                lvLibItems.EnsureVisible(currIndex);
+            }
+
         }
     }
 }

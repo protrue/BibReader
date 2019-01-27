@@ -105,7 +105,6 @@ namespace BibReaderLibrary
 
     public class UniversalBibReader
     {
-        const string codeStar = "amp;#x2014;";
         MyDictinaries myDictinaries = new MyDictinaries();
 
 
@@ -125,10 +124,18 @@ namespace BibReaderLibrary
 
         private string pretreatmentTitle(string title)
         {
-            if(title.Contains(codeStar))
+            string[] codesForRemove = new string[] {
+                @"\&\#38;",
+                "amp;#x2014;"
+            };
+
+            foreach (var code in codesForRemove)
             {
-                var index = title.IndexOf(codeStar);
-                title = title.Remove(index, codeStar.Length);
+                if (title.Contains(code))
+                {
+                    var index = title.IndexOf(code);
+                    title = title.Remove(index, code.Length);
+                }
             }
 
             title = FindOriginalTitle(title);
@@ -152,54 +159,61 @@ namespace BibReaderLibrary
             return title;
         }
 
+        private List<LibItem> ReadFile(StreamReader reader, List<LibItem> Items)
+        {
+            var template = @"\s?(.+?)\s?=\s?(""|{{|{)(.+?)(""|}}|}),";
+            var regex = new Regex(template);
+            string str = "", currstr = "";
+            const string endStr = "\",";
+
+            if (reader == null)
+                return Items;
+            while ((currstr = reader.ReadLine()) != null && currstr != "" && currstr[0] != '@')
+                currstr = reader.ReadLine();
+            while (!reader.EndOfStream)
+            {
+                myDictinaries = new MyDictinaries();
+                myDictinaries.Init();
+                while ((currstr = reader.ReadLine())[currstr.Length - 1] != '}')
+                {
+                    if (currstr != null && currstr != "")
+                    {
+                        if (currstr[0] != '@')
+                            str += currstr;
+
+                        if (currstr.Length >= 2 && (currstr.Substring(currstr.Length - 2, 2) == "}," ||
+                            currstr.Substring(currstr.Length - 2, 2) == endStr) ||
+                            currstr.Length >= "abstract = ".Length + 1 && currstr.Substring(0, "abstract = ".Length + 1) == "abstract = \"")
+                        {
+                            var key = regex.Match(str).Groups[1].Value;
+                            var value = regex.Match(str).Groups[3].Value;
+                            if (key == "title" || key == "Title")
+                            {
+                                // TODO: обработку заголовка убрать коды и названия на оригинальном языке
+                                value = pretreatmentTitle(value);
+                                myDictinaries.mainDict["source"] = WhereFrom(str);
+                            }
+                            if (myDictinaries.dict.ContainsKey(key))
+                                myDictinaries.mainDict[myDictinaries.dict[key]] = value;
+                            str = "";
+                        }
+                    }
+                }
+                reader.ReadLine();
+                var newItem = new LibItem(myDictinaries.mainDict);
+                Items.Add(newItem);
+            }
+            reader.Close();
+            return Items;
+
+        }
+
         public List<LibItem> Read(StreamReader[] readers)
         {
             var Items = new List<LibItem>();
-            var template = @"([^=\s]+)\s?=\s?""?({{?)?([^{}""]+)(}}?)?""?,";
-            var regex = new Regex(template);
-            string str = "", currstr="";
-            const string endStr = "\",";
-            foreach (var reader in readers)
-            {
-                if (reader == null)
-                    return Items;
-                while ((currstr = reader.ReadLine()) != null && currstr != "" && currstr[0] != '@')
-                    currstr = reader.ReadLine();
-                while (!reader.EndOfStream)
-                {
-                    myDictinaries = new MyDictinaries();
-                    myDictinaries.Init();
-                    while ((currstr = reader.ReadLine())[currstr.Length - 1] != '}')
-                    {
-                        if (currstr != null && currstr != "")
-                        {
-                            if (currstr[0] != '@')
-                                str += currstr;
-
-                            if (currstr.Length >= 2 && (currstr.Substring(currstr.Length - 2, 2) == "}," ||
-                                currstr.Substring(currstr.Length - 2, 2) == endStr) ||
-                                currstr.Length >= "abstract = ".Length + 1 && currstr.Substring(0, "abstract = ".Length + 1) == "abstract = \"")
-                            {
-                                var key = regex.Match(str).Groups[1].Value;
-                                var value = regex.Match(str).Groups[3].Value;
-                                if (key == "title" || key == "Title")
-                                {
-                                    // TODO: обработку заголовка убрать коды и названия на оригинальном языке
-                                    value = pretreatmentTitle(value);
-                                    myDictinaries.mainDict["source"] = WhereFrom(str);
-                                }
-                                if (myDictinaries.dict.ContainsKey(key))
-                                    myDictinaries.mainDict[myDictinaries.dict[key]] = value;
-                                str = "";
-                            }
-                        }
-                    }
-                    reader.ReadLine();
-                    var newItem = new LibItem(myDictinaries.mainDict);
-                    Items.Add(newItem);
-                }
-                reader.Close();
-            }
+            if (readers != null)
+                foreach (var reader in readers)
+                    Items = ReadFile(reader, Items);
             return Items;
         }
     }

@@ -81,6 +81,9 @@
             this.pbLoadUniqueData = new System.Windows.Forms.ProgressBar();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.tbFind = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.btNextFindedLibItem = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tpData.SuspendLayout();
@@ -100,7 +103,7 @@
             this.groupBox1.Controls.Add(this.tabControl);
             this.groupBox1.Location = new System.Drawing.Point(848, 33);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(676, 755);
+            this.groupBox1.Size = new System.Drawing.Size(676, 766);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Информация";
@@ -117,7 +120,7 @@
             this.tabControl.Location = new System.Drawing.Point(6, 21);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(664, 728);
+            this.tabControl.Size = new System.Drawing.Size(664, 739);
             this.tabControl.TabIndex = 0;
             this.tabControl.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl_Selected);
             // 
@@ -154,7 +157,7 @@
             this.tpData.Location = new System.Drawing.Point(4, 25);
             this.tpData.Name = "tpData";
             this.tpData.Padding = new System.Windows.Forms.Padding(3);
-            this.tpData.Size = new System.Drawing.Size(656, 699);
+            this.tpData.Size = new System.Drawing.Size(656, 710);
             this.tpData.TabIndex = 0;
             this.tpData.Text = "Данные";
             this.tpData.UseVisualStyleBackColor = true;
@@ -512,7 +515,7 @@
             this.lvLibItems.Location = new System.Drawing.Point(12, 189);
             this.lvLibItems.MultiSelect = false;
             this.lvLibItems.Name = "lvLibItems";
-            this.lvLibItems.Size = new System.Drawing.Size(776, 560);
+            this.lvLibItems.Size = new System.Drawing.Size(776, 555);
             this.lvLibItems.TabIndex = 2;
             this.lvLibItems.UseCompatibleStateImageBehavior = false;
             this.lvLibItems.View = System.Windows.Forms.View.Details;
@@ -618,7 +621,7 @@
             // pbLoadUniqueData
             // 
             this.pbLoadUniqueData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.pbLoadUniqueData.Location = new System.Drawing.Point(12, 755);
+            this.pbLoadUniqueData.Location = new System.Drawing.Point(12, 750);
             this.pbLoadUniqueData.Name = "pbLoadUniqueData";
             this.pbLoadUniqueData.Size = new System.Drawing.Size(776, 23);
             this.pbLoadUniqueData.TabIndex = 8;
@@ -628,7 +631,7 @@
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 765);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 776);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(1536, 25);
             this.statusStrip1.TabIndex = 9;
@@ -640,11 +643,41 @@
             this.toolStripStatusLabel1.Size = new System.Drawing.Size(90, 20);
             this.toolStripStatusLabel1.Text = "random text";
             // 
+            // tbFind
+            // 
+            this.tbFind.Location = new System.Drawing.Point(476, 106);
+            this.tbFind.Name = "tbFind";
+            this.tbFind.Size = new System.Drawing.Size(222, 22);
+            this.tbFind.TabIndex = 10;
+            this.tbFind.TextChanged += new System.EventHandler(this.tbFind_TextChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(473, 79);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(48, 17);
+            this.label1.TabIndex = 11;
+            this.label1.Text = "Поиск";
+            // 
+            // btNextFindedLibItem
+            // 
+            this.btNextFindedLibItem.Location = new System.Drawing.Point(704, 106);
+            this.btNextFindedLibItem.Name = "btNextFindedLibItem";
+            this.btNextFindedLibItem.Size = new System.Drawing.Size(84, 23);
+            this.btNextFindedLibItem.TabIndex = 12;
+            this.btNextFindedLibItem.Text = "Дальше";
+            this.btNextFindedLibItem.UseVisualStyleBackColor = true;
+            this.btNextFindedLibItem.Click += new System.EventHandler(this.btNextFindedLibItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1536, 790);
+            this.ClientSize = new System.Drawing.Size(1536, 801);
+            this.Controls.Add(this.btNextFindedLibItem);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.tbFind);
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.pbLoadUniqueData);
             this.Controls.Add(this.btRelevance);
@@ -728,6 +761,9 @@
         private System.Windows.Forms.ProgressBar pbLoadUniqueData;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.TextBox tbFind;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Button btNextFindedLibItem;
     }
 }
 
