@@ -11,7 +11,8 @@ namespace BibReader
 {
     public partial class MainForm : Form
     {
-        HashSet<string> currTitles = new HashSet<string>();
+        //HashSet<string> currTitles = new HashSet<string>();
+        Dictionary<string, int> currTitles = new Dictionary<string, int>();
         Statistic statistic = new Statistic();
         List<ListViewItem> deletedNotUniqueItems = new List<ListViewItem>();
         string lastOpenedFileName = string.Empty;
@@ -134,7 +135,7 @@ namespace BibReader
         {
             var minDistance = 10000;
             int ed;
-            foreach (var title in currTitles)
+            foreach (var title in currTitles.Keys)
             {
                 if (title == "" || title == null)
                     ed = 10000;
@@ -156,9 +157,9 @@ namespace BibReader
             {
                 //var ed = 100;
                 var title = Normalize(((LibItem)item.Tag).Title.ToLower());
-                if (!currTitles.Contains(title) && LevenshteinDistance(title) > 5)
+                if (!currTitles.Keys.Contains(title) && LevenshteinDistance(title) > 5)
                 {
-                    currTitles.Add(title);
+                    currTitles.Add(title, item.Index);
                     statistic.AddLibItemsCountAfterFirstResearch();
                     item.SubItems[2].Text = "2";
                 }
@@ -167,12 +168,32 @@ namespace BibReader
                     item.Remove();
                     item.SubItems[2].Text = "1";
                     deletedNotUniqueItems.Add(item);
+                    FindImportantData((LibItem)lvLibItems.Items[currTitles[title]].Tag, (LibItem)item.Tag);
                 }
                 if (pbLoadUniqueData.Value + step <= 100)
                     pbLoadUniqueData.Value += (int)step;
             }
             pbLoadUniqueData.Value = 100;
             currTitles.Clear();
+        }
+
+        private void FindImportantData(LibItem savedItem, LibItem currItem)
+        {
+            AbstractComplement(savedItem, currItem);
+            KeywordsComplement(savedItem, currItem);
+        }
+
+        private void KeywordsComplement(LibItem savedItem, LibItem currItem)
+        {
+            if (savedItem.KeywordsIsEmpty && !currItem.KeywordsIsEmpty)
+                savedItem.Keywords = currItem.Keywords;
+        }
+
+        private void AbstractComplement(LibItem savedItem, LibItem currItem)
+        {
+            if (savedItem.AbstractIsEmpty && !currItem.AbstractIsEmpty)
+                savedItem.Abstract = currItem.Abstract;
+
         }
 
         private bool isRelevancePages(string pages)

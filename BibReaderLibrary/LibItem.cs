@@ -62,19 +62,9 @@ namespace BibReaderLibrary
             Number = dict["number"];
         }
 
-        //public string Authors { get => Authors; set => Authors = value; }
-        //public string Doi { get => Doi; private set => Doi = value; }
-        //public string Year { get => Year; private set => Year = value; }
-        //public string Booktitle { get => Booktitle; private set => Booktitle = value; }
-        //public string JournalName { get => JournalName; private set => JournalName = value; }
-        //public string Volume { get => Volume; private set => Volume = value; }
-        //public string Pages { get => Pages; private set => Pages = value; }
-        //public string Url { get => Url; private set => Url = value; }
-        //public string Affiliation { get => Affiliation; private set => Affiliation = value; }
-        //public string Abstract { get => Abstract; private set => Abstract = value; }
-        //public string Keywords { get => Keywords; private set => Keywords = value; }
-        //public string Publisher { get => Publisher; private set => Publisher = value; }
-        //public string Sourse { get => Sourse; private set => Sourse = value; }
-        //public string Number { get => Number; private set => Number = value; }
+        public bool AbstractIsEmpty => Abstract == string.Empty ? true : false;
+        public bool KeywordsIsEmpty => Keywords == string.Empty ? true : false;
+
+
     }
 }
