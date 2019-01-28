@@ -520,16 +520,44 @@ namespace BibReader
             }
             else
                 MessageBox.Show("Элементы не найдены!");
-            foreach (var index in indexesOfLibItems)
-            {
-                if (index > currIndex)
-                {
-                    currIndex = index;
-                    break;
-                }
-            }
+
+            currIndex = indexesOfLibItems.First(x => x > currIndex);
+            
             if (indexesOfLibItems.Count > 0 && currIndex == indexesOfLibItems.Last())
                 currIndex = indexesOfLibItems.First();
+            if (indexesOfLibItems.Count > 0)
+            {
+                lvLibItems.Select();
+                lvLibItems.Items[currIndex].Selected = true;
+                lvLibItems.EnsureVisible(currIndex);
+            }
+
+        }
+
+        private void btPrevFindedLibItem_Click(object sender, EventArgs e)
+
+        {
+            indexesOfLibItems = new List<int>();
+            indexesOfLibItems.Clear();
+            foreach (ListViewItem libItem in lvLibItems.Items)
+            {
+                if (libItem.SubItems[0].Text.ToLower().IndexOf(tbFind.Text.ToLower()) >= 0)
+                    indexesOfLibItems.Add(libItem.Index);
+            }
+            if (indexesOfLibItems.Count > 0)
+            {
+                lvLibItems.Select();
+                lvLibItems.EnsureVisible(indexesOfLibItems[0]);
+                // currIndex = indexesOfLibItems[0];
+                lvLibItems.Items[currIndex].Selected = true;
+            }
+            else
+                MessageBox.Show("Элементы не найдены!");
+
+            currIndex = indexesOfLibItems.Last(x => x < currIndex);
+           
+            if (indexesOfLibItems.Count > 0 && currIndex == indexesOfLibItems.First())
+                currIndex = indexesOfLibItems.Last();
             if (indexesOfLibItems.Count > 0)
             {
                 lvLibItems.Select();

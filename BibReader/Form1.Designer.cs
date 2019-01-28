@@ -84,6 +84,7 @@
             this.tbFind = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btNextFindedLibItem = new System.Windows.Forms.Button();
+            this.btPrevFindedLibItem = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tpData.SuspendLayout();
@@ -445,7 +446,7 @@
             this.tpBib.Location = new System.Drawing.Point(4, 25);
             this.tpBib.Name = "tpBib";
             this.tpBib.Padding = new System.Windows.Forms.Padding(3);
-            this.tpBib.Size = new System.Drawing.Size(656, 699);
+            this.tpBib.Size = new System.Drawing.Size(656, 710);
             this.tpBib.TabIndex = 1;
             this.tpBib.Text = "Библ. описания";
             this.tpBib.UseVisualStyleBackColor = true;
@@ -467,7 +468,7 @@
             this.tpYearStatistic.Location = new System.Drawing.Point(4, 25);
             this.tpYearStatistic.Name = "tpYearStatistic";
             this.tpYearStatistic.Padding = new System.Windows.Forms.Padding(3);
-            this.tpYearStatistic.Size = new System.Drawing.Size(656, 699);
+            this.tpYearStatistic.Size = new System.Drawing.Size(656, 710);
             this.tpYearStatistic.TabIndex = 2;
             this.tpYearStatistic.Text = "Statistic";
             this.tpYearStatistic.UseVisualStyleBackColor = true;
@@ -490,7 +491,7 @@
             this.tpSourceStatistic.Location = new System.Drawing.Point(4, 25);
             this.tpSourceStatistic.Name = "tpSourceStatistic";
             this.tpSourceStatistic.Padding = new System.Windows.Forms.Padding(3);
-            this.tpSourceStatistic.Size = new System.Drawing.Size(656, 699);
+            this.tpSourceStatistic.Size = new System.Drawing.Size(656, 710);
             this.tpSourceStatistic.TabIndex = 3;
             this.tpSourceStatistic.Text = "Source statistic";
             this.tpSourceStatistic.UseVisualStyleBackColor = true;
@@ -662,19 +663,30 @@
             // 
             // btNextFindedLibItem
             // 
-            this.btNextFindedLibItem.Location = new System.Drawing.Point(704, 106);
+            this.btNextFindedLibItem.Location = new System.Drawing.Point(749, 106);
             this.btNextFindedLibItem.Name = "btNextFindedLibItem";
-            this.btNextFindedLibItem.Size = new System.Drawing.Size(84, 23);
+            this.btNextFindedLibItem.Size = new System.Drawing.Size(39, 23);
             this.btNextFindedLibItem.TabIndex = 12;
-            this.btNextFindedLibItem.Text = "Дальше";
+            this.btNextFindedLibItem.Text = ">>";
             this.btNextFindedLibItem.UseVisualStyleBackColor = true;
             this.btNextFindedLibItem.Click += new System.EventHandler(this.btNextFindedLibItem_Click);
+            // 
+            // btPrevFindedLibItem
+            // 
+            this.btPrevFindedLibItem.Location = new System.Drawing.Point(704, 106);
+            this.btPrevFindedLibItem.Name = "btPrevFindedLibItem";
+            this.btPrevFindedLibItem.Size = new System.Drawing.Size(39, 23);
+            this.btPrevFindedLibItem.TabIndex = 13;
+            this.btPrevFindedLibItem.Text = "<<";
+            this.btPrevFindedLibItem.UseVisualStyleBackColor = true;
+            this.btPrevFindedLibItem.Click += new System.EventHandler(this.btPrevFindedLibItem_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1536, 801);
+            this.Controls.Add(this.btPrevFindedLibItem);
             this.Controls.Add(this.btNextFindedLibItem);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tbFind);
@@ -764,6 +776,7 @@
         private System.Windows.Forms.TextBox tbFind;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button btNextFindedLibItem;
+        private System.Windows.Forms.Button btPrevFindedLibItem;
     }
 }
 
