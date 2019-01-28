@@ -82,11 +82,5 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\BibReaderLibrary\BibReaderLibrary.csproj">
-      <Project>{814695fe-2902-4a12-b2b2-d16cf057fd94}</Project>
-      <Name>BibReaderLibrary</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,5 +1,4 @@
 ﻿using System;
-using BibReaderLibrary;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.IO;
 
