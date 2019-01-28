@@ -174,7 +174,8 @@ namespace BibReader
             {
                 myDictinaries = new MyDictinaries();
                 myDictinaries.Init();
-                while ((currstr = reader.ReadLine())[currstr.Length - 1] != '}')
+                currstr = reader.ReadLine();
+                while (currstr != "}" && (currstr.Length > 2 && currstr.Substring(currstr.Length - 2, 2) != ",}"))
                 {
                     if (currstr != null && currstr != "")
                     {
@@ -198,6 +199,7 @@ namespace BibReader
                             str = "";
                         }
                     }
+                    currstr = reader.ReadLine();
                 }
                 reader.ReadLine();
                 var newItem = new LibItem(myDictinaries.mainDict);

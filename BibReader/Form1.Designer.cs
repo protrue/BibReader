@@ -641,8 +641,8 @@
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(90, 20);
-            this.toolStripStatusLabel1.Text = "random text";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(163, 20);
+            this.toolStripStatusLabel1.Text = "Last opened file name: ";
             // 
             // tbFind
             // 

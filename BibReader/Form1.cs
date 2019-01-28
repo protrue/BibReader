@@ -31,6 +31,7 @@ namespace BibReader
                     var reader = new StreamReader(opd.FileNames[i]);
                     streamReaders[i] = reader;
                 }
+                lastOpenedFileName = opd.FileNames.Last();
                 return streamReaders;
             }
             return null;
@@ -215,17 +216,13 @@ namespace BibReader
             while (i < pages.Length)
             { pageEnd += pages[i]; i++; }
 
-            try
-            {
-                if (pageEnd != "" && (Convert.ToInt32(pageEnd) - Convert.ToInt32(pageBegin)) > 3)
-                    return true;
-            }
-            catch(Exception ex)
-            {
-                return true;
-            }
+            int intPageBegin;
+            Int32.TryParse(pageBegin, out intPageBegin);
+            int intPageEnd;
+            Int32.TryParse(pageEnd, out intPageEnd);
 
-            return false;
+            return intPageEnd - intPageBegin > 3 ? true : false;
+
         }
 
         private void RelevanceData()
@@ -293,6 +290,7 @@ namespace BibReader
             var listOfItems = univReader.Read(reader);
             ClearDataBeforeLoad();
             LoadLibItemsInLv(listOfItems);
+            
             toolStripStatusLabel1.Text = "Last opened file name: " + lastOpenedFileName;
         }
 
