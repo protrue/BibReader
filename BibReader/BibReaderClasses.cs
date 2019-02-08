@@ -151,7 +151,7 @@ namespace BibReader
             var value = regex.Match(title).Groups[1].Value;
             if (value != "")
             {
-                myDictinaries.mainDict["OriginalTitle"] = value;
+                myDictinaries.mainDict["originalTitle"] = value;
                 var index = title.IndexOf(value);
                 title = title.Remove(index - 1, value.Length + 2);
             }
