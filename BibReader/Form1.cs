@@ -157,7 +157,7 @@ namespace BibReader
             {
                 //var ed = 100;
                 var title = Normalize(((LibItem)item.Tag).Title.ToLower());
-                if (!currTitles.Keys.Contains(title) && LevenshteinDistance(title) > 5)
+                if (!currTitles.ContainsKey(title) && LevenshteinDistance(title) > 5)
                 {
                     currTitles.Add(title, item.Index);
                     statistic.AddLibItemsCountAfterFirstResearch();
@@ -168,13 +168,16 @@ namespace BibReader
                     item.Remove();
                     item.SubItems[2].Text = "1";
                     deletedNotUniqueItems.Add(item);
-                    FindImportantData((LibItem)lvLibItems.Items[currTitles[title]].Tag, (LibItem)item.Tag);
+                    if (currTitles.ContainsKey(title))
+                        FindImportantData((LibItem)lvLibItems.Items[currTitles[title]].Tag, (LibItem)item.Tag);
                 }
                 if (pbLoadUniqueData.Value + step <= 100)
                     pbLoadUniqueData.Value += (int)step;
             }
             pbLoadUniqueData.Value = 100;
             currTitles.Clear();
+            MessageBox.Show("Done");
+            pbLoadUniqueData.Value = 0;
         }
 
         private void FindImportantData(LibItem savedItem, LibItem currItem)
@@ -227,6 +230,8 @@ namespace BibReader
 
         private void RelevanceData()
         {
+            var libItemsCount = lvLibItems.Items.Count;
+            double step = libItemsCount / 100;
             foreach (ListViewItem item in lvLibItems.Items)
             {
                 var pages = ((LibItem)item.Tag).Pages;
@@ -241,7 +246,12 @@ namespace BibReader
                     item.SubItems[2].Text = "1";
                     deletedNotUniqueItems.Add(item);
                 }
+                if (pbLoadUniqueData.Value + step <= 100)
+                    pbLoadUniqueData.Value += (int)step;
             }
+            pbLoadUniqueData.Value = 100;
+            MessageBox.Show("Done");
+            pbLoadUniqueData.Value = 0;
         }
 
         private void LoadLibItemsInLv(List<LibItem> libItems)
