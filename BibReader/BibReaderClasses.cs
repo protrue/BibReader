@@ -159,6 +159,21 @@ namespace BibReader
             return title;
         }
 
+        private bool isScienceDirectEnd(string str) => 
+            (str.Length >= "abstract = ".Length + 1 && str.Substring(0, "abstract = ".Length + 1) == "abstract = \"")
+            ? true 
+            : false;
+
+        private void ScienceDirectFix(string str)
+        {
+            var template = @"(.+?)\s=\s""(.+?)""";
+            var regex = new Regex(template);
+           
+            var key = regex.Match(str).Groups[1].Value;
+            var value = regex.Match(str).Groups[2].Value;
+            myDictinaries.mainDict[myDictinaries.dict[key]] = value;
+        }
+
         private List<LibItem> ReadFile(StreamReader reader, List<LibItem> Items)
         {
             var template = @"\s?(.+?)\s?=\s?(""|{{|{)(.+?)(""|}}|}),";
@@ -183,8 +198,7 @@ namespace BibReader
                             str += currstr;
 
                         if (currstr.Length >= 2 && (currstr.Substring(currstr.Length - 2, 2) == "}," ||
-                            currstr.Substring(currstr.Length - 2, 2) == endStr) ||
-                            currstr.Length >= "abstract = ".Length + 1 && currstr.Substring(0, "abstract = ".Length + 1) == "abstract = \"")
+                            currstr.Substring(currstr.Length - 2, 2) == endStr))
                         {
                             var key = regex.Match(str).Groups[1].Value;
                             var value = regex.Match(str).Groups[3].Value;
@@ -201,6 +215,9 @@ namespace BibReader
                     }
                     currstr = reader.ReadLine();
                 }
+                if (str != string.Empty)
+                    ScienceDirectFix(str);
+                str = string.Empty;
                 reader.ReadLine();
                 var newItem = new LibItem(myDictinaries.mainDict);
                 Items.Add(newItem);
