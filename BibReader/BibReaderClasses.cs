@@ -60,7 +60,7 @@ namespace BibReader
                 { "publisher", ""},
                 { "source", ""},
                 { "number", ""},
-
+                { "originalTitle", ""}
             };
     }
 }
@@ -190,9 +190,9 @@ namespace BibReader
                 myDictinaries = new MyDictinaries();
                 myDictinaries.Init();
                 currstr = reader.ReadLine();
-                while (currstr != "}" && (currstr.Length > 2 && currstr.Substring(currstr.Length - 2, 2) != ",}"))
+                while (currstr == "" || currstr != "}" && (currstr.Length > 2 && currstr.Substring(currstr.Length - 2, 2) != ",}"))
                 {
-                    if (currstr != null && currstr != "")
+                    if (currstr != "")
                     {
                         if (currstr[0] != '@')
                             str += currstr;
@@ -214,11 +214,14 @@ namespace BibReader
                         }
                     }
                     currstr = reader.ReadLine();
+                    if (currstr == null)
+                        break;
                 }
                 if (str != string.Empty)
                     ScienceDirectFix(str);
+                if (currstr == null)
+                    break;
                 str = string.Empty;
-                reader.ReadLine();
                 var newItem = new LibItem(myDictinaries.mainDict);
                 Items.Add(newItem);
             }
