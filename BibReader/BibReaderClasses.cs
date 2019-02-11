@@ -177,7 +177,7 @@ namespace BibReader
         private void SetTypeOfLibItem(string str)
         {
             var index = str.IndexOf('{');
-            myDictinaries.mainDict["Type"] = str.Substring(1, index - 1).ToLower();
+            myDictinaries.mainDict["type"] = str.Substring(1, index - 1).ToLower();
         }
 
         private List<LibItem> ReadFile(StreamReader reader, List<LibItem> Items)
