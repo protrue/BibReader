@@ -115,7 +115,7 @@ namespace BibReader
                 case " titl":
                     return "ACMDL";
                 case "title":
-                    return (str[5] != ' ') ? "Scopus" : "Science direct";
+                    return (str[5] != ' ') ? "IEEE" : "Science direct";
                 case "Title":
                     return "Web of science";
             }
@@ -174,6 +174,12 @@ namespace BibReader
             myDictinaries.mainDict[myDictinaries.dict[key]] = value;
         }
 
+        private void SetTypeOfLibItem(string str)
+        {
+            var index = str.IndexOf('{');
+            myDictinaries.mainDict["Type"] = str.Substring(1, index - 1).ToLower();
+        }
+
         private List<LibItem> ReadFile(StreamReader reader, List<LibItem> Items)
         {
             var template = @"\s?(.+?)\s?=\s?(""|{{|{)(.+?)(""|}}|}),";
@@ -196,17 +202,20 @@ namespace BibReader
                     {
                         if (currstr[0] != '@')
                             str += currstr;
+                        else
+                            SetTypeOfLibItem(currstr);
 
                         if (currstr.Length >= 2 && (currstr.Substring(currstr.Length - 2, 2) == "}," ||
                             currstr.Substring(currstr.Length - 2, 2) == endStr))
                         {
                             var key = regex.Match(str).Groups[1].Value;
                             var value = regex.Match(str).Groups[3].Value;
-                            if (key == "title" || key == "Title")
+                            if (key == "title" || key == "Title" || key == "sourse")
                             {
-                                // TODO: обработку заголовка убрать коды и названия на оригинальном языке
                                 value = pretreatmentTitle(value);
                                 myDictinaries.mainDict["source"] = WhereFrom(str);
+                                if (key == "sourse")
+                                    myDictinaries.mainDict["sourse"] = value;
                             }
                             if (myDictinaries.dict.ContainsKey(key))
                                 myDictinaries.mainDict[myDictinaries.dict[key]] = value;

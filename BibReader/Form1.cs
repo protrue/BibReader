@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
+using BibReader.Blocks;
 
 namespace BibReader
 {
@@ -37,42 +38,6 @@ namespace BibReader
             return null;
         }
 
-        public static int EditDistance(string fstWord, string sndWord)
-        {
-            int fstWordLength = fstWord.Length, sndWordLength = sndWord.Length;
-            int[,] ed = new int[fstWordLength, sndWordLength];
-
-            ed[0, 0] = (fstWord[0] == sndWord[0]) ? 0 : 1;
-            for (int i = 1; i < fstWordLength; i++)
-            {
-                ed[i, 0] = ed[i - 1, 0] + 1;
-            }
-
-            for (int j = 1; j < sndWordLength; j++)
-            {
-                ed[0, j] = ed[0, j - 1] + 1;
-            }
-
-            for (int j = 1; j < sndWordLength; j++)
-            {
-                for (int i = 1; i < fstWordLength; i++)
-                {
-                    if (fstWord[i] == sndWord[j])
-                    {
-                        // Операция не требуется
-                        ed[i, j] = ed[i - 1, j - 1];
-                    }
-                    else
-                    {
-                        // Минимум между удалением, вставкой и заменой
-                        ed[i, j] = Math.Min(ed[i - 1, j] + 1,
-                            Math.Min(ed[i, j - 1] + 1, ed[i - 1, j - 1] + 1));
-                    }
-                }
-            }
-
-            return ed[fstWordLength - 1, sndWordLength - 1];
-        }
 
         private void InitListViewItems()
         {
@@ -131,21 +96,6 @@ namespace BibReader
             }
         }
 
-        private int LevenshteinDistance(string word)
-        {
-            var minDistance = 10000;
-            int ed;
-            foreach (var title in currTitles.Keys)
-            {
-                if (title == "" || title == null)
-                    ed = 10000;
-                else
-                    ed = EditDistance(word, title);
-                if (ed < minDistance)
-                    minDistance = ed;
-            }
-            return minDistance;
-        }
 
         private void UniqueTitles()
         {
@@ -157,7 +107,7 @@ namespace BibReader
             {
                 //var ed = 100;
                 var title = Normalize(((LibItem)item.Tag).Title.ToLower());
-                if (!currTitles.ContainsKey(title) && LevenshteinDistance(title) > 5)
+                if (!currTitles.ContainsKey(title) && WorkWithBlocks.LevenshteinDistance(currTitles, title) > 5)
                 {
                     currTitles.Add(title, item.Index);
                     statistic.AddLibItemsCountAfterFirstResearch();
@@ -169,7 +119,7 @@ namespace BibReader
                     item.SubItems[2].Text = "1";
                     deletedNotUniqueItems.Add(item);
                     if (currTitles.ContainsKey(title))
-                        FindImportantData((LibItem)lvLibItems.Items[currTitles[title]].Tag, (LibItem)item.Tag);
+                        WorkWithBlocks.FindImportantData((LibItem)lvLibItems.Items[currTitles[title]].Tag, (LibItem)item.Tag);
                 }
                 if (pbLoadUniqueData.Value + step <= 100)
                     pbLoadUniqueData.Value += (int)step;
@@ -180,53 +130,8 @@ namespace BibReader
             pbLoadUniqueData.Value = 0;
         }
 
-        private void FindImportantData(LibItem savedItem, LibItem currItem)
-        {
-            AbstractComplement(savedItem, currItem);
-            KeywordsComplement(savedItem, currItem);
-        }
+     
 
-        private void KeywordsComplement(LibItem savedItem, LibItem currItem)
-        {
-            if (savedItem.KeywordsIsEmpty && !currItem.KeywordsIsEmpty)
-                savedItem.Keywords = currItem.Keywords;
-        }
-
-        private void AbstractComplement(LibItem savedItem, LibItem currItem)
-        {
-            if (savedItem.AbstractIsEmpty && !currItem.AbstractIsEmpty)
-                savedItem.Abstract = currItem.Abstract;
-
-        }
-
-        private bool isRelevancePages(string pages)
-        {
-            if (pages == "" || pages == string.Empty)
-                return false;
-
-            var pagesClone = "";
-            for (int j = 0; j < pages.Length; j++)
-                if (!char.IsLetter(pages[j]))
-                    pagesClone += pages[j];
-            pages = pagesClone;
-
-            string pageBegin = "", pageEnd = "";
-            int i = 0;
-            while (i < pages.Length && char.IsDigit(pages[i]))
-            { pageBegin += pages[i]; i++; }
-            while (i < pages.Length && !char.IsDigit(pages[i]))
-                i++;
-            while (i < pages.Length)
-            { pageEnd += pages[i]; i++; }
-
-            int intPageBegin;
-            Int32.TryParse(pageBegin, out intPageBegin);
-            int intPageEnd;
-            Int32.TryParse(pageEnd, out intPageEnd);
-
-            return intPageEnd - intPageBegin > 3 ? true : false;
-
-        }
 
         private void RelevanceData()
         {
@@ -236,7 +141,7 @@ namespace BibReader
             {
                 var pages = ((LibItem)item.Tag).Pages;
                
-                if (isRelevancePages(pages) && ((LibItem)item.Tag).Authors != "")
+                if (WorkWithBlocks.isRelevancePages(pages) && ((LibItem)item.Tag).Authors != "")
                 {
                     item.SubItems[2].Text = "3";
                 }
