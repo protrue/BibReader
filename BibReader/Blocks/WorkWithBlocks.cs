@@ -8,7 +8,52 @@ namespace BibReader.Blocks
 {
     class WorkWithBlocks
     {
-        public static int EditDistance(string fstWord, string sndWord)
+        static Dictionary<string, int> currTitles = new Dictionary<string, int>();
+
+        public static bool isRelevance(string pages, string authors) => isRelevancePages(pages) && authors != "" ? true : false;
+
+        public static bool isUnique(string title, int positoin)
+        {
+            title = Normalize(title);
+            if (isUnique(title))
+            {
+                currTitles.Add(title, positoin);
+                return true;
+            }
+            else
+                return false;
+        }
+
+        private static bool isUnique(string title) => !currTitles.ContainsKey(title) && LevenshteinDistance(currTitles, title) > 5 ? true : false;
+
+        public static void ClearDictionary() => currTitles.Clear();
+
+        public static int IndexOfTitle(string title) => currTitles[Normalize(title)];
+
+        public static bool ContainsKey(string title) => currTitles.ContainsKey(Normalize(title));
+
+        public static void FindImportantData(LibItem savedItem, LibItem currItem)
+        {
+            AbstractComplement(savedItem, currItem);
+            KeywordsComplement(savedItem, currItem);
+        }
+
+        private static string Normalize(string sentence)
+        {
+            var resultContainer = new StringBuilder(100);
+            var lowerSentece = sentence.ToLower();
+            foreach (var c in lowerSentece)
+            {
+                if (char.IsLetterOrDigit(c) || c == ' ')
+                {
+                    resultContainer.Append(c);
+                }
+            }
+
+            return resultContainer.ToString();
+        }
+
+        private static int EditDistance(string fstWord, string sndWord)
         {
             int fstWordLength = fstWord.Length, sndWordLength = sndWord.Length;
             int[,] ed = new int[fstWordLength, sndWordLength];
@@ -45,7 +90,7 @@ namespace BibReader.Blocks
             return ed[fstWordLength - 1, sndWordLength - 1];
         }
 
-        public static int LevenshteinDistance(Dictionary<string,int> currTitles, string word)
+        private static int LevenshteinDistance(Dictionary<string, int> currTitles, string word)
         {
             var minDistance = 10000;
             int ed;
@@ -61,12 +106,6 @@ namespace BibReader.Blocks
             return minDistance;
         }
 
-        public static void FindImportantData(LibItem savedItem, LibItem currItem)
-        {
-            AbstractComplement(savedItem, currItem);
-            KeywordsComplement(savedItem, currItem);
-        }
-
         private static void KeywordsComplement(LibItem savedItem, LibItem currItem)
         {
             if (savedItem.KeywordsIsEmpty && !currItem.KeywordsIsEmpty)
@@ -80,7 +119,7 @@ namespace BibReader.Blocks
 
         }
 
-        public static bool isRelevancePages(string pages)
+        private static bool isRelevancePages(string pages)
         {
             if (pages == "" || pages == string.Empty)
                 return false;

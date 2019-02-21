@@ -58,21 +58,6 @@ namespace BibReader
 
         }
 
-        private string Normalize(string sentence)
-        {
-            var resultContainer = new StringBuilder(100);
-            var lowerSentece = sentence.ToLower();
-            foreach (var c in lowerSentece)
-            {
-                if (char.IsLetterOrDigit(c) || c == ' ')
-                {
-                    resultContainer.Append(c);
-                }
-            }
-
-            return resultContainer.ToString();
-        }
-
         private void AddLibItemsInLvItems(List<LibItem> libItems)
         {
             foreach (var item in libItems)
@@ -108,10 +93,9 @@ namespace BibReader
             foreach (ListViewItem item in lvLibItems.Items)
             {
                 //var ed = 100;
-                var title = Normalize(((LibItem)item.Tag).Title.ToLower());
-                if (!currTitles.ContainsKey(title) && WorkWithBlocks.LevenshteinDistance(currTitles, title) > 5)
+                var title = ((LibItem)item.Tag).Title;
+                if (WorkWithBlocks.isUnique(title, item.Index))
                 {
-                    currTitles.Add(title, item.Index);
                     statistic.AddLibItemsCountAfterFirstResearch();
                     item.SubItems[2].Text = "2";
                 }
@@ -120,14 +104,17 @@ namespace BibReader
                     item.Remove();
                     item.SubItems[2].Text = "1";
                     deletedNotUniqueItems.Add(item);
-                    if (currTitles.ContainsKey(title))
-                        WorkWithBlocks.FindImportantData((LibItem)lvLibItems.Items[currTitles[title]].Tag, (LibItem)item.Tag);
+                    if (WorkWithBlocks.ContainsKey(title))
+                        WorkWithBlocks.FindImportantData(
+                            (LibItem)lvLibItems.Items[WorkWithBlocks.IndexOfTitle(title)].Tag,
+                            (LibItem)item.Tag
+                            );
                 }
                 if (pbLoadUniqueData.Value + step <= 100)
                     pbLoadUniqueData.Value += (int)step;
             }
             pbLoadUniqueData.Value = 100;
-            currTitles.Clear();
+            WorkWithBlocks.ClearDictionary();
             MessageBox.Show("Done");
             pbLoadUniqueData.Value = 0;
         }
@@ -142,8 +129,10 @@ namespace BibReader
             foreach (ListViewItem item in lvLibItems.Items)
             {
                 var pages = ((LibItem)item.Tag).Pages;
-               
-                if (WorkWithBlocks.isRelevancePages(pages) && ((LibItem)item.Tag).Authors != "")
+                var authors = ((LibItem)item.Tag).Authors;
+
+
+                if (WorkWithBlocks.isRelevance(pages, authors))
                 {
                     item.SubItems[2].Text = "3";
                 }
@@ -153,6 +142,7 @@ namespace BibReader
                     item.SubItems[2].Text = "1";
                     deletedNotUniqueItems.Add(item);
                 }
+
                 if (pbLoadUniqueData.Value + step <= 100)
                     pbLoadUniqueData.Value += (int)step;
             }
@@ -165,7 +155,7 @@ namespace BibReader
         {
             lvLibItems.Items.Clear();
             statistic = new Stat();
-            currTitles.Clear();
+            WorkWithBlocks.ClearDictionary();
             currIndex = 0;
             AddLibItemsInLvItems(libItems);
         }
