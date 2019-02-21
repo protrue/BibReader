@@ -60,7 +60,8 @@ namespace BibReader
                 { "publisher", ""},
                 { "source", ""},
                 { "number", ""},
-                { "originalTitle", ""}
+                { "originalTitle", ""},
+                { "type", "" }
             };
     }
 }

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BibReader
+namespace BibReader.Statistic
 {
-    public class Statistic
+    public class Stat
     {
         int libItemCountFirst = 0;
         public int libItemCountAfterFirstResearch { get; private set; } = 0;
