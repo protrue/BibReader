@@ -63,7 +63,7 @@ namespace BibReader.TypesOfSourse
             result += IntPages + Pages + Point;
             if (Link != "")
                 result += Space + URL + Link + Space + Lparenthesis + DateRus + DoublePointSpace + Date.ToString("dd.MM.yyyy") + Rparenthesis + Point;
-            rtb.Text = result;
+            rtb.Text += result + "\n\n";
         }
 
         public void MakeHarvard(ref RichTextBox rtb)

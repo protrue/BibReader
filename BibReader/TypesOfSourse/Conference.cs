@@ -40,17 +40,20 @@ namespace BibReader.TypesOfSourse
             const string PPage = "C. ";
             const string CommaSpace = ", ";
             const string DoubleSlash = " // ";
-            // rtb.Text = string.Empty;
+            var result = string.Empty;
 
-            rtb.Text += string.Join(", ", Authors) + Spase;
+            result += string.Join(", ", Authors) + Spase;
 
-            rtb.Text += Report + DoubleSlash;
-            rtb.Text += NameOfConf + PointSpace;
-            rtb.Text += Town + DoublePointSpace;
-            rtb.Text += Publisher + CommaSpace;
-            rtb.Text += Year + PointSpace;
+            result += Report + PointSpace;
+            result += NameOfConf + PointSpace;
+            if (Town != string.Empty)
+                result += Town + DoublePointSpace;
+            if (Publisher != string.Empty)
+                result += Publisher + CommaSpace;
 
-            rtb.Text += PPage + Pages + Point;
+            result += Year + PointSpace;
+            result += PPage + Pages + Point;
+            rtb.Text += result + "\n\n";
         }
 
         public void MakeHarvard(ref RichTextBox rtb)

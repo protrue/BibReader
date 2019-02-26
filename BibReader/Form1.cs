@@ -264,7 +264,14 @@ namespace BibReader
                     break;
                 case "tpBib":
                     rtbBib.Text = string.Empty;
-                    MakeBibRef();
+                    try
+                    {
+                        MakeBibRef();
+                    }
+                    catch(Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                     break;
             }
         }
@@ -276,37 +283,30 @@ namespace BibReader
                 var libItem = (LibItem)item.Tag;
                 AuthorsParser parser = new AuthorsParser();
                 parser.Authors = libItem.Authors;
-                int volume;
+                int volume, number, year;
                 Int32.TryParse(libItem.Volume, out volume);
+                Int32.TryParse(libItem.Number, out number);
+                Int32.TryParse(libItem.Year, out year);
                 var authors = parser.GetAuthors(libItem.Sourсe);
                 switch (((LibItem)item.Tag).Type)
                 {
-                    case "inproceedings":
-                        {
-                            var book = new Book(authors, libItem.Title, "libItem.location", libItem.Sourсe,
-                                Convert.ToInt32(libItem.Year), volume, libItem.Pages, "",
-                                DateTime.Parse(DateTime.Now.ToShortDateString()));
-                            book.MakeGOST(ref rtbBib);
-                            break;
-                        }
-
                     case "conference":
                         var conf = new Conference(authors, libItem.Title, libItem.Publisher, libItem.Pages,
-                            Convert.ToInt32(libItem.Year), "town", libItem.JournalName);
+                            year, libItem.Address, libItem.JournalName);
                         conf.MakeGOST(ref rtbBib);
                         break;
 
                     case "book":
                         {
-                            var book = new Book(authors, libItem.Title, "libItem.location", libItem.Sourсe,
-                                Convert.ToInt32(libItem.Year), volume, libItem.Pages, "",
+                            var book = new Book(authors, libItem.Title, "libItem.Address", libItem.Sourсe,
+                                year, volume, libItem.Pages, "",
                                 DateTime.Parse(DateTime.Now.ToShortDateString()));
                             book.MakeGOST(ref rtbBib);
                             break;
                         }
                     case "journal":
                         var journal = new Journal(authors, libItem.JournalName, libItem.Publisher, libItem.Pages,
-                            Convert.ToInt32(libItem.Year), Convert.ToInt32(libItem.Number), Convert.ToInt32(libItem.Volume),
+                            year, number, volume,
                             "", DateTime.Parse(DateTime.Now.ToShortDateString()));
                         journal.MakeGOST(ref rtbBib);
                         break;

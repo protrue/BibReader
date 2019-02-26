@@ -42,13 +42,16 @@ namespace BibReader
                 {"publisher", "publisher"},
                 {"Publisher", "publisher"},
                 {"source", "source"},
+                {"address", "address"},
+                {"Address", "address"},
                 {"inproceedings", "conference"},
                 {"INPROCEEDINGS", "conference"},
                 {"article", "journal"},
                 {"ARTICLE", "journal"},
-                {"CONFERENCE", "conference"},
+                {"conference", "conference"},
                 {"incollection", "book"},
-                {"BOOK", "book"},
+                {"book", "book"},
+                {"inbook", "book"},
             };
             mainDict = new Dictionary<string, string>
             {
@@ -68,7 +71,8 @@ namespace BibReader
                 { "source", ""},
                 { "number", ""},
                 { "originalTitle", ""},
-                { "type", "" }
+                { "type", "" },
+                { "address", "" }
             };
     }
 }

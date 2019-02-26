@@ -25,10 +25,11 @@ namespace BibReader
         public string Number {get; set; }
         public string OriginalTitle { get; set; }
         public string Type { get; set; }
+        public string Address { get; set; }
 
         public LibItem(string authors, string doi, string year, string booktitle, string title, string journalName, 
             string volume, string pages, string url, string affiliation, string @abstract, string keywords, string publisher, 
-            string sourсe, string number, string originalTitle, string type)
+            string sourсe, string number, string originalTitle, string type, string address)
         {
             Authors = authors;
             Doi = doi;
@@ -47,6 +48,7 @@ namespace BibReader
             Number = number;
             OriginalTitle = originalTitle;
             Type = type;
+            Address = address;
         }
 
         public LibItem(Dictionary<string, string> dict)
@@ -68,6 +70,7 @@ namespace BibReader
             Number = dict["number"];
             OriginalTitle = dict["originalTitle"];
             Type = dict["type"];
+            Address = dict["address"];
         }
 
         public bool AbstractIsEmpty => Abstract == string.Empty ? true : false;

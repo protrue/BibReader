@@ -89,15 +89,12 @@ namespace BibReader.TypesOfSourse
             const string Page = " с.";
             const string IntPages = "C. ";
             const string CommaSpace = ", ";
-            const string Slash = " / ";
-            const string DoubleSlash = "// ";
             const string URL = "URL: ";
             const string Lparenthesis = "(";
             const string Rparenthesis = ")";
             const string DateRus = "дата обращения";
             const string Point = ".";
             string result = string.Empty;
-            int flag;
             if (Authors.Length < 4)
             {
                 result += string.Join(", ", Authors);
@@ -106,7 +103,6 @@ namespace BibReader.TypesOfSourse
             }
             else
             {
-                //result += Name + Slash;
                 for (int i = 0; i < 2; i++)
                     result += Authors[i] + CommaSpace;
                 result += Authors[2] + " [и др.]";
@@ -123,7 +119,7 @@ namespace BibReader.TypesOfSourse
                 result += Space + Pages + Page;
             if (Link != "")
                 result += Space + URL + Link + Space + Lparenthesis + DateRus + DoublePointSpace + Date.ToString("dd.MM.yyyy") + Rparenthesis + Point;
-            rtb.Text += result + "\n";
+            rtb.Text += result + "\n\n";
         }
 
         public void MakeHarvard(ref RichTextBox rtb)
