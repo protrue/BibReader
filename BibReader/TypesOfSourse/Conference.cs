@@ -17,6 +17,7 @@ namespace BibReader.TypesOfSourse
         string Publisher;
         string Pages;
         int Year;
+
         public Conference(string[] authors, string report, string publisher, string pages, int year, string town, string nameOfConf)
         {
             Authors = authors.ToArray();
@@ -39,7 +40,7 @@ namespace BibReader.TypesOfSourse
             const string PPage = "C. ";
             const string CommaSpace = ", ";
             const string DoubleSlash = " // ";
-            rtb.Text = string.Empty;
+            // rtb.Text = string.Empty;
 
             rtb.Text += string.Join(", ", Authors) + Spase;
 
@@ -48,16 +49,6 @@ namespace BibReader.TypesOfSourse
             rtb.Text += Town + DoublePointSpace;
             rtb.Text += Publisher + CommaSpace;
             rtb.Text += Year + PointSpace;
-
-            //if (Pages == "" || Pages == "0")
-            //{
-            //    var form = new fAdd() { Text = "Добавьте страницы" };
-
-            //    if (form.ShowDialog() == DialogResult.OK)
-            //        Pages = form.Add;
-            //    else
-            //        MessageBox.Show("Вы не добавили страницы, ссылка будет не верна!");
-            //}
 
             rtb.Text += PPage + Pages + Point;
         }
@@ -94,15 +85,6 @@ namespace BibReader.TypesOfSourse
 
             rtb.SelectedText += Town + DoublePointSpace;
             rtb.SelectedText += Publisher + CommaSpace;
-            //if (Pages == "" || Pages == "0")
-            //{
-            //    var form = new fAdd() { Text = "Добавьте страницы" };
-
-            //    if (form.ShowDialog() == DialogResult.OK)
-            //        Pages = form.Add;
-            //    else
-            //        MessageBox.Show("Вы не добавили страницы, ссылка будет не верна!");
-            //}
             int a = 0;
             if (Int32.TryParse(Pages, out a))
                 rtb.SelectedText += Page + Pages + Point;
@@ -133,15 +115,7 @@ namespace BibReader.TypesOfSourse
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
             rtb.SelectedText += NameOfConf + Space;
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = SystemFonts.DefaultFont;
-            //if (Pages == "" || Pages == "0")
-            //{
-            //    var form = new fAdd() { Text = "Добавьте страницы" };
 
-            //    if (form.ShowDialog() == DialogResult.OK)
-            //        Pages = form.Add;
-            //    else
-            //        MessageBox.Show("Вы не добавили страницы, ссылка будет не верна!");
-            //}
             int a = 0;
             if (Int32.TryParse(Pages, out a))
                 rtb.SelectedText += Lparenthesis + Page;
@@ -174,25 +148,10 @@ namespace BibReader.TypesOfSourse
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
             rtb.SelectedText = NameOfConf + CommaSpace;
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = SystemFonts.DefaultFont;
-            //var formTown = new fAdd() { Text = "Добавьте город, в котором проходила конференция" };
 
-            //if (formTown.ShowDialog() == DialogResult.OK)
-            //    Town = formTown.Add;
-            //else
-            //    MessageBox.Show("Вы не добавили город, ссылка будет не верна!");
             rtb.SelectedText += Town + CommaSpace;
             rtb.SelectedText += Year + CommaSpace;
 
-
-            //if (Pages == "" || Pages == "0")
-            //{
-            //    var form = new fAdd() { Text = "Добавьте страницы" };
-
-            //    if (form.ShowDialog() == DialogResult.OK)
-            //        Pages = form.Add;
-            //    else
-            //        MessageBox.Show("Вы не добавили страницы, ссылка будет не верна!");
-            //}
             int a = 0;
             if (Int32.TryParse(Pages, out a))
                 rtb.SelectedText += Page + Pages + Point;

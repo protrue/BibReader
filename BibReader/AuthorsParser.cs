@@ -6,41 +6,44 @@ using System.Threading.Tasks;
 
 namespace BibReader
 {
+    public enum Sourse
+    {
+        Scopus,
+        ScienceDirect,
+        IEEE,
+        WebOfScience,
+        ACMDL
+    }
+
     class AuthorsParser
     {
         public string Authors { get; set; }
 
-        enum Sourse {
-            Scopus,
-            ScienceDirect,
-            IEEE,
-            WebOfScience,
-            ACMDL
-        }
+        
 
-        public string[] GetAuthors(int sourse)
+        public string[] GetAuthors(string sourse)
         {
             var listOfAuthors = Authors.Split(new string[] { " and " }, StringSplitOptions.RemoveEmptyEntries);
             
             switch(sourse)
             {
-                case (int)Sourse.Scopus:
+                case "Scopus":
                     LastNameIsFirst(listOfAuthors);
                     break;
 
-                case (int)Sourse.ScienceDirect:
+                case "ScienceDirect":
                     LastNameIsLast(listOfAuthors);
                     break;
 
-                case (int)Sourse.IEEE:
+                case "IEEE":
                     LastNameIsLast(listOfAuthors);
                     break;
 
-                case (int)Sourse.WebOfScience:
+                case "WebOfScience":
                     LastNameIsFirst(listOfAuthors);
                     break;
 
-                case (int)Sourse.ACMDL:
+                case "ACMDL":
                     LastNameIsFirst(listOfAuthors);
                     break;
             }

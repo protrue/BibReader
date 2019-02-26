@@ -10,7 +10,7 @@ namespace BibReader.TypesOfSourse
 {
     public class Book
     {
-        string Name;
+        string Title;
         string[] Authors;
         string Town;
         string Publisher;
@@ -20,10 +20,10 @@ namespace BibReader.TypesOfSourse
         int Vol;
         int Year;
 
-        public Book(string[] authors, string name, string town, string publisher, int year, int vol, string pages, string link, DateTime date)
+        public Book(string[] authors, string title, string town, string publisher, int year, int vol, string pages, string link, DateTime date)
         {
             Authors = authors.ToArray();
-            Name = name;
+            Title = title;
             Town = town;
             Publisher = publisher;
             Year = year;
@@ -102,7 +102,7 @@ namespace BibReader.TypesOfSourse
             {
                 result += string.Join(", ", Authors);
                 result += Space;
-                result += Name + PointSpace;
+                result += Title + PointSpace;
             }
             else
             {
@@ -111,7 +111,7 @@ namespace BibReader.TypesOfSourse
                     result += Authors[i] + CommaSpace;
                 result += Authors[2] + " [и др.]";
                 result += PointSpace;
-                result += Name + PointSpace;
+                result += Title + PointSpace;
 
             }
             result += Town;
@@ -123,7 +123,7 @@ namespace BibReader.TypesOfSourse
                 result += Space + Pages + Page;
             if (Link != "")
                 result += Space + URL + Link + Space + Lparenthesis + DateRus + DoublePointSpace + Date.ToString("dd.MM.yyyy") + Rparenthesis + Point;
-            rtb.Text = result;
+            rtb.Text += result + "\n";
         }
 
         public void MakeHarvard(ref RichTextBox rtb)
@@ -150,7 +150,7 @@ namespace BibReader.TypesOfSourse
             rtb.Text += Space;
             rtb.Text += Lparenthesis + Year + Rparenthesis + PointSpace;
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
-            rtb.SelectedText += Name + PointSpace;
+            rtb.SelectedText += Title + PointSpace;
             //if (Vol > 0)
             //    rtb.SelectedText += Vol + Point; 
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = SystemFonts.DefaultFont;
@@ -200,7 +200,7 @@ namespace BibReader.TypesOfSourse
             rtb.Text += Space;
             rtb.Text += Lparenthesis + Year + Rparenthesis + PointSpace;
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
-            rtb.SelectedText += Name + Space;
+            rtb.SelectedText += Title + Space;
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = SystemFonts.DefaultFont;
             //if (Pages == "" || Pages == "0")
             //{
@@ -262,7 +262,7 @@ namespace BibReader.TypesOfSourse
             }
 
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
-            rtb.SelectedText += Name + PointSpace;
+            rtb.SelectedText += Title + PointSpace;
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = SystemFonts.DefaultFont;
             rtb.SelectedText += Town + CommaSpace;
             rtb.SelectedText += Country + DoublePointSpace;

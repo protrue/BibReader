@@ -42,6 +42,13 @@ namespace BibReader
                 {"publisher", "publisher"},
                 {"Publisher", "publisher"},
                 {"source", "source"},
+                {"inproceedings", "conference"},
+                {"INPROCEEDINGS", "conference"},
+                {"article", "journal"},
+                {"ARTICLE", "journal"},
+                {"CONFERENCE", "conference"},
+                {"incollection", "book"},
+                {"BOOK", "book"},
             };
             mainDict = new Dictionary<string, string>
             {
@@ -178,7 +185,7 @@ namespace BibReader
         private void SetTypeOfLibItem(string str)
         {
             var index = str.IndexOf('{');
-            myDictinaries.mainDict["type"] = str.Substring(1, index - 1).ToLower();
+            myDictinaries.mainDict["type"] = myDictinaries.dict[str.Substring(1, index - 1).ToLower()];
         }
 
         private List<LibItem> ReadFile(StreamReader reader, List<LibItem> Items)

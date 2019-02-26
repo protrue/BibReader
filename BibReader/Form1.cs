@@ -14,7 +14,7 @@ namespace BibReader
     public partial class MainForm : Form
     {
         //HashSet<string> currTitles = new HashSet<string>();
-        Dictionary<string, int> currTitles = new Dictionary<string, int>();
+        //Dictionary<string, int> currTitles = new Dictionary<string, int>();
         Stat statistic = new Stat();
         List<ListViewItem> deletedNotUniqueItems = new List<ListViewItem>();
         string lastOpenedFileName = string.Empty;
@@ -119,9 +119,6 @@ namespace BibReader
             pbLoadUniqueData.Value = 0;
         }
 
-     
-
-
         private void RelevanceData()
         {
             var libItemsCount = lvLibItems.Items.Count;
@@ -130,7 +127,6 @@ namespace BibReader
             {
                 var pages = ((LibItem)item.Tag).Pages;
                 var authors = ((LibItem)item.Tag).Authors;
-
 
                 if (WorkWithBlocks.isRelevance(pages, authors))
                 {
@@ -267,22 +263,54 @@ namespace BibReader
                     lvSourceStatistic.Items.AddRange(statistic.dictOfSourses.OrderBy(i => i.Key).Select(i => new ListViewItem(new string[] { (i.Key == "") ? "Неизв источник" : i.Key, i.Value.ToString() })).ToArray());
                     break;
                 case "tpBib":
-                    foreach(ListViewItem item in lvLibItems.Items)
-                    {
-                        var libItem = (LibItem)item.Tag;
-                        AuthorsParser parser = new AuthorsParser();
-                        parser.Authors = libItem.Authors;
-                        int a;
-                        Int32.TryParse(libItem.Volume, out a);
-                        if (((LibItem)item.Tag).Type == "inproceedings")
+                    rtbBib.Text = string.Empty;
+                    MakeBibRef();
+                    break;
+            }
+        }
+
+        private void MakeBibRef()
+        {
+            foreach (ListViewItem item in lvLibItems.Items)
+            {
+                var libItem = (LibItem)item.Tag;
+                AuthorsParser parser = new AuthorsParser();
+                parser.Authors = libItem.Authors;
+                int volume;
+                Int32.TryParse(libItem.Volume, out volume);
+                var authors = parser.GetAuthors(libItem.Sourсe);
+                switch (((LibItem)item.Tag).Type)
+                {
+                    case "inproceedings":
                         {
-                            var book = new Book(parser.GetAuthors(4), libItem.Title, "libItem.location", libItem.Sourсe,
-                                Convert.ToInt32(libItem.Year), a, libItem.Pages, "",
+                            var book = new Book(authors, libItem.Title, "libItem.location", libItem.Sourсe,
+                                Convert.ToInt32(libItem.Year), volume, libItem.Pages, "",
                                 DateTime.Parse(DateTime.Now.ToShortDateString()));
                             book.MakeGOST(ref rtbBib);
+                            break;
                         }
-                    }
-                    break;
+
+                    case "conference":
+                        var conf = new Conference(authors, libItem.Title, libItem.Publisher, libItem.Pages,
+                            Convert.ToInt32(libItem.Year), "town", libItem.JournalName);
+                        conf.MakeGOST(ref rtbBib);
+                        break;
+
+                    case "book":
+                        {
+                            var book = new Book(authors, libItem.Title, "libItem.location", libItem.Sourсe,
+                                Convert.ToInt32(libItem.Year), volume, libItem.Pages, "",
+                                DateTime.Parse(DateTime.Now.ToShortDateString()));
+                            book.MakeGOST(ref rtbBib);
+                            break;
+                        }
+                    case "journal":
+                        var journal = new Journal(authors, libItem.JournalName, libItem.Publisher, libItem.Pages,
+                            Convert.ToInt32(libItem.Year), Convert.ToInt32(libItem.Number), Convert.ToInt32(libItem.Volume),
+                            "", DateTime.Parse(DateTime.Now.ToShortDateString()));
+                        journal.MakeGOST(ref rtbBib);
+                        break;
+                }
             }
         }
 
