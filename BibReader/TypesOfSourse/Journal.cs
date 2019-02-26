@@ -59,7 +59,8 @@ namespace BibReader.TypesOfSourse
             result += Year + PointSpace;
             if (Vol != 0)
                 result += Volume + Vol + Commaspace;
-            result += Num + Number + PointSpace;
+            if (Number != 0)
+                result += Num + Number + PointSpace;
             result += IntPages + Pages + Point;
             if (Link != "")
                 result += Space + URL + Link + Space + Lparenthesis + DateRus + DoublePointSpace + Date.ToString("dd.MM.yyyy") + Rparenthesis + Point;

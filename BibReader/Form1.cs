@@ -202,6 +202,7 @@ namespace BibReader
             lvSourceStatistic.Clear();
             lvYearStatistic.Clear();
             lbCurrSelectedItem.Text = "";
+            rtbBib.Clear();
             var tbs = tabControl.TabPages["tpData"].Controls.OfType<TextBox>();
             foreach (var tb in tbs)
                 tb.Text = string.Empty;
@@ -298,14 +299,14 @@ namespace BibReader
 
                     case "book":
                         {
-                            var book = new Book(authors, libItem.Title, "libItem.Address", libItem.Sourсe,
+                            var book = new Book(authors, libItem.Title, "libItem.Address", libItem.Publisher,
                                 year, volume, libItem.Pages, "",
                                 DateTime.Parse(DateTime.Now.ToShortDateString()));
                             book.MakeGOST(ref rtbBib);
                             break;
                         }
                     case "journal":
-                        var journal = new Journal(authors, libItem.JournalName, libItem.Publisher, libItem.Pages,
+                        var journal = new Journal(authors, libItem.Title, libItem.JournalName, libItem.Pages,
                             year, number, volume,
                             "", DateTime.Parse(DateTime.Now.ToShortDateString()));
                         journal.MakeGOST(ref rtbBib);

@@ -125,11 +125,11 @@ namespace BibReader
             switch(str.Substring(0, "title".Length))
             {
                 case " titl":
-                    return "ACMDL";
+                    return "ACM DL";
                 case "title":
-                    return (str[5] != ' ') ? "IEEE" : "Science direct";
+                    return (str[5] != ' ') ? "IEEE" : "Science Direct";
                 case "Title":
-                    return "Web of science";
+                    return "Web of Science";
             }
             return "";
         }

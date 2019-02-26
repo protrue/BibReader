@@ -19,8 +19,6 @@ namespace BibReader
     {
         public string Authors { get; set; }
 
-        
-
         public string[] GetAuthors(string sourse)
         {
             var listOfAuthors = Authors.Split(new string[] { " and " }, StringSplitOptions.RemoveEmptyEntries);
@@ -28,44 +26,50 @@ namespace BibReader
             switch(sourse)
             {
                 case "Scopus":
-                    LastNameIsFirst(listOfAuthors);
+                    LastNameIsFirst(ref listOfAuthors);
                     break;
 
-                case "ScienceDirect":
-                    LastNameIsLast(listOfAuthors);
+                case "Science Direct":
+                    LastNameIsLast(ref listOfAuthors);
                     break;
 
                 case "IEEE":
-                    LastNameIsLast(listOfAuthors);
+                    LastNameIsLast(ref listOfAuthors);
                     break;
 
-                case "WebOfScience":
-                    LastNameIsFirst(listOfAuthors);
+                case "Web of Science":
+                    LastNameIsFirst(ref listOfAuthors);
                     break;
 
-                case "ACMDL":
-                    LastNameIsFirst(listOfAuthors);
+                case "ACM DL":
+                    LastNameIsFirst(ref listOfAuthors);
                     break;
             }
 
             return listOfAuthors;
         }
 
-        private string[] LastNameIsFirst(string[] Authors)
-        {
-            return null;
-        }
-
-        private string[] LastNameIsLast(string[] Authors)
+        private void LastNameIsFirst(ref string[] Authors)
         {
             for (int i = 0; i < Authors.Length; i++)
             {
+                while (Authors[i].Contains(','))
+                    Authors[i] = Authors[i].Remove(Authors[i].IndexOf(','), 1);
+            }
+
+        }
+
+        private void LastNameIsLast(ref string[] Authors)
+        {
+            for (int i = 0; i < Authors.Length; i++)
+            {
+                while (Authors[i].Contains(','))
+                    Authors[i] = Authors[i].Remove(Authors[i].IndexOf(','), 1);
                 var indexOfStartLastName = Authors[i].LastIndexOf(' ');
                 var FirstName = Authors[i].Substring(0, indexOfStartLastName);
                 var LastName = Authors[i].Substring(indexOfStartLastName + 1);
                 Authors[i] = string.Join(" ", LastName, FirstName);
             }
-            return null;
         }
     }
 }
