@@ -538,8 +538,8 @@
             // 
             this.файлToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.открытьToolStripMenuItem,
-            this.сохранитьToolStripMenuItem,
-            this.добавитьToolStripMenuItem});
+            this.добавитьToolStripMenuItem,
+            this.сохранитьToolStripMenuItem});
             this.файлToolStripMenuItem.Name = "файлToolStripMenuItem";
             this.файлToolStripMenuItem.Size = new System.Drawing.Size(57, 24);
             this.файлToolStripMenuItem.Text = "Файл";

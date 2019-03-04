@@ -20,6 +20,8 @@ namespace BibReader
                 {"Author", "authors"},
                 {"title", "title"},
                 {"Title", "title"},
+                {"booktitle", "booktitle"},
+                {"Booktitle", "booktitle"},
                 {"journal", "journalName"},
                 {"Journal", "journalName"},
                 {"year", "year"},
