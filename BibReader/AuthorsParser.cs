@@ -71,5 +71,41 @@ namespace BibReader
                 Authors[i] = string.Join(" ", LastName, FirstName);
             }
         }
+
+        public string MakeAuthorsForAPA(string[] authors)
+        {
+            return string.Join("", authors.Select(author => string.Join(" ", author.Split(' ').Select((part, index) => part = index == 0 ? part + "," : part[0] + ".")))
+                                    .Select((author, i) => author +=
+                                        i != authors.Length - 1 && i != authors.Length - 2
+                                        ? ", "
+                                        : i != authors.Length - 1 ? " & " : ""
+                                    ).ToArray());
+        }
+
+        public string MakeAuthorsForHarvard(string[] authors)
+        {
+            return string.Join("", authors.Select(author => string.Join(" ", author.Split(' ').Select((part, index) => part = index == 0 ? part + "," : part[0] + ".")))
+                                    .Select((author, i) => author +=
+                                        i != authors.Length - 1 && i != authors.Length - 2
+                                        ? ", "
+                                        : i != authors.Length - 1 ? " and " : ""
+                                    ).ToArray());
+        }
+
+        public string MakeAuthorsForIEEE(string[] authors)
+        {
+            return string.Join("", authors.Select(author => author = string.Join(" ", author.Substring(author.IndexOf(" ") + 1).Split(' ').Select(init => init = init[0] + ".").ToArray()) + " " + author.Substring(0, author.IndexOf(" ")))
+                                               .Select((author, i) => author +=
+                                                    i != authors.Length - 1 && i != authors.Length - 2
+                                                    ? ", "
+                                                    : i != authors.Length - 1 ? " and " : ""
+                                               ).ToArray());
+        }
+
+        public string[] MakeAuthorsForGOST(string[] authors)
+        {
+            return authors.Select(author => string.Join(" ", author.Split(' ').Select((part, index) => part = index == 0 ? part + "," : part[0] + "."))).ToArray();
+        }
+
     }
 }

@@ -33,54 +33,6 @@ namespace BibReader.TypesOfSourse
             Date = date;
         }
 
-        public void MakeAuthorsForHarvard(string[] authors)
-        {
-            for (int i = 0; i < authors.Length; i++)
-            {
-                int ind = authors[i].IndexOf(' ');
-                authors[i] = authors[i].Insert(ind, ",");
-
-                if (i != authors.Length - 2 && i != authors.Length - 1)
-                    authors[i] = authors[i] + ", ";
-                else if (authors.Length - 2 == i)
-                    authors[i] += " и ";
-            }
-        }
-
-        public void MakeAuthorsForAPA(string[] authors)
-        {
-            for (int i = 0; i < authors.Length; i++)
-            {
-                int ind = authors[i].IndexOf(' ');
-                authors[i] = authors[i].Insert(ind, ",");
-                //string Initial = authors[i].SkipWhile((x, y) => x != ' ').ToString();
-                //authors[i]= authors[i].TakeWhile((x, y) => x != ' ').ToString();
-
-                if (i != authors.Length - 2 && i != authors.Length - 1)
-                    authors[i] = authors[i] + ", ";
-                else if (authors.Length - 2 == i)
-                    authors[i] += " & ";
-            }
-        }
-
-        public void MakeAuthorsForIEEE(string[] authors)
-        {
-            for (int i = 0; i < authors.Length; i++)
-            {
-                int ind = authors[i].IndexOf(' ');
-                authors[i] = authors[i].Substring(0, ind).Insert(0, authors[i].Substring(ind + 1));
-                for (int j = 0; j < authors[i].Length; j++)
-                {
-                    if (authors[i][j] == '.')
-                        authors[i] = authors[i].Insert(j + 1, " ");
-                }
-                if (i != authors.Length - 2 && i != authors.Length - 1)
-                    authors[i] = authors[i] + ", ";
-                else if (authors.Length - 2 == i)
-                    authors[i] += ", & ";
-            }
-        }
-
         public void MakeGOST(ref RichTextBox rtb)
         {
             const string Space = " ";
@@ -95,6 +47,8 @@ namespace BibReader.TypesOfSourse
             const string DateRus = "дата обращения";
             const string Point = ".";
             string result = string.Empty;
+            AuthorsParser authorsParser = new AuthorsParser();
+            Authors = authorsParser.MakeAuthorsForGOST(Authors);
             if (Authors.Length < 4)
             {
                 result += string.Join(", ", Authors);
@@ -138,11 +92,12 @@ namespace BibReader.TypesOfSourse
             const string DateRus = "Accesed ";
             const string Point = ".";
             const string DoublePoint = ":";
-            rtb.Text = string.Empty;
 
 
-            MakeAuthorsForHarvard(Authors);
-            rtb.Text += string.Join("", Authors);
+            //MakeAuthorsForHarvard(Authors);
+            //rtb.Text += string.Join("", Authors);
+            AuthorsParser authorsParser = new AuthorsParser();
+            rtb.Text += authorsParser.MakeAuthorsForHarvard(Authors);
             rtb.Text += Space;
             rtb.Text += Lparenthesis + Year + Rparenthesis + PointSpace;
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
@@ -166,7 +121,7 @@ namespace BibReader.TypesOfSourse
                 rtb.SelectedText += Page;
             else
                 rtb.SelectedText += PPage;
-            rtb.SelectedText += Pages + Point;
+            rtb.SelectedText += Pages + Point + "\n\n";
 
             if (Link != "")
                 rtb.SelectedText += Space + Avaliable + Link + Space + Lpar + DateRus + Space + Date.ToString("dd MMM yyyy") + Rpar + Point;
@@ -189,10 +144,11 @@ namespace BibReader.TypesOfSourse
             const string Retrieved = "Retrieved ";
             const string From = "from ";
             const string DoublePoint = ": ";
-            rtb.Text = string.Empty;
 
-            MakeAuthorsForAPA(Authors);
-            rtb.Text += string.Join("", Authors);
+            //MakeAuthorsForAPA(Authors);
+            //rtb.Text += string.Join("", Authors);
+            AuthorsParser authorsParser = new AuthorsParser();
+            rtb.Text += authorsParser.MakeAuthorsForAPA(Authors);
             rtb.Text += Space;
             rtb.Text += Lparenthesis + Year + Rparenthesis + PointSpace;
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
@@ -215,7 +171,7 @@ namespace BibReader.TypesOfSourse
             rtb.SelectedText += Pages + Rparenthesis + PointSpace;
 
             rtb.SelectedText += Town + DoublePoint;
-            rtb.SelectedText = Publisher + Point;
+            rtb.SelectedText = Publisher + Point + "\n\n";
 
             //if (Vol > 0)
             //    rtb.SelectedText += "т. " + Vol + Point;
@@ -239,23 +195,26 @@ namespace BibReader.TypesOfSourse
             const string Access = "Accessed on: ";
             const string Available = "Available: ";
 
-            rtb.Text = string.Empty;
             //var form = new fAdd() { Text = "Добавьте название страны" };
             string Country = "";
             //if (form.ShowDialog() == DialogResult.OK)
             //    Country = form.Add;
             //else
             //    MessageBox.Show("Вы не добавили страну, ссылка будет не верна!");
-            MakeAuthorsForIEEE(Authors);
-            if (Authors.Length < 6)
-            {
-                rtb.Text += string.Join("", Authors);
-                rtb.Text += CommaSpace;
-            }
-            else
-            {
-                rtb.Text += Authors[0] + " et al." + CommaSpace;
-            }
+
+            AuthorsParser authorsParser = new AuthorsParser();
+            rtb.Text += authorsParser.MakeAuthorsForIEEE(Authors) + CommaSpace;
+
+            //MakeAuthorsForIEEE(Authors);
+            //if (Authors.Length < 6)
+            //{
+            //    rtb.Text += string.Join("", Authors);
+            //    rtb.Text += CommaSpace;
+            //}
+            //else
+            //{
+            //    rtb.Text += Authors[0] + " et al." + CommaSpace;
+            //}
 
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
             rtb.SelectedText += Title + PointSpace;
@@ -278,7 +237,7 @@ namespace BibReader.TypesOfSourse
                 rtb.SelectedText += Pages + Point;
             }
             else
-                rtb.SelectedText += Point;
+                rtb.SelectedText += Point + "\n\n";
             if (Link != "")
                 rtb.SelectedText += Space + Available + Link + Point + Space + Access + Date.ToString("MMM. dd, yyyy.");
         }

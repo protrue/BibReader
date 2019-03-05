@@ -58,7 +58,7 @@ namespace BibReader
             btFirst.Enabled = false;
             btUnique.Enabled = false;
             btRelevance.Enabled = false;
-
+            cbBibStyles.SelectedIndex = 0;
         }
 
         private void AddLibItemsInLvItems(List<LibItem> libItems)
@@ -324,7 +324,14 @@ namespace BibReader
                     case "conference":
                         var conf = new Conference(authors, libItem.Title, libItem.Publisher, libItem.Pages,
                             year, libItem.Address, libItem.Booktitle);
-                        conf.MakeGOST(ref rtbBib);
+                        if (cbBibStyles.Text == "APA")
+                            conf.MakeAPA(ref rtbBib);
+                        else if (cbBibStyles.Text == "Harvard")
+                            conf.MakeHarvard(ref rtbBib);
+                        else if (cbBibStyles.Text == "IEEE")
+                            conf.MakeI3E(ref rtbBib);
+                        else
+                            conf.MakeGOST(ref rtbBib);
                         break;
 
                     case "book":
@@ -332,14 +339,28 @@ namespace BibReader
                             var book = new Book(authors, libItem.Title, "libItem.Address", libItem.Publisher,
                                 year, volume, libItem.Pages, "",
                                 DateTime.Parse(DateTime.Now.ToShortDateString()));
-                            book.MakeGOST(ref rtbBib);
+                            if (cbBibStyles.Text == "APA")
+                                book.MakeAPA(ref rtbBib);
+                            else if (cbBibStyles.Text == "Harvard")
+                                book.MakeHarvard(ref rtbBib);
+                            else if (cbBibStyles.Text == "IEEE")
+                                book.MakeI3E(ref rtbBib);
+                            else
+                                book.MakeGOST(ref rtbBib);
                             break;
                         }
                     case "journal":
                         var journal = new Journal(authors, libItem.Title, libItem.JournalName, libItem.Pages,
                             year, number, volume,
                             "", DateTime.Parse(DateTime.Now.ToShortDateString()));
-                        journal.MakeGOST(ref rtbBib);
+                        if (cbBibStyles.Text == "APA")
+                            journal.MakeAPA(ref rtbBib);
+                        else if (cbBibStyles.Text == "Harvard")
+                            journal.MakeHarvard(ref rtbBib);
+                        else if (cbBibStyles.Text == "IEEE")
+                            journal.MakeI3E(ref rtbBib);
+                        else
+                            journal.MakeGOST(ref rtbBib);
                         break;
                 }
             }
@@ -583,6 +604,12 @@ namespace BibReader
                 lvLibItems.EnsureVisible(currIndex);
             }
 
+        }
+
+        private void btPrintBib_Click(object sender, EventArgs e)
+        {
+            rtbBib.Text = string.Empty;
+            MakeBibRef();
         }
     }
 }

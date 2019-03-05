@@ -51,7 +51,8 @@ namespace BibReader.TypesOfSourse
             const string Commaspace = ", ";
             string result = string.Empty;
 
-
+            AuthorsParser authorsParser = new AuthorsParser();
+            Authors = authorsParser.MakeAuthorsForGOST(Authors);
             result += string.Join(", ", Authors);
             result += Space;
             result += Name + Space;
@@ -82,10 +83,11 @@ namespace BibReader.TypesOfSourse
             const string Lpar = "[";
             const string Rpar = "]";
             const string DateRus = "Accessed ";
-            rtb.Text = string.Empty;
 
-            MakeAuthorsForHarvard(Authors);
-            rtb.Text += string.Join(" и ", Authors);
+            //MakeAuthorsForHarvard(Authors);
+            //rtb.Text += string.Join(" и ", Authors);
+            AuthorsParser authorsParser = new AuthorsParser();
+            rtb.Text += authorsParser.MakeAuthorsForHarvard(Authors);
             rtb.Text += Space;
             rtb.Text += Lparenthesis + Year + Rparenthesis + PointSpace;
 
@@ -118,7 +120,7 @@ namespace BibReader.TypesOfSourse
                 rtb.SelectedText += Page;
             else
                 rtb.SelectedText += PPage;
-            rtb.SelectedText += Pages + Point;
+            rtb.SelectedText += Pages + Point + "\n\n";
 
             if (Link != "")
                 rtb.SelectedText += Space + Avaliable + Link + Space + Lpar + DateRus + Date.ToString("dd MMM yyyy") + Rpar + Point;
@@ -138,10 +140,11 @@ namespace BibReader.TypesOfSourse
             const string Rparenthesis = ")";
             const string Retrieved = "Retrieved ";
             const string From = "from ";
-            rtb.Text = string.Empty;
 
-            MakeAuthorsForAPA(Authors);
-            rtb.Text += string.Join("", Authors);
+            //MakeAuthorsForAPA(Authors);
+            //rtb.Text += string.Join("", Authors);
+            AuthorsParser authorsParser = new AuthorsParser();
+            rtb.Text += authorsParser.MakeAuthorsForAPA(Authors);
             rtb.Text += Space;
             rtb.Text += Lparenthesis + Year + Rparenthesis + PointSpace;
 
@@ -170,7 +173,7 @@ namespace BibReader.TypesOfSourse
             //        MessageBox.Show("Вы не добавили страницы, ссылка будет не верна!");
             //}
 
-            rtb.SelectedText += Pages + Point;
+            rtb.SelectedText += Pages + Point + "\n\n";
             if (Link != "")
                 rtb.SelectedText += Space + Retrieved + Date.ToString("dd MMMM yyyy") + CommaSpace + From + Link;
 
@@ -187,12 +190,13 @@ namespace BibReader.TypesOfSourse
             const string Access = "Accessed on: ";
             const string Available = "Available: ";
             string vol = "";
-            rtb.Text = string.Empty;
 
 
-            MakeAuthorsForIEEE(Authors);
-            rtb.Text += string.Join("", Authors);
-            rtb.Text += CommaSpace;
+            //MakeAuthorsForIEEE(Authors);
+            //rtb.Text += string.Join("", Authors);
+            //rtb.Text += CommaSpace;
+            AuthorsParser authorsParser = new AuthorsParser();
+            rtb.Text += authorsParser.MakeAuthorsForIEEE(Authors) + CommaSpace;
 
 
             rtb.Text += "\"" + Name + "\"" + CommaSpace;
@@ -228,52 +232,11 @@ namespace BibReader.TypesOfSourse
 
             rtb.SelectedText += Pages + CommaSpace;
 
-            rtb.SelectedText += Year + Point;
+            rtb.SelectedText += Year + Point + "\n\n";
             if (Link != "")
                 rtb.SelectedText += Space + Available + Link + Point + Space + Access + Date.ToString("MMM. dd, yyyy.");
         }
 
-        public void MakeAuthorsForHarvard(string[] authors)
-        {
-            for (int i = 0; i < authors.Length; i++)
-            {
-                int ind = authors[i].IndexOf(' ');
-                authors[i] = authors[i].Insert(ind, ",");
-                //string Initial = authors[i].SkipWhile((x, y) => x != ' ').ToString();
-                //authors[i]= authors[i].TakeWhile((x, y) => x != ' ').ToString();
-            }
-        }
-
-        public void MakeAuthorsForAPA(string[] authors)
-        {
-            for (int i = 0; i < authors.Length; i++)
-            {
-                int ind = authors[i].IndexOf(' ');
-                authors[i] = authors[i].Insert(ind, ",");
-                if (i != authors.Length - 2 && i != authors.Length - 1)
-                    authors[i] = authors[i] + ", ";
-                else if (authors.Length - 2 == i)
-                    authors[i] += " & ";
-            }
-        }
-
-        public void MakeAuthorsForIEEE(string[] authors)
-        {
-            for (int i = 0; i < authors.Length; i++)
-            {
-                int ind = authors[i].IndexOf(' ');
-                authors[i] = authors[i].Substring(0, ind).Insert(0, authors[i].Substring(ind + 1));
-                for (int j = 0; j < authors[i].Length; j++)
-                {
-                    if (authors[i][j] == '.')
-                        authors[i] = authors[i].Insert(j + 1, " ");
-                }
-                if (i != authors.Length - 2 && i != authors.Length - 1)
-                    authors[i] = authors[i] + ", ";
-                else if (authors.Length - 2 == i)
-                    authors[i] += ", & ";
-            }
-        }
     }
 
 }
