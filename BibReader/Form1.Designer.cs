@@ -61,6 +61,8 @@
             this.lbTitle = new System.Windows.Forms.Label();
             this.lbAuthors = new System.Windows.Forms.Label();
             this.tpBib = new System.Windows.Forms.TabPage();
+            this.btPrintBib = new System.Windows.Forms.Button();
+            this.cbBibStyles = new System.Windows.Forms.ComboBox();
             this.rtbBib = new System.Windows.Forms.RichTextBox();
             this.tpYearStatistic = new System.Windows.Forms.TabPage();
             this.lvYearStatistic = new System.Windows.Forms.ListView();
@@ -72,6 +74,8 @@
             this.открытьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.добавитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.сохранитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.кластеризацияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.получитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lbCurrSelectedItem = new System.Windows.Forms.Label();
             this.btFirst = new System.Windows.Forms.Button();
             this.btUnique = new System.Windows.Forms.Button();
@@ -85,8 +89,9 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btNextFindedLibItem = new System.Windows.Forms.Button();
             this.btPrevFindedLibItem = new System.Windows.Forms.Button();
-            this.cbBibStyles = new System.Windows.Forms.ComboBox();
-            this.btPrintBib = new System.Windows.Forms.Button();
+            this.названияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ключевыеСловаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.аннотацииToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tpData.SuspendLayout();
@@ -455,6 +460,29 @@
             this.tpBib.Text = "Библ. описания";
             this.tpBib.UseVisualStyleBackColor = true;
             // 
+            // btPrintBib
+            // 
+            this.btPrintBib.Location = new System.Drawing.Point(230, 17);
+            this.btPrintBib.Name = "btPrintBib";
+            this.btPrintBib.Size = new System.Drawing.Size(88, 23);
+            this.btPrintBib.TabIndex = 2;
+            this.btPrintBib.Text = "Изменить";
+            this.btPrintBib.UseVisualStyleBackColor = true;
+            this.btPrintBib.Click += new System.EventHandler(this.btPrintBib_Click);
+            // 
+            // cbBibStyles
+            // 
+            this.cbBibStyles.FormattingEnabled = true;
+            this.cbBibStyles.Items.AddRange(new object[] {
+            "ГОСТ",
+            "APA",
+            "Harvard",
+            "IEEE"});
+            this.cbBibStyles.Location = new System.Drawing.Point(7, 17);
+            this.cbBibStyles.Name = "cbBibStyles";
+            this.cbBibStyles.Size = new System.Drawing.Size(205, 24);
+            this.cbBibStyles.TabIndex = 1;
+            // 
             // rtbBib
             // 
             this.rtbBib.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -531,7 +559,8 @@
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.файлToolStripMenuItem});
+            this.файлToolStripMenuItem,
+            this.кластеризацияToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1536, 28);
@@ -568,6 +597,24 @@
             this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(158, 26);
             this.сохранитьToolStripMenuItem.Text = "Сохранить";
             this.сохранитьToolStripMenuItem.Click += new System.EventHandler(this.сохранитьToolStripMenuItem_Click);
+            // 
+            // кластеризацияToolStripMenuItem
+            // 
+            this.кластеризацияToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.получитьToolStripMenuItem});
+            this.кластеризацияToolStripMenuItem.Name = "кластеризацияToolStripMenuItem";
+            this.кластеризацияToolStripMenuItem.Size = new System.Drawing.Size(126, 24);
+            this.кластеризацияToolStripMenuItem.Text = "Кластеризация";
+            // 
+            // получитьToolStripMenuItem
+            // 
+            this.получитьToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.названияToolStripMenuItem,
+            this.ключевыеСловаToolStripMenuItem,
+            this.аннотацииToolStripMenuItem});
+            this.получитьToolStripMenuItem.Name = "получитьToolStripMenuItem";
+            this.получитьToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.получитьToolStripMenuItem.Text = "Получить";
             // 
             // lbCurrSelectedItem
             // 
@@ -685,28 +732,26 @@
             this.btPrevFindedLibItem.UseVisualStyleBackColor = true;
             this.btPrevFindedLibItem.Click += new System.EventHandler(this.btPrevFindedLibItem_Click);
             // 
-            // cbBibStyles
+            // названияToolStripMenuItem
             // 
-            this.cbBibStyles.FormattingEnabled = true;
-            this.cbBibStyles.Items.AddRange(new object[] {
-            "ГОСТ",
-            "APA",
-            "Harvard",
-            "IEEE"});
-            this.cbBibStyles.Location = new System.Drawing.Point(7, 17);
-            this.cbBibStyles.Name = "cbBibStyles";
-            this.cbBibStyles.Size = new System.Drawing.Size(205, 24);
-            this.cbBibStyles.TabIndex = 1;
+            this.названияToolStripMenuItem.Name = "названияToolStripMenuItem";
+            this.названияToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.названияToolStripMenuItem.Text = "Названия";
+            this.названияToolStripMenuItem.Click += new System.EventHandler(this.названияToolStripMenuItem_Click);
             // 
-            // btPrintBib
+            // ключевыеСловаToolStripMenuItem
             // 
-            this.btPrintBib.Location = new System.Drawing.Point(230, 17);
-            this.btPrintBib.Name = "btPrintBib";
-            this.btPrintBib.Size = new System.Drawing.Size(88, 23);
-            this.btPrintBib.TabIndex = 2;
-            this.btPrintBib.Text = "Изменить";
-            this.btPrintBib.UseVisualStyleBackColor = true;
-            this.btPrintBib.Click += new System.EventHandler(this.btPrintBib_Click);
+            this.ключевыеСловаToolStripMenuItem.Name = "ключевыеСловаToolStripMenuItem";
+            this.ключевыеСловаToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.ключевыеСловаToolStripMenuItem.Text = "Ключевые слова";
+            this.ключевыеСловаToolStripMenuItem.Click += new System.EventHandler(this.ключевыеСловаToolStripMenuItem_Click);
+            // 
+            // аннотацииToolStripMenuItem
+            // 
+            this.аннотацииToolStripMenuItem.Name = "аннотацииToolStripMenuItem";
+            this.аннотацииToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.аннотацииToolStripMenuItem.Text = "Аннотации";
+            this.аннотацииToolStripMenuItem.Click += new System.EventHandler(this.аннотацииToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -806,6 +851,11 @@
         private System.Windows.Forms.Button btPrevFindedLibItem;
         private System.Windows.Forms.ComboBox cbBibStyles;
         private System.Windows.Forms.Button btPrintBib;
+        private System.Windows.Forms.ToolStripMenuItem кластеризацияToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem получитьToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem названияToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ключевыеСловаToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem аннотацииToolStripMenuItem;
     }
 }
 

@@ -611,5 +611,41 @@ namespace BibReader
             rtbBib.Text = string.Empty;
             MakeBibRef();
         }
+
+        private void названияToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var libItems = GetListOfLibItemsFromLv();
+            string titles = string.Empty;
+            foreach(var libItem in libItems)
+            {
+                titles += libItem.Title + "\r\n";
+            }
+            var form = new ClusterizationForm() { Info = titles };
+            form.Show();
+        }
+
+        private void ключевыеСловаToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var libItems = GetListOfLibItemsFromLv();
+            string keywords = string.Empty;
+            foreach (var libItem in libItems)
+            {
+                keywords += libItem.Keywords + "\r\n";
+            }
+            var form = new ClusterizationForm() { Info = keywords };
+            form.Show();
+        }
+
+        private void аннотацииToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var libItems = GetListOfLibItemsFromLv();
+            string abstract_ = string.Empty;
+            foreach (var libItem in libItems)
+            {
+                abstract_ += libItem.Abstract + "\r\n";
+            }
+            var form = new ClusterizationForm() { Info = abstract_ };
+            form.Show();
+        }
     }
 }
