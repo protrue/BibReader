@@ -29,11 +29,14 @@
         private void InitializeComponent()
         {
             this.tbInfo = new System.Windows.Forms.TextBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictBox = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictBox)).BeginInit();
             this.SuspendLayout();
             // 
             // tbInfo
             // 
+            this.tbInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left)));
             this.tbInfo.Location = new System.Drawing.Point(13, 13);
             this.tbInfo.Multiline = true;
             this.tbInfo.Name = "tbInfo";
@@ -41,25 +44,27 @@
             this.tbInfo.Size = new System.Drawing.Size(775, 425);
             this.tbInfo.TabIndex = 0;
             // 
-            // pictureBox1
+            // pictBox
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(794, 13);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(650, 425);
-            this.pictureBox1.TabIndex = 1;
-            this.pictureBox1.TabStop = false;
+            this.pictBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pictBox.Location = new System.Drawing.Point(794, 13);
+            this.pictBox.Name = "pictBox";
+            this.pictBox.Size = new System.Drawing.Size(650, 425);
+            this.pictBox.TabIndex = 1;
+            this.pictBox.TabStop = false;
             // 
             // ClusterizationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1455, 450);
-            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.pictBox);
             this.Controls.Add(this.tbInfo);
             this.Name = "ClusterizationForm";
             this.Text = "Clusterization";
             this.Load += new System.EventHandler(this.ClusterizationForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -68,6 +73,6 @@
         #endregion
 
         private System.Windows.Forms.TextBox tbInfo;
-        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pictBox;
     }
 }

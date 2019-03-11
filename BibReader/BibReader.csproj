@@ -32,6 +32,21 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="LemmaSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sparc.TagCloud.0.0.1\lib\net40\LemmaSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="LemmaSharpPrebuilt, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sparc.TagCloud.0.0.1\lib\net40\LemmaSharpPrebuilt.dll</HintPath>
+    </Reference>
+    <Reference Include="LemmaSharpPrebuiltCompact, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sparc.TagCloud.0.0.1\lib\net40\LemmaSharpPrebuiltCompact.dll</HintPath>
+    </Reference>
+    <Reference Include="Lzma#, Version=4.12.3884.11200, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sparc.TagCloud.0.0.1\lib\net40\Lzma#.dll</HintPath>
+    </Reference>
+    <Reference Include="Sparc.TagCloud, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Sparc.TagCloud.0.0.1\lib\net40\Sparc.TagCloud.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="WordCloud, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\WordCloud.1.0.0.3\lib\net45\WordCloud.dll</HintPath>
