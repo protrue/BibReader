@@ -26,6 +26,14 @@ namespace BibReader
             switch(sourse)
             {
                 case "Scopus":
+                    listOfAuthors = listOfAuthors.Select(author => author = 
+                        string.Join(" ", 
+                        author.Split(' ').Select((part, i) => 
+                            part = i != 0 
+                            ? string.Join(". ", part.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries)) + "." 
+                            : part)
+                        )
+                    ).ToArray();
                     LastNameIsFirst(ref listOfAuthors);
                     break;
 
@@ -74,7 +82,8 @@ namespace BibReader
 
         public string MakeAuthorsForAPA(string[] authors)
         {
-            return string.Join("", authors.Select(author => string.Join(" ", author.Split(' ').Select((part, index) => part = index == 0 ? part + "," : part[0] + ".")))
+            return string.Join("", authors.Select(author => string.Join(" ", author.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
+                Select((part, index) => part = index == 0 ? part + "," : part[0] + ".")))
                                     .Select((author, i) => author +=
                                         i != authors.Length - 1 && i != authors.Length - 2
                                         ? ", "
@@ -84,7 +93,8 @@ namespace BibReader
 
         public string MakeAuthorsForHarvard(string[] authors)
         {
-            return string.Join("", authors.Select(author => string.Join(" ", author.Split(' ').Select((part, index) => part = index == 0 ? part + "," : part[0] + ".")))
+            return string.Join("", authors.Select(author => string.Join(" ", author.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
+                Select((part, index) => part = index == 0 ? part + "," : part[0] + ".")))
                                     .Select((author, i) => author +=
                                         i != authors.Length - 1 && i != authors.Length - 2
                                         ? ", "
@@ -94,7 +104,9 @@ namespace BibReader
 
         public string MakeAuthorsForIEEE(string[] authors)
         {
-            return string.Join("", authors.Select(author => author = string.Join(" ", author.Substring(author.IndexOf(" ") + 1).Split(' ').Select(init => init = init[0] + ".").ToArray()) + " " + author.Substring(0, author.IndexOf(" ")))
+            return string.Join("", authors.Select(author => author = string.Join(" ", author.Substring(author.IndexOf(" ") + 1).
+                Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
+                Select(init => init = init[0] + ".").ToArray()) + " " + author.Substring(0, author.IndexOf(" ")))
                                                .Select((author, i) => author +=
                                                     i != authors.Length - 1 && i != authors.Length - 2
                                                     ? ", "
@@ -104,7 +116,8 @@ namespace BibReader
 
         public string[] MakeAuthorsForGOST(string[] authors)
         {
-            return authors.Select(author => string.Join(" ", author.Split(' ').Select((part, index) => part = index == 0 ? part + "," : part[0] + "."))).ToArray();
+            return authors.Select(author => string.Join(" ", author.Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
+                Select((part, index) => part = index == 0 ? part : part[0] + "."))).ToArray();
         }
 
     }
