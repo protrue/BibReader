@@ -118,7 +118,7 @@ namespace BibReader
             }
             pbLoadUniqueData.Value = 100;
             WorkWithBlocks.ClearDictionary();
-            MessageBox.Show("Done");
+            MessageBox.Show("Готово!");
             pbLoadUniqueData.Value = 0;
         }
 
@@ -146,7 +146,7 @@ namespace BibReader
                     pbLoadUniqueData.Value += (int)step;
             }
             pbLoadUniqueData.Value = 100;
-            MessageBox.Show("Done");
+            MessageBox.Show("Готово!");
             pbLoadUniqueData.Value = 0;
         }
 
@@ -404,11 +404,6 @@ namespace BibReader
             deletedNotUniqueItems = deletedNotUniqueItems.Where(item => item.SubItems[2].Text != "2").ToList();
             lvLibItems.Sorting = SortOrder.Ascending;
             lvLibItems.Sort();
-            if (lvLibItems.Items.Count != 0)
-            {
-                lvLibItems.Items[0].Selected = true;
-                lbCurrSelectedItem.Text = $"1/{lvLibItems.Items.Count}";
-            }
 
             UpdateUI();
 
@@ -420,12 +415,6 @@ namespace BibReader
         private void btRelevance_Click(object sender, EventArgs e)
         {
             RelevanceData();
-            if (lvLibItems.Items.Count != 0)
-            {
-                lvLibItems.Items[0].Selected = true;
-                lbCurrSelectedItem.Text = $"1/{lvLibItems.Items.Count}";
-            }
-
             UpdateUI();
 
             btFirst.Enabled = true;
@@ -437,6 +426,29 @@ namespace BibReader
             LoadSourseStatistic();
             LoadYearStatistic();
             rtbBib.Text = string.Empty;
+            if (lvLibItems.Items.Count != 0)
+            {
+                lvLibItems.Items[0].Selected = true;
+                lbCurrSelectedItem.Text = $"1/{lvLibItems.Items.Count}";
+            }
+            else
+            {
+                tbAbstract.Text = string.Empty;
+                tbAffiliation.Text = string.Empty;
+                tbAuthors.Text = string.Empty;
+                tbDoi.Text = string.Empty;
+                tbJournalName.Text = string.Empty;
+                tbKeywords.Text = string.Empty;
+                tbNumber.Text = string.Empty;
+                tbPages.Text = string.Empty;
+                tbPublisher.Text = string.Empty;
+                tbSourсe.Text = string.Empty;
+                tbTitle.Text = string.Empty;
+                tbUrl.Text = string.Empty;
+                tbVolume.Text = string.Empty;
+                tbYear.Text = string.Empty;
+                lbCurrSelectedItem.Text = $"0/{lvLibItems.Items.Count}";
+            }
             try
             {
                 MakeBibRef();
@@ -466,74 +478,91 @@ namespace BibReader
 
         private void tbTitle_TextChanged(object sender, EventArgs e)
         {
+            if (lvLibItems.Items.Count != 0) { 
             ((LibItem)lvLibItems.SelectedItems[0].Tag).Title = tbTitle.Text;
             lvLibItems.SelectedItems[0].SubItems[0].Text = tbTitle.Text;
+            }
         }
 
         private void tbAbstract_TextChanged(object sender, EventArgs e)
         {
-            ((LibItem)lvLibItems.SelectedItems[0].Tag).Abstract = tbAbstract.Text;
+            if (lvLibItems.Items.Count != 0)
+                ((LibItem)lvLibItems.SelectedItems[0].Tag).Abstract = tbAbstract.Text;
         }
 
         private void tbJournalName_TextChanged(object sender, EventArgs e)
         {
-            ((LibItem)lvLibItems.SelectedItems[0].Tag).JournalName = tbJournalName.Text;
+            if (lvLibItems.Items.Count != 0)
+                ((LibItem)lvLibItems.SelectedItems[0].Tag).JournalName = tbJournalName.Text;
         }
 
         private void tbYear_TextChanged(object sender, EventArgs e)
         {
-            ((LibItem)lvLibItems.SelectedItems[0].Tag).Year = tbYear.Text;
+            if (lvLibItems.Items.Count != 0)
+                ((LibItem)lvLibItems.SelectedItems[0].Tag).Year = tbYear.Text;
         }
 
         private void tbVolume_TextChanged(object sender, EventArgs e)
         {
-            ((LibItem)lvLibItems.SelectedItems[0].Tag).Volume = tbVolume.Text;
+            if (lvLibItems.Items.Count != 0)
+                ((LibItem)lvLibItems.SelectedItems[0].Tag).Volume = tbVolume.Text;
         }
 
         private void tbPublisher_TextChanged(object sender, EventArgs e)
         {
-            ((LibItem)lvLibItems.SelectedItems[0].Tag).Publisher = tbPublisher.Text;
+            if (lvLibItems.Items.Count != 0)
+                ((LibItem)lvLibItems.SelectedItems[0].Tag).Publisher = tbPublisher.Text;
         }
 
         private void tbNumber_TextChanged(object sender, EventArgs e)
         {
-            ((LibItem)lvLibItems.SelectedItems[0].Tag).Number = tbNumber.Text;
+            if (lvLibItems.Items.Count != 0)
+                ((LibItem)lvLibItems.SelectedItems[0].Tag).Number = tbNumber.Text;
         }
 
         private void tbPages_TextChanged(object sender, EventArgs e)
         {
-            ((LibItem)lvLibItems.SelectedItems[0].Tag).Pages = tbPages.Text;
+            if (lvLibItems.Items.Count != 0)
+                ((LibItem)lvLibItems.SelectedItems[0].Tag).Pages = tbPages.Text;
         }
 
         private void tbDoi_TextChanged(object sender, EventArgs e)
         {
-            ((LibItem)lvLibItems.SelectedItems[0].Tag).Doi = tbDoi.Text;
+            if (lvLibItems.Items.Count != 0)
+                ((LibItem)lvLibItems.SelectedItems[0].Tag).Doi = tbDoi.Text;
         }
 
         private void tbUrl_TextChanged(object sender, EventArgs e)
         {
-            ((LibItem)lvLibItems.SelectedItems[0].Tag).Url = tbUrl.Text;
+            if (lvLibItems.Items.Count != 0)
+                ((LibItem)lvLibItems.SelectedItems[0].Tag).Url = tbUrl.Text;
         }
 
         private void tbAffiliation_TextChanged(object sender, EventArgs e)
         {
-            ((LibItem)lvLibItems.SelectedItems[0].Tag).Affiliation = tbAffiliation.Text;
+            if (lvLibItems.Items.Count != 0)
+                ((LibItem)lvLibItems.SelectedItems[0].Tag).Affiliation = tbAffiliation.Text;
         }
 
         private void tbKeywords_TextChanged(object sender, EventArgs e)
         {
-            ((LibItem)lvLibItems.SelectedItems[0].Tag).Keywords = tbKeywords.Text;
+            if (lvLibItems.Items.Count != 0)
+                ((LibItem)lvLibItems.SelectedItems[0].Tag).Keywords = tbKeywords.Text;
         }
 
         private void tbSourсe_TextChanged(object sender, EventArgs e)
         {
-            ((LibItem)lvLibItems.SelectedItems[0].Tag).Sourсe = tbSourсe.Text;
+            if (lvLibItems.Items.Count != 0)
+                ((LibItem)lvLibItems.SelectedItems[0].Tag).Sourсe = tbSourсe.Text;
         }
 
         private void tbAuthors_TextChanged(object sender, EventArgs e)
         {
-            ((LibItem)lvLibItems.SelectedItems[0].Tag).Authors = tbAuthors.Text;
-            lvLibItems.SelectedItems[0].SubItems[1].Text = tbAuthors.Text;
+            if (lvLibItems.Items.Count != 0)
+            {
+                ((LibItem)lvLibItems.SelectedItems[0].Tag).Authors = tbAuthors.Text;
+                lvLibItems.SelectedItems[0].SubItems[1].Text = tbAuthors.Text;
+            }
         }
 
         private void tbFind_TextChanged(object sender, EventArgs e)

@@ -8,6 +8,8 @@ namespace BibReader.Blocks
 {
     class WorkWithBlocks
     {
+        const int distance = 5;
+
         static Dictionary<string, int> currTitles = new Dictionary<string, int>();
 
         public static bool isRelevance(string pages, string authors) => isRelevancePages(pages) && authors != "" ? true : false;
@@ -24,7 +26,7 @@ namespace BibReader.Blocks
                 return false;
         }
 
-        private static bool isUnique(string title) => !currTitles.ContainsKey(title) && LevenshteinDistance(currTitles, title) > 5 ? true : false;
+        private static bool isUnique(string title) => !currTitles.ContainsKey(title) && LevenshteinDistance(currTitles, title) > distance ? true : false;
 
         public static void ClearDictionary() => currTitles.Clear();
 
@@ -57,6 +59,7 @@ namespace BibReader.Blocks
         {
             int fstWordLength = fstWord.Length, sndWordLength = sndWord.Length;
             int[,] ed = new int[fstWordLength, sndWordLength];
+            int minValueInRow = 100;
 
             ed[0, 0] = (fstWord[0] == sndWord[0]) ? 0 : 1;
             for (int i = 1; i < fstWordLength; i++)
@@ -71,6 +74,7 @@ namespace BibReader.Blocks
 
             for (int j = 1; j < sndWordLength; j++)
             {
+                minValueInRow = 100;
                 for (int i = 1; i < fstWordLength; i++)
                 {
                     if (fstWord[i] == sndWord[j])
@@ -84,7 +88,11 @@ namespace BibReader.Blocks
                         ed[i, j] = Math.Min(ed[i - 1, j] + 1,
                             Math.Min(ed[i, j - 1] + 1, ed[i - 1, j - 1] + 1));
                     }
+                    if (ed[i, j] < minValueInRow)
+                        minValueInRow = ed[i, j];
                 }
+                if (minValueInRow > distance)
+                    return minValueInRow;
             }
 
             return ed[fstWordLength - 1, sndWordLength - 1];
@@ -97,6 +105,8 @@ namespace BibReader.Blocks
             foreach (var title in currTitles.Keys)
             {
                 if (title == "" || title == null)
+                    ed = 10000;
+                else if (Math.Abs(word.Length - title.Length) > distance)
                     ed = 10000;
                 else
                     ed = EditDistance(word, title);

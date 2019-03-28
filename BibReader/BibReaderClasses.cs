@@ -185,7 +185,8 @@ namespace BibReader
            
             var key = regex.Match(str).Groups[1].Value;
             var value = regex.Match(str).Groups[2].Value;
-            myDictinaries.mainDict[myDictinaries.dict[key]] = value;
+            if (myDictinaries.dict.ContainsKey(key) && myDictinaries.mainDict.ContainsKey(myDictinaries.dict[key]))
+                myDictinaries.mainDict[myDictinaries.dict[key]] = value;
         }
 
         private void SetTypeOfLibItem(string str)

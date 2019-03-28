@@ -104,14 +104,20 @@ namespace BibReader
 
         public string MakeAuthorsForIEEE(string[] authors)
         {
-            return string.Join("", authors.Select(author => author = string.Join(" ", author.Substring(author.IndexOf(" ") + 1).
+            return string.Join("", authors.Select(author => author =
+            author.IndexOf(" ") != -1 ?
+                string.Join(" ", author.Substring(author.IndexOf(" ") + 1).
                 Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries).
-                Select(init => init = init[0] + ".").ToArray()) + " " + author.Substring(0, author.IndexOf(" ")))
-                                               .Select((author, i) => author +=
-                                                    i != authors.Length - 1 && i != authors.Length - 2
-                                                    ? ", "
-                                                    : i != authors.Length - 1 ? " and " : ""
-                                               ).ToArray());
+                Select(init => init = init[0] + ".").ToArray()
+                )
+                + " " + author.Substring(0, author.IndexOf(" "))
+                : author
+                )
+                .Select((author, i) => author +=
+                    i != authors.Length - 1 && i != authors.Length - 2
+                    ? ", "
+                    : i != authors.Length - 1 ? " and " : ""
+                ).ToArray());
         }
 
         public string[] MakeAuthorsForGOST(string[] authors)

@@ -234,7 +234,7 @@ namespace BibReader.TypesOfSourse
                 else
                     rtb.SelectedText += PPage;
 
-                rtb.SelectedText += Pages + Point;
+                rtb.SelectedText += Pages + Point + "\n\n";
             }
             else
                 rtb.SelectedText += Point + "\n\n";
