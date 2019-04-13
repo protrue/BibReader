@@ -13,6 +13,9 @@ namespace BibReader
 {
     public partial class ClusterizationForm : Form
     {
+        IEnumerable<TagCloudTag> words;
+        WordCloud.WordCloud wordCloud;
+
         public string Info
         {
             get => tbInfo.Text;
@@ -26,13 +29,6 @@ namespace BibReader
 
         private void ClusterizationForm_Load(object sender, EventArgs e)
         {
-            List<string> list1 = new List<string>() { "bool", "rofl", "lol" };
-            List<int> list2 = new List<int>() { 2, 50, 1 };
-            
-            WordCloud.WordCloud wordCloud = new WordCloud.WordCloud(100, 100);
-            var draw = wordCloud.Draw(list1, list2);
-            pictBox.Image = draw;
-
             TagCloudAnalyzer tagCloudAnalyzer = new TagCloudAnalyzer();
             TagCloudSetting tagCloudSetting = new TagCloudSetting();
             TagCloudTag tagCloudTag = new TagCloudTag();
@@ -50,21 +46,71 @@ namespace BibReader
             //var tags = tagCloudAnalyzer.ComputeTagCloud(IEnumerable<string> phrases);
             //tags.Shuffle();
 
-            var words = new TagCloudAnalyzer().ComputeTagCloud(Info.Split(new string[] { "\r\n" }, StringSplitOptions.None));
+            words = new TagCloudAnalyzer().ComputeTagCloud(Info.Split(new string[] { "\r\n" }, StringSplitOptions.None));
 
             //Info = (string.Join(
             //    Environment.NewLine,
             //    words.Select(p => "[" + p.Count + "] \t" + p.Text).ToArray()));
 
-            list1 = new List<string>(); list1.AddRange(words.Select(w => w.Text).ToArray());
-            list2 = new List<int>(); list2.AddRange(words.Select(w => w.Count).ToArray());
-
             wordCloud = new WordCloud.WordCloud(pictBox.Width, pictBox.Height);
-            draw = wordCloud.Draw(list1, list2);
-            pictBox.Image = draw;
+            var image = wordCloud.Draw(
+                words.Select(word => word.Text).ToList(),
+                words.Select(word => word.Count).ToList()
+                );
+            pictBox.Image = image;
+        }
 
-            // Console.ReadLine();
+        private void LoadWordAndFreqs()
+        {
+            foreach(var word in words)
+            {
+                lvFreqs.Items.Add(
+                    new ListViewItem(new string[] {
+                        word.Text,
+                        word.Count.ToString()
+                    })
+                    );
+            }
+            lvFreqs.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent);
+            lvFreqs.AutoResizeColumn(1, ColumnHeaderAutoResizeStyle.HeaderSize);
+        }
 
+        private void tabControl1_Selected(object sender, TabControlEventArgs e)
+        {
+            switch(e.TabPage.Name)
+            {
+                case "tpText":
+                    
+                    break;
+
+                case "tpFreqs":
+                    LoadWordAndFreqs();
+                    break;
+            }
+        }
+
+        private void btDeleteItems_Click(object sender, EventArgs e)
+        {
+            foreach(ListViewItem item in lvFreqs.SelectedItems)
+            {
+                lvFreqs.Items.Remove(item);
+            }
+        }
+
+        private void tbRedraw_Click(object sender, EventArgs e)
+        {
+            Draw();
+        }
+
+        private void Draw()
+        {
+            wordCloud = new WordCloud.WordCloud(pictBox.Width, pictBox.Height);
+
+            var image = wordCloud.Draw(
+                lvFreqs.Items.Cast<ListViewItem>().Select(item => item.SubItems[0].Text).ToList(),
+                lvFreqs.Items.Cast<ListViewItem>().Select(item => Convert.ToInt32(item.SubItems[1].Text)).ToList()
+                );
+            pictBox.Image = image;
         }
     }
 }

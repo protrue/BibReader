@@ -86,12 +86,14 @@ namespace BibReader.TypesOfSourse
 
             //MakeAuthorsForHarvard(Authors);
             //rtb.Text += string.Join(" и ", Authors);
-            AuthorsParser authorsParser = new AuthorsParser();
-            rtb.Text += authorsParser.MakeAuthorsForHarvard(Authors);
-            rtb.Text += Space;
-            rtb.Text += Lparenthesis + Year + Rparenthesis + PointSpace;
+            rtb.Select(rtb.TextLength, 0);
 
-            rtb.Text += Name + PointSpace;
+            AuthorsParser authorsParser = new AuthorsParser();
+            rtb.SelectedText = authorsParser.MakeAuthorsForHarvard(Authors);
+            rtb.SelectedText = Space;
+            rtb.SelectedText = Lparenthesis + Year + Rparenthesis + PointSpace;
+
+            rtb.SelectedText = Name + PointSpace;
 
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
             rtb.SelectedText = Publisher + CommaSpace;
@@ -99,12 +101,12 @@ namespace BibReader.TypesOfSourse
 
             // Том нужно добавить и все просмотреть заного
             if (Vol != 0 && Number != 0)
-                rtb.SelectedText += Vol + Lparenthesis + Number + Rparenthesis + CommaSpace;
+                rtb.SelectedText = Vol + Lparenthesis + Number + Rparenthesis + CommaSpace;
             else
                 if (Vol != 0 && Number == 0)
-                rtb.SelectedText += Vol + CommaSpace;
+                rtb.SelectedText = Vol + CommaSpace;
             else
-                rtb.SelectedText += Number + CommaSpace;
+                rtb.SelectedText = Number + CommaSpace;
 
             //if (Pages == "" || Pages == "0")
             //{
@@ -117,13 +119,13 @@ namespace BibReader.TypesOfSourse
             //}
             int a = 0;
             if (Int32.TryParse(Pages, out a))
-                rtb.SelectedText += Page;
+                rtb.SelectedText = Page;
             else
-                rtb.SelectedText += PPage;
-            rtb.SelectedText += Pages + Point + "\n\n";
+                rtb.SelectedText = PPage;
+            rtb.SelectedText = Pages + Point + "\n\n";
 
             if (Link != "")
-                rtb.SelectedText += Space + Avaliable + Link + Space + Lpar + DateRus + Date.ToString("dd MMM yyyy") + Rpar + Point;
+                rtb.SelectedText = Space + Avaliable + Link + Space + Lpar + DateRus + Date.ToString("dd MMM yyyy") + Rpar + Point;
 
 
         }
@@ -143,12 +145,13 @@ namespace BibReader.TypesOfSourse
 
             //MakeAuthorsForAPA(Authors);
             //rtb.Text += string.Join("", Authors);
+            rtb.Select(rtb.TextLength, 0);
             AuthorsParser authorsParser = new AuthorsParser();
-            rtb.Text += authorsParser.MakeAuthorsForAPA(Authors);
-            rtb.Text += Space;
-            rtb.Text += Lparenthesis + Year + Rparenthesis + PointSpace;
+            rtb.SelectedText = authorsParser.MakeAuthorsForAPA(Authors);
+            rtb.SelectedText = Space;
+            rtb.SelectedText = Lparenthesis + Year + Rparenthesis + PointSpace;
 
-            rtb.Text += Name + PointSpace;
+            rtb.SelectedText = Name + PointSpace;
 
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
             rtb.SelectedText = Publisher + CommaSpace;
@@ -156,12 +159,12 @@ namespace BibReader.TypesOfSourse
 
             // Том нужно добавить и все просмотреть заного
             if (Vol != 0 && Number != 0)
-                rtb.SelectedText += Vol + Lparenthesis + Number + Rparenthesis + CommaSpace;
+                rtb.SelectedText = Vol + Lparenthesis + Number + Rparenthesis + CommaSpace;
             else
                 if (Vol != 0 && Number == 0)
-                rtb.SelectedText += Vol + CommaSpace;
+                rtb.SelectedText = Vol + CommaSpace;
             else
-                rtb.SelectedText += Number + CommaSpace;
+                rtb.SelectedText = Number + CommaSpace;
 
             //if (Pages == "" || Pages == "0")
             //{
@@ -173,13 +176,13 @@ namespace BibReader.TypesOfSourse
             //        MessageBox.Show("Вы не добавили страницы, ссылка будет не верна!");
             //}
 
-            rtb.SelectedText += Pages + Point + "\n\n";
+            rtb.SelectedText = Pages + Point + "\n\n";
             if (Link != "")
-                rtb.SelectedText += Space + Retrieved + Date.ToString("dd MMMM yyyy") + CommaSpace + From + Link;
+                rtb.SelectedText = Space + Retrieved + Date.ToString("dd MMMM yyyy") + CommaSpace + From + Link;
 
         }
 
-        public void MakeI3E(ref RichTextBox rtb)
+        public void MakeIEEE(ref RichTextBox rtb)
         {
             Font f = new Font(SystemFonts.DefaultFont, FontStyle.Italic);
             const string Point = ".";
@@ -191,15 +194,15 @@ namespace BibReader.TypesOfSourse
             const string Available = "Available: ";
             string vol = "";
 
-
+            rtb.Select(rtb.TextLength, 0);
             //MakeAuthorsForIEEE(Authors);
             //rtb.Text += string.Join("", Authors);
             //rtb.Text += CommaSpace;
             AuthorsParser authorsParser = new AuthorsParser();
-            rtb.Text += authorsParser.MakeAuthorsForIEEE(Authors) + CommaSpace;
+            rtb.SelectedText = authorsParser.MakeAuthorsForIEEE(Authors) + CommaSpace;
 
 
-            rtb.Text += "\"" + Name + "\"" + CommaSpace;
+            rtb.SelectedText = "\"" + Name + "\"" + CommaSpace;
 
 
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
@@ -213,8 +216,8 @@ namespace BibReader.TypesOfSourse
             //    else
             //        MessageBox.Show("Вы не добавили том, ссылка будет не верна!");
             //}
-            rtb.SelectedText += "vol. " + Vol + CommaSpace;
-            rtb.SelectedText += "no. " + Number + CommaSpace;
+            rtb.SelectedText = "vol. " + Vol + CommaSpace;
+            rtb.SelectedText = "no. " + Number + CommaSpace;
             //if (Pages == "" || Pages == "0")
             //{
             //    var form = new fAdd() { Text = "Добавьте страницы" };
@@ -226,15 +229,15 @@ namespace BibReader.TypesOfSourse
             //}
             int a = 0;
             if (Int32.TryParse(Pages, out a))
-                rtb.SelectedText += Page;
+                rtb.SelectedText = Page;
             else
-                rtb.SelectedText += PPage;
+                rtb.SelectedText = PPage;
 
-            rtb.SelectedText += Pages + CommaSpace;
+            rtb.SelectedText = Pages + CommaSpace;
 
-            rtb.SelectedText += Year + Point + "\n\n";
+            rtb.SelectedText = Year + Point + "\n\n";
             if (Link != "")
-                rtb.SelectedText += Space + Available + Link + Point + Space + Access + Date.ToString("MMM. dd, yyyy.");
+                rtb.SelectedText = Space + Available + Link + Point + Space + Access + Date.ToString("MMM. dd, yyyy.");
         }
 
     }

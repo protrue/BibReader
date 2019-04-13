@@ -75,27 +75,28 @@ namespace BibReader.TypesOfSourse
 
             //MakeAuthorsForHarvard(Authors);
             //rtb.Text += string.Join(" и ", Authors);
+            rtb.Select(rtb.TextLength, 0);
             AuthorsParser authorsParser = new AuthorsParser();
-            rtb.Text += authorsParser.MakeAuthorsForHarvard(Authors);
-            rtb.Text += Space;
+            rtb.SelectedText = authorsParser.MakeAuthorsForHarvard(Authors);
+            rtb.SelectedText = Space;
 
-            rtb.Text += Lparenthesis + Year + Rparenthesis + PointSpace;
+            rtb.SelectedText = Lparenthesis + Year + Rparenthesis + PointSpace;
 
-            rtb.Text += Report + PointSpace;
-            rtb.Text += In;
+            rtb.SelectedText = Report + PointSpace;
+            rtb.SelectedText = In;
 
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
             rtb.SelectedText = NameOfConf + PointSpace;
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = SystemFonts.DefaultFont;
 
 
-            rtb.SelectedText += Town + DoublePointSpace;
-            rtb.SelectedText += Publisher + CommaSpace;
+            rtb.SelectedText = Town + DoublePointSpace;
+            rtb.SelectedText = Publisher + CommaSpace;
             int a = 0;
             if (Int32.TryParse(Pages, out a))
-                rtb.SelectedText += Page + Pages + Point + "\n\n";
+                rtb.SelectedText = Page + Pages + Point + "\n\n";
             else
-                rtb.SelectedText += PPage + Pages + Point + "\n\n";
+                rtb.SelectedText = PPage + Pages + Point + "\n\n";
         }
 
         public void MakeAPA(ref RichTextBox rtb)
@@ -114,57 +115,61 @@ namespace BibReader.TypesOfSourse
 
             //MakeAuthorsForAPA(Authors);
             //rtb.Text += string.Join("", Authors);
+            rtb.Select(rtb.TextLength, 0);
             AuthorsParser authorsParser = new AuthorsParser();
-            rtb.Text += authorsParser.MakeAuthorsForAPA(Authors);
-            rtb.Text += Space;
-            rtb.Text += Lparenthesis + Year + Rparenthesis + PointSpace;
-            rtb.Text += Report + PointSpace + In;
+            rtb.SelectedText = authorsParser.MakeAuthorsForAPA(Authors);
+            rtb.SelectedText = Space;
+            rtb.SelectedText = Lparenthesis + Year + Rparenthesis + PointSpace;
+            rtb.SelectedText = Report + PointSpace + In;
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
-            rtb.SelectedText += NameOfConf + Space;
+            rtb.SelectedText = NameOfConf + Space;
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = SystemFonts.DefaultFont;
 
             int a = 0;
             if (Int32.TryParse(Pages, out a))
-                rtb.SelectedText += Lparenthesis + Page;
+                rtb.SelectedText = Lparenthesis + Page;
             else
-                rtb.SelectedText += Lparenthesis + PPage;
-            rtb.SelectedText += Pages + Rparenthesis + PointSpace;
-
-            rtb.SelectedText += Town + DoublePoint;
+                rtb.SelectedText = Lparenthesis + PPage;
+            rtb.SelectedText = Pages + Rparenthesis + PointSpace;
+            if (Town != string.Empty)
+                rtb.SelectedText = Town + DoublePoint;
             rtb.SelectedText = Publisher + Point + "\n\n";
 
         }
 
-        public void MakeI3E(ref RichTextBox rtb)
+        public void MakeIEEE(ref RichTextBox rtb)
         {
             Font f = new Font(SystemFonts.DefaultFont, FontStyle.Italic);
             const string Point = ".";
             const string Page = "p. ";
             const string PPage = "pp. ";
             const string CommaSpace = ", ";
+            const string Space = " ";
+            const string Comma = ",";
             const string In = "in ";
 
 
             //MakeAuthorsForIEEE(Authors);
             //rtb.Text += string.Join("", Authors);
             //rtb.Text += CommaSpace;
+            rtb.Select(rtb.TextLength, 0);
             AuthorsParser authorsParser = new AuthorsParser();
-            rtb.Text += authorsParser.MakeAuthorsForIEEE(Authors) + CommaSpace;
+            rtb.SelectedText = authorsParser.MakeAuthorsForIEEE(Authors) + CommaSpace;
 
-            rtb.Text += "\"" + Report + "\"" + CommaSpace + In;
+            rtb.SelectedText = "\"" + Report + Comma + "\"" + Space + In;
 
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
             rtb.SelectedText = NameOfConf + CommaSpace;
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = SystemFonts.DefaultFont;
-
-            rtb.SelectedText += Town + CommaSpace;
-            rtb.SelectedText += Year + CommaSpace;
+            if (Town != string.Empty)
+                rtb.SelectedText = Town + CommaSpace;
+            rtb.SelectedText = Year + CommaSpace;
 
             int a = 0;
             if (Int32.TryParse(Pages, out a))
-                rtb.SelectedText += Page + Pages + Point + "\n\n";
+                rtb.SelectedText = Page + Pages + Point + "\n\n";
             else
-                rtb.SelectedText += PPage + Pages + Point + "\n\n";
+                rtb.SelectedText = PPage + Pages + Point + "\n\n";
 
         }
 

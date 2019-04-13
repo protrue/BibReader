@@ -116,7 +116,7 @@ namespace BibReader
                 .Select((author, i) => author +=
                     i != authors.Length - 1 && i != authors.Length - 2
                     ? ", "
-                    : i != authors.Length - 1 ? " and " : ""
+                    : i != authors.Length - 1 ? (i==0 ? " and " : ", and ") : ""
                 ).ToArray());
         }
 

@@ -38,6 +38,7 @@ namespace BibReader.Blocks
         {
             AbstractComplement(savedItem, currItem);
             KeywordsComplement(savedItem, currItem);
+            AffiliationComplement(savedItem, currItem);
         }
 
         private static string Normalize(string sentence)
@@ -127,6 +128,12 @@ namespace BibReader.Blocks
             if (savedItem.AbstractIsEmpty && !currItem.AbstractIsEmpty)
                 savedItem.Abstract = currItem.Abstract;
 
+        }
+
+        private static void AffiliationComplement(LibItem savedItem, LibItem currItem)
+        {
+            if (savedItem.AffiliationIsEmpty && !currItem.AffiliationIsEmpty)
+                savedItem.Affiliation = currItem.Affiliation;
         }
 
         private static bool isRelevancePages(string pages)

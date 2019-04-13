@@ -75,6 +75,7 @@ namespace BibReader
 
         public bool AbstractIsEmpty => Abstract == string.Empty ? true : false;
         public bool KeywordsIsEmpty => Keywords == string.Empty ? true : false;
+        public bool AffiliationIsEmpty => Affiliation == string.Empty ? true : false;
 
 
     }

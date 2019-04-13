@@ -8,6 +8,7 @@ using System.IO;
 using BibReader.Blocks;
 using BibReader.Statistic;
 using BibReader.TypesOfSourse;
+using System.Drawing;
 
 namespace BibReader
 {
@@ -19,7 +20,7 @@ namespace BibReader
         List<ListViewItem> deletedNotUniqueItems = new List<ListViewItem>();
         string lastOpenedFileName = string.Empty;
         List<int> indexesOfLibItems;
-        int currIndex = 0;
+        int currIndex = -1;
 
         public StreamReader[] GetStreamReaders()
         {
@@ -59,6 +60,7 @@ namespace BibReader
             btUnique.Enabled = false;
             btRelevance.Enabled = false;
             cbBibStyles.SelectedIndex = 0;
+            // TryToLoadText();
         }
 
         private void AddLibItemsInLvItems(List<LibItem> libItems)
@@ -155,7 +157,8 @@ namespace BibReader
             lvLibItems.Items.Clear();
             statistic = new Stat();
             WorkWithBlocks.ClearDictionary();
-            currIndex = 0;
+            currIndex = -1;
+            deletedNotUniqueItems.Clear();
             AddLibItemsInLvItems(libItems);
         }
 
@@ -329,7 +332,7 @@ namespace BibReader
                         else if (cbBibStyles.Text == "Harvard")
                             conf.MakeHarvard(ref rtbBib);
                         else if (cbBibStyles.Text == "IEEE")
-                            conf.MakeI3E(ref rtbBib);
+                            conf.MakeIEEE(ref rtbBib);
                         else
                             conf.MakeGOST(ref rtbBib);
                         break;
@@ -344,7 +347,7 @@ namespace BibReader
                             else if (cbBibStyles.Text == "Harvard")
                                 book.MakeHarvard(ref rtbBib);
                             else if (cbBibStyles.Text == "IEEE")
-                                book.MakeI3E(ref rtbBib);
+                                book.MakeIEEE(ref rtbBib);
                             else
                                 book.MakeGOST(ref rtbBib);
                             break;
@@ -358,7 +361,7 @@ namespace BibReader
                         else if (cbBibStyles.Text == "Harvard")
                             journal.MakeHarvard(ref rtbBib);
                         else if (cbBibStyles.Text == "IEEE")
-                            journal.MakeI3E(ref rtbBib);
+                            journal.MakeIEEE(ref rtbBib);
                         else
                             journal.MakeGOST(ref rtbBib);
                         break;
@@ -473,7 +476,11 @@ namespace BibReader
         private void contextMenuStrip1_Click(object sender, EventArgs e)
         {
             lvLibItems.SelectedItems[0].Remove();
-            ClearDataBeforeLoad();
+            if (lvLibItems.Items.Count > 0)
+            {
+                lvLibItems.Items[0].Selected = true;
+                lbCurrSelectedItem.Text = $"1/{lvLibItems.Items.Count}";
+            }
         }
 
         private void tbTitle_TextChanged(object sender, EventArgs e)
@@ -582,28 +589,20 @@ namespace BibReader
             if (indexesOfLibItems.Count > 0)
             {
                 lvLibItems.Select();
-                lvLibItems.EnsureVisible(indexesOfLibItems[0]);
                 // currIndex = indexesOfLibItems[0];
-                lvLibItems.Items[currIndex].Selected = true;
-            }
-            else
-                MessageBox.Show("Элементы не найдены!");
-
-            currIndex = indexesOfLibItems.First(x => x > currIndex);
-            
-            if (indexesOfLibItems.Count > 0 && currIndex == indexesOfLibItems.Last())
-                currIndex = indexesOfLibItems.First();
-            if (indexesOfLibItems.Count > 0)
-            {
-                lvLibItems.Select();
+                currIndex = currIndex == indexesOfLibItems.Last() || currIndex == -1
+                    ? indexesOfLibItems.First()
+                    : indexesOfLibItems.First(x => x > currIndex);
                 lvLibItems.Items[currIndex].Selected = true;
                 lvLibItems.EnsureVisible(currIndex);
             }
-
+            else
+                MessageBox.Show("Элементы не найдены!");
+            
+           
         }
 
         private void btPrevFindedLibItem_Click(object sender, EventArgs e)
-
         {
             indexesOfLibItems = new List<int>();
             indexesOfLibItems.Clear();
@@ -615,23 +614,14 @@ namespace BibReader
             if (indexesOfLibItems.Count > 0)
             {
                 lvLibItems.Select();
-                lvLibItems.EnsureVisible(indexesOfLibItems[0]);
-                // currIndex = indexesOfLibItems[0];
-                lvLibItems.Items[currIndex].Selected = true;
-            }
-            else
-                MessageBox.Show("Элементы не найдены!");
-
-            currIndex = indexesOfLibItems.Last(x => x < currIndex);
-           
-            if (indexesOfLibItems.Count > 0 && currIndex == indexesOfLibItems.First())
-                currIndex = indexesOfLibItems.Last();
-            if (indexesOfLibItems.Count > 0)
-            {
-                lvLibItems.Select();
+                currIndex = currIndex == indexesOfLibItems.First() || currIndex == -1
+                    ? indexesOfLibItems.Last() 
+                    : indexesOfLibItems.Last(x => x < currIndex);
                 lvLibItems.Items[currIndex].Selected = true;
                 lvLibItems.EnsureVisible(currIndex);
             }
+            else
+                MessageBox.Show("Элементы не найдены!");
 
         }
 
@@ -647,6 +637,7 @@ namespace BibReader
             string titles = string.Empty;
             foreach(var libItem in libItems)
             {
+                if (libItem.Title != string.Empty)
                 titles += libItem.Title + "\r\n";
             }
             var form = new ClusterizationForm() { Info = titles };
@@ -659,7 +650,8 @@ namespace BibReader
             string keywords = string.Empty;
             foreach (var libItem in libItems)
             {
-                keywords += libItem.Keywords + "\r\n";
+                if (libItem.Keywords != string.Empty)
+                    keywords += libItem.Keywords + "\r\n";
             }
             var form = new ClusterizationForm() { Info = keywords };
             form.Show();
@@ -671,10 +663,47 @@ namespace BibReader
             string abstract_ = string.Empty;
             foreach (var libItem in libItems)
             {
+                if (libItem.Abstract != string.Empty)
                 abstract_ += libItem.Abstract + "\r\n";
             }
             var form = new ClusterizationForm() { Info = abstract_ };
             form.Show();
+        }
+
+        private void TryToLoadText()
+        {
+
+            Font f = new Font(SystemFonts.DefaultFont, FontStyle.Italic);
+
+            for (int i = 0; i < 3; i++)
+            {
+                rtbBib.Select(rtbBib.TextLength, 0); rtbBib.SelectionFont = f;
+                rtbBib.SelectedText = "ITALICHELLO\n";
+                rtbBib.Select(rtbBib.TextLength, 0); rtbBib.SelectionFont = SystemFonts.DefaultFont;
+                rtbBib.SelectedText = "DEFAULTHELLO\n";
+            }
+
+            for (int i = 0; i < 1; i++)
+            {
+                rtbBib.Select(rtbBib.TextLength, 0);
+                rtbBib.SelectedText = "DEFAULTHELLO";
+                rtbBib.Select(rtbBib.TextLength, 0); rtbBib.SelectionFont = f;
+                rtbBib.SelectedText = "ITALICHELLO";
+                rtbBib.Select(rtbBib.TextLength, 0); rtbBib.SelectionFont = SystemFonts.DefaultFont;
+                rtbBib.SelectedText = "DEFAULTHELLO\n";
+
+            }
+
+            for (int i = 0; i < 2; i++)
+            {
+                rtbBib.SelectedText = "AUTHORS";
+                rtbBib.SelectedText = "\"" + "NAME" + "\"" + ";";
+                rtbBib.Select(rtbBib.TextLength, 0); rtbBib.SelectionFont = f;
+                rtbBib.SelectedText = "Publisher" + ";";
+                rtbBib.Select(rtbBib.TextLength, 0); rtbBib.SelectionFont = SystemFonts.DefaultFont;
+                rtbBib.SelectedText = "vol. " + "Vol" + "CommaSpace";
+                rtbBib.SelectedText = "no. " + "Number" + "CommaSpace\n";
+            }
         }
     }
 }
