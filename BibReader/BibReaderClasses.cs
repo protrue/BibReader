@@ -22,8 +22,8 @@ namespace BibReader
                 {"Title", "title"},
                 {"booktitle", "booktitle"},
                 {"Booktitle", "booktitle"},
-                {"journal", "journalName"},
-                {"Journal", "journalName"},
+                {"journal", "journal"},
+                {"Journal", "journal"},
                 {"year", "year"},
                 {"Year", "year"},
                 {"volume", "volume"},
@@ -60,7 +60,7 @@ namespace BibReader
                 { "authors", ""},
                 { "title", ""},
                 { "booktitle", ""},
-                { "journalName", ""},
+                { "journal", ""},
                 { "year", ""},
                 { "volume", ""},
                 { "pages", ""},
@@ -201,15 +201,22 @@ namespace BibReader
             var regex = new Regex(template);
             string str = "", currstr = "";
             const string endStr = "\",";
+            myDictinaries = new MyDictinaries();
+            myDictinaries.Init();
 
             if (reader == null)
                 return Items;
-            while ((currstr = reader.ReadLine()) != null && currstr != "" && currstr[0] != '@')
+            currstr = reader.ReadLine();
+            while (currstr == null || currstr == "" || currstr[0] != '@')
+            {
+                if (currstr == null)
+                    return Items;
                 currstr = reader.ReadLine();
+            }
+            SetTypeOfLibItem(currstr);
             while (!reader.EndOfStream)
             {
-                myDictinaries = new MyDictinaries();
-                myDictinaries.Init();
+               
                 currstr = reader.ReadLine();
                 while (currstr == "" || currstr != "}" && (currstr.Length > 2 && currstr.Substring(currstr.Length - 2, 2) != ",}"))
                 {
@@ -225,12 +232,13 @@ namespace BibReader
                         {
                             var key = regex.Match(str).Groups[1].Value;
                             var value = regex.Match(str).Groups[3].Value;
-                            if (key == "title" || key == "Title" || key == "sourse")
+                            if (key == "title" || key == "Title" || key == "source")
                             {
                                 value = pretreatmentTitle(value);
-                                myDictinaries.mainDict["source"] = WhereFrom(str);
-                                if (key == "sourse")
-                                    myDictinaries.mainDict["sourse"] = value;
+                                if (myDictinaries.mainDict["source"] == "")
+                                    myDictinaries.mainDict["source"] = WhereFrom(str);
+                                if (key == "source")
+                                    myDictinaries.mainDict["source"] = value;
                             }
                             if (myDictinaries.dict.ContainsKey(key))
                                 myDictinaries.mainDict[myDictinaries.dict[key]] = value;
@@ -248,6 +256,8 @@ namespace BibReader
                 str = string.Empty;
                 var newItem = new LibItem(myDictinaries.mainDict);
                 Items.Add(newItem);
+                myDictinaries = new MyDictinaries();
+                myDictinaries.Init();
             }
             reader.Close();
             return Items;

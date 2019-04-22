@@ -16,9 +16,9 @@ namespace BibReader
             {
                 foreach (var item in libItems)
                 {
-                    writer.WriteLine("@{");
+                    writer.WriteLine("@" + item.Type + "{");
                     writer.WriteLine("author={" + item.Authors + "},");
-                    writer.WriteLine("abstruct={" + item.Abstract + "},");
+                    writer.WriteLine("abstract={" + item.Abstract + "},");
                     writer.WriteLine("affiliation={" + item.Affiliation + "},");
                     writer.WriteLine("booktitle={" + item.Booktitle + "},");
                     writer.WriteLine("doi={" + item.Doi + "},");
@@ -27,11 +27,15 @@ namespace BibReader
                     writer.WriteLine("number={" + item.Number + "},");
                     writer.WriteLine("pages={" + item.Pages + "},");
                     writer.WriteLine("publisher={" + item.Publisher + "},");
-                    writer.WriteLine("sourсe={" + item.Sourсe + "},");
-                    writer.WriteLine("title={" + item.Title + "},");
+                    writer.WriteLine("source={" + item.Sourсe + "},");
+                    var title = item.OriginalTitle != string.Empty
+                        ? "title={" + item.Title + " [" + item.OriginalTitle + "]},"
+                        : "title={" + item.Title + "},";
+                    writer.WriteLine(title);
                     writer.WriteLine("url={" + item.Url + "},");
                     writer.WriteLine("volume={" + item.Volume + "},");
                     writer.WriteLine("year={" + item.Year + "},");
+                    writer.WriteLine("address={" + item.Address + "},");
                     writer.WriteLine("}");
                     writer.WriteLine();
                 }

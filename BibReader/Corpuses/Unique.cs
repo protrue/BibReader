@@ -4,17 +4,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BibReader.Blocks
+namespace BibReader.Corpuses
 {
-    class WorkWithBlocks
+    class Unique
     {
         const int distance = 5;
+        Dictionary<string, int> currTitles = new Dictionary<string, int>();
 
-        static Dictionary<string, int> currTitles = new Dictionary<string, int>();
+        public Unique() {
+            currTitles = new Dictionary<string, int>();
+        }
 
-        public static bool isRelevance(string pages, string authors) => isRelevancePages(pages) && authors != "" ? true : false;
 
-        public static bool isUnique(string title, int positoin)
+        public bool isUnique(string title, int positoin)
         {
             title = Normalize(title);
             if (isUnique(title))
@@ -26,22 +28,22 @@ namespace BibReader.Blocks
                 return false;
         }
 
-        private static bool isUnique(string title) => !currTitles.ContainsKey(title) && LevenshteinDistance(currTitles, title) > distance ? true : false;
+        private bool isUnique(string title) => !currTitles.ContainsKey(title) && LevenshteinDistance(currTitles, title) > distance ? true : false;
 
-        public static void ClearDictionary() => currTitles.Clear();
+        public void ClearDictionary() => currTitles.Clear();
 
-        public static int IndexOfTitle(string title) => currTitles[Normalize(title)];
+        public int IndexOfTitle(string title) => currTitles[Normalize(title)];
 
-        public static bool ContainsKey(string title) => currTitles.ContainsKey(Normalize(title));
+        public bool ContainsKey(string title) => currTitles.ContainsKey(Normalize(title));
 
-        public static void FindImportantData(LibItem savedItem, LibItem currItem)
+        public void FindImportantData(LibItem savedItem, LibItem currItem)
         {
             AbstractComplement(savedItem, currItem);
             KeywordsComplement(savedItem, currItem);
             AffiliationComplement(savedItem, currItem);
         }
 
-        private static string Normalize(string sentence)
+        private string Normalize(string sentence)
         {
             var resultContainer = new StringBuilder(100);
             var lowerSentece = sentence.ToLower();
@@ -56,7 +58,7 @@ namespace BibReader.Blocks
             return resultContainer.ToString();
         }
 
-        private static int EditDistance(string fstWord, string sndWord)
+        private int EditDistance(string fstWord, string sndWord)
         {
             int fstWordLength = fstWord.Length, sndWordLength = sndWord.Length;
             int[,] ed = new int[fstWordLength, sndWordLength];
@@ -99,7 +101,7 @@ namespace BibReader.Blocks
             return ed[fstWordLength - 1, sndWordLength - 1];
         }
 
-        private static int LevenshteinDistance(Dictionary<string, int> currTitles, string word)
+        private int LevenshteinDistance(Dictionary<string, int> currTitles, string word)
         {
             var minDistance = 10000;
             int ed;
@@ -117,53 +119,25 @@ namespace BibReader.Blocks
             return minDistance;
         }
 
-        private static void KeywordsComplement(LibItem savedItem, LibItem currItem)
+        private void KeywordsComplement(LibItem savedItem, LibItem currItem)
         {
             if (savedItem.KeywordsIsEmpty && !currItem.KeywordsIsEmpty)
                 savedItem.Keywords = currItem.Keywords;
         }
 
-        private static void AbstractComplement(LibItem savedItem, LibItem currItem)
+        private void AbstractComplement(LibItem savedItem, LibItem currItem)
         {
             if (savedItem.AbstractIsEmpty && !currItem.AbstractIsEmpty)
                 savedItem.Abstract = currItem.Abstract;
 
         }
 
-        private static void AffiliationComplement(LibItem savedItem, LibItem currItem)
+        private void AffiliationComplement(LibItem savedItem, LibItem currItem)
         {
             if (savedItem.AffiliationIsEmpty && !currItem.AffiliationIsEmpty)
                 savedItem.Affiliation = currItem.Affiliation;
         }
 
-        private static bool isRelevancePages(string pages)
-        {
-            if (pages == "" || pages == string.Empty)
-                return false;
-
-            var pagesClone = "";
-            for (int j = 0; j < pages.Length; j++)
-                if (!char.IsLetter(pages[j]))
-                    pagesClone += pages[j];
-            pages = pagesClone;
-
-            string pageBegin = "", pageEnd = "";
-            int i = 0;
-            while (i < pages.Length && char.IsDigit(pages[i]))
-            { pageBegin += pages[i]; i++; }
-            while (i < pages.Length && !char.IsDigit(pages[i]))
-                i++;
-            while (i < pages.Length)
-            { pageEnd += pages[i]; i++; }
-
-            int intPageBegin;
-            Int32.TryParse(pageBegin, out intPageBegin);
-            int intPageEnd;
-            Int32.TryParse(pageEnd, out intPageEnd);
-
-            return intPageEnd - intPageBegin > 3 ? true : false;
-
-        }
 
     }
 

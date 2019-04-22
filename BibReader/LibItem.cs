@@ -58,7 +58,7 @@ namespace BibReader
             Year = dict["year"];
             Booktitle = dict["booktitle"];
             Title = dict["title"];
-            JournalName = dict["journalName"];
+            JournalName = dict["journal"];
             Volume = dict["volume"];
             Pages = dict["pages"];
             Url = dict["url"];

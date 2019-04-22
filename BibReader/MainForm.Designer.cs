@@ -65,6 +65,7 @@
             this.cbBibStyles = new System.Windows.Forms.ComboBox();
             this.rtbBib = new System.Windows.Forms.RichTextBox();
             this.tpStatistic = new System.Windows.Forms.TabPage();
+            this.btSaveStatistic = new System.Windows.Forms.Button();
             this.tabControlForStatistic = new System.Windows.Forms.TabControl();
             this.tpYearStat = new System.Windows.Forms.TabPage();
             this.lvYearStatistic = new System.Windows.Forms.ListView();
@@ -97,6 +98,12 @@
             this.btNextFindedLibItem = new System.Windows.Forms.Button();
             this.btPrevFindedLibItem = new System.Windows.Forms.Button();
             this.cbSearchCriterion = new System.Windows.Forms.ComboBox();
+            this.tpJournalStat = new System.Windows.Forms.TabPage();
+            this.lvJournalStat = new System.Windows.Forms.ListView();
+            this.tpGeography = new System.Windows.Forms.TabPage();
+            this.lvGeography = new System.Windows.Forms.ListView();
+            this.tpConf = new System.Windows.Forms.TabPage();
+            this.lvConferenceStat = new System.Windows.Forms.ListView();
             this.groupBox1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tpData.SuspendLayout();
@@ -109,6 +116,9 @@
             this.menuStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
+            this.tpJournalStat.SuspendLayout();
+            this.tpGeography.SuspendLayout();
+            this.tpConf.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -503,6 +513,7 @@
             // 
             // tpStatistic
             // 
+            this.tpStatistic.Controls.Add(this.btSaveStatistic);
             this.tpStatistic.Controls.Add(this.tabControlForStatistic);
             this.tpStatistic.Location = new System.Drawing.Point(4, 25);
             this.tpStatistic.Name = "tpStatistic";
@@ -512,15 +523,28 @@
             this.tpStatistic.Text = "Статистика";
             this.tpStatistic.UseVisualStyleBackColor = true;
             // 
+            // btSaveStatistic
+            // 
+            this.btSaveStatistic.Location = new System.Drawing.Point(17, 630);
+            this.btSaveStatistic.Name = "btSaveStatistic";
+            this.btSaveStatistic.Size = new System.Drawing.Size(107, 48);
+            this.btSaveStatistic.TabIndex = 2;
+            this.btSaveStatistic.Text = "Сохранить в Excel";
+            this.btSaveStatistic.UseVisualStyleBackColor = true;
+            this.btSaveStatistic.Click += new System.EventHandler(this.btSaveStatistic_Click);
+            // 
             // tabControlForStatistic
             // 
             this.tabControlForStatistic.Controls.Add(this.tpYearStat);
             this.tabControlForStatistic.Controls.Add(this.tpSourses);
             this.tabControlForStatistic.Controls.Add(this.tabPage1);
-            this.tabControlForStatistic.Location = new System.Drawing.Point(7, 7);
+            this.tabControlForStatistic.Controls.Add(this.tpJournalStat);
+            this.tabControlForStatistic.Controls.Add(this.tpGeography);
+            this.tabControlForStatistic.Controls.Add(this.tpConf);
+            this.tabControlForStatistic.Location = new System.Drawing.Point(6, 7);
             this.tabControlForStatistic.Name = "tabControlForStatistic";
             this.tabControlForStatistic.SelectedIndex = 0;
-            this.tabControlForStatistic.Size = new System.Drawing.Size(643, 671);
+            this.tabControlForStatistic.Size = new System.Drawing.Size(643, 616);
             this.tabControlForStatistic.TabIndex = 1;
             // 
             // tpYearStat
@@ -529,7 +553,7 @@
             this.tpYearStat.Location = new System.Drawing.Point(4, 25);
             this.tpYearStat.Name = "tpYearStat";
             this.tpYearStat.Padding = new System.Windows.Forms.Padding(3);
-            this.tpYearStat.Size = new System.Drawing.Size(635, 642);
+            this.tpYearStat.Size = new System.Drawing.Size(635, 587);
             this.tpYearStat.TabIndex = 0;
             this.tpYearStat.Text = "Года";
             this.tpYearStat.UseVisualStyleBackColor = true;
@@ -541,7 +565,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lvYearStatistic.Location = new System.Drawing.Point(6, 6);
             this.lvYearStatistic.Name = "lvYearStatistic";
-            this.lvYearStatistic.Size = new System.Drawing.Size(623, 627);
+            this.lvYearStatistic.Size = new System.Drawing.Size(623, 572);
             this.lvYearStatistic.TabIndex = 0;
             this.lvYearStatistic.UseCompatibleStateImageBehavior = false;
             this.lvYearStatistic.View = System.Windows.Forms.View.Details;
@@ -552,7 +576,7 @@
             this.tpSourses.Location = new System.Drawing.Point(4, 25);
             this.tpSourses.Name = "tpSourses";
             this.tpSourses.Padding = new System.Windows.Forms.Padding(3);
-            this.tpSourses.Size = new System.Drawing.Size(635, 642);
+            this.tpSourses.Size = new System.Drawing.Size(635, 587);
             this.tpSourses.TabIndex = 1;
             this.tpSourses.Text = "Источники";
             this.tpSourses.UseVisualStyleBackColor = true;
@@ -564,7 +588,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lvSourceStatistic.Location = new System.Drawing.Point(6, 6);
             this.lvSourceStatistic.Name = "lvSourceStatistic";
-            this.lvSourceStatistic.Size = new System.Drawing.Size(623, 627);
+            this.lvSourceStatistic.Size = new System.Drawing.Size(623, 572);
             this.lvSourceStatistic.TabIndex = 1;
             this.lvSourceStatistic.UseCompatibleStateImageBehavior = false;
             this.lvSourceStatistic.View = System.Windows.Forms.View.Details;
@@ -575,7 +599,7 @@
             this.tabPage1.Location = new System.Drawing.Point(4, 25);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(635, 642);
+            this.tabPage1.Size = new System.Drawing.Size(635, 587);
             this.tabPage1.TabIndex = 2;
             this.tabPage1.Text = "Тип документа";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -583,9 +607,9 @@
             // lvTypeOfDoc
             // 
             this.lvTypeOfDoc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.lvTypeOfDoc.Location = new System.Drawing.Point(7, 7);
+            this.lvTypeOfDoc.Location = new System.Drawing.Point(7, 6);
             this.lvTypeOfDoc.Name = "lvTypeOfDoc";
-            this.lvTypeOfDoc.Size = new System.Drawing.Size(622, 626);
+            this.lvTypeOfDoc.Size = new System.Drawing.Size(622, 572);
             this.lvTypeOfDoc.TabIndex = 0;
             this.lvTypeOfDoc.UseCompatibleStateImageBehavior = false;
             this.lvTypeOfDoc.View = System.Windows.Forms.View.Details;
@@ -818,6 +842,66 @@
             this.cbSearchCriterion.TabIndex = 14;
             this.cbSearchCriterion.SelectedIndexChanged += new System.EventHandler(this.cbSearchCriterion_SelectedIndexChanged);
             // 
+            // tpJournalStat
+            // 
+            this.tpJournalStat.Controls.Add(this.lvJournalStat);
+            this.tpJournalStat.Location = new System.Drawing.Point(4, 25);
+            this.tpJournalStat.Name = "tpJournalStat";
+            this.tpJournalStat.Padding = new System.Windows.Forms.Padding(3);
+            this.tpJournalStat.Size = new System.Drawing.Size(635, 587);
+            this.tpJournalStat.TabIndex = 3;
+            this.tpJournalStat.Text = "Журналы";
+            this.tpJournalStat.UseVisualStyleBackColor = true;
+            // 
+            // lvJournalStat
+            // 
+            this.lvJournalStat.Location = new System.Drawing.Point(7, 4);
+            this.lvJournalStat.Name = "lvJournalStat";
+            this.lvJournalStat.Size = new System.Drawing.Size(622, 577);
+            this.lvJournalStat.TabIndex = 0;
+            this.lvJournalStat.UseCompatibleStateImageBehavior = false;
+            this.lvJournalStat.View = System.Windows.Forms.View.Details;
+            // 
+            // tpGeography
+            // 
+            this.tpGeography.Controls.Add(this.lvGeography);
+            this.tpGeography.Location = new System.Drawing.Point(4, 25);
+            this.tpGeography.Name = "tpGeography";
+            this.tpGeography.Padding = new System.Windows.Forms.Padding(3);
+            this.tpGeography.Size = new System.Drawing.Size(635, 587);
+            this.tpGeography.TabIndex = 4;
+            this.tpGeography.Text = "География";
+            this.tpGeography.UseVisualStyleBackColor = true;
+            // 
+            // lvGeography
+            // 
+            this.lvGeography.Location = new System.Drawing.Point(7, 7);
+            this.lvGeography.Name = "lvGeography";
+            this.lvGeography.Size = new System.Drawing.Size(622, 574);
+            this.lvGeography.TabIndex = 0;
+            this.lvGeography.UseCompatibleStateImageBehavior = false;
+            this.lvGeography.View = System.Windows.Forms.View.Details;
+            // 
+            // tpConf
+            // 
+            this.tpConf.Controls.Add(this.lvConferenceStat);
+            this.tpConf.Location = new System.Drawing.Point(4, 25);
+            this.tpConf.Name = "tpConf";
+            this.tpConf.Padding = new System.Windows.Forms.Padding(3);
+            this.tpConf.Size = new System.Drawing.Size(635, 587);
+            this.tpConf.TabIndex = 5;
+            this.tpConf.Text = "Конференции";
+            this.tpConf.UseVisualStyleBackColor = true;
+            // 
+            // lvConferenceStat
+            // 
+            this.lvConferenceStat.Location = new System.Drawing.Point(7, 7);
+            this.lvConferenceStat.Name = "lvConferenceStat";
+            this.lvConferenceStat.Size = new System.Drawing.Size(622, 574);
+            this.lvConferenceStat.TabIndex = 0;
+            this.lvConferenceStat.UseCompatibleStateImageBehavior = false;
+            this.lvConferenceStat.View = System.Windows.Forms.View.Details;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -856,6 +940,9 @@
             this.contextMenuStrip1.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
+            this.tpJournalStat.ResumeLayout(false);
+            this.tpGeography.ResumeLayout(false);
+            this.tpConf.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -930,6 +1017,13 @@
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.ListView lvTypeOfDoc;
         private System.Windows.Forms.ComboBox cbSearchCriterion;
+        private System.Windows.Forms.Button btSaveStatistic;
+        private System.Windows.Forms.TabPage tpJournalStat;
+        private System.Windows.Forms.ListView lvJournalStat;
+        private System.Windows.Forms.TabPage tpGeography;
+        private System.Windows.Forms.ListView lvGeography;
+        private System.Windows.Forms.TabPage tpConf;
+        private System.Windows.Forms.ListView lvConferenceStat;
     }
 }
 

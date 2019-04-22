@@ -69,6 +69,7 @@
     <Compile Include="ClassificationForm.Designer.cs">
       <DependentUpon>ClassificationForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Corpuses\Relevance.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -80,7 +81,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Statistic\Statistic.cs" />
-    <Compile Include="Blocks\WorkWithBlocks.cs" />
+    <Compile Include="Corpuses\Unique.cs" />
     <Compile Include="TypesOfSourse\Book.cs" />
     <Compile Include="TypesOfSourse\Conference.cs" />
     <Compile Include="TypesOfSourse\Journal.cs" />

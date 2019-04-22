@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.IO;
-using BibReader.Blocks;
+using BibReader.Corpuses;
 using BibReader.Statistic;
 using BibReader.TypesOfSourse;
 using System.Drawing;
@@ -96,12 +96,13 @@ namespace BibReader
             var libItemsCount = lvLibItems.Items.Count;
             double step = libItemsCount / 100;
             pbLoadUniqueData.Step = (int)step;
+            Unique unique = new Unique();
 
             foreach (ListViewItem item in lvLibItems.Items)
             {
                 //var ed = 100;
                 var title = ((LibItem)item.Tag).Title;
-                if (WorkWithBlocks.isUnique(title, item.Index))
+                if (unique.isUnique(title, item.Index))
                 {
                     statistic.AddLibItemsCountAfterFirstResearch();
                     item.SubItems[2].Text = "2";
@@ -111,9 +112,9 @@ namespace BibReader
                     item.Remove();
                     item.SubItems[2].Text = "1";
                     deletedNotUniqueItems.Add(item);
-                    if (WorkWithBlocks.ContainsKey(title))
-                        WorkWithBlocks.FindImportantData(
-                            (LibItem)lvLibItems.Items[WorkWithBlocks.IndexOfTitle(title)].Tag,
+                    if (unique.ContainsKey(title))
+                        unique.FindImportantData(
+                            (LibItem)lvLibItems.Items[unique.IndexOfTitle(title)].Tag,
                             (LibItem)item.Tag
                             );
                 }
@@ -121,7 +122,7 @@ namespace BibReader
                     pbLoadUniqueData.Value += (int)step;
             }
             pbLoadUniqueData.Value = 100;
-            WorkWithBlocks.ClearDictionary();
+            //Unique.ClearDictionary();
             MessageBox.Show("Готово!");
             pbLoadUniqueData.Value = 0;
         }
@@ -135,7 +136,7 @@ namespace BibReader
                 var pages = ((LibItem)item.Tag).Pages;
                 var authors = ((LibItem)item.Tag).Authors;
 
-                if (WorkWithBlocks.isRelevance(pages, authors))
+                if (Relevance.isRelevance(pages, authors))
                 {
                     item.SubItems[2].Text = "3";
                 }
@@ -158,7 +159,7 @@ namespace BibReader
         {
             lvLibItems.Items.Clear();
             statistic = new Stat();
-            WorkWithBlocks.ClearDictionary();
+            //Unique.ClearDictionary();
             currIndex = -1;
             deletedNotUniqueItems.Clear();
             AddLibItemsInLvItems(libItems);
@@ -288,21 +289,39 @@ namespace BibReader
         {
             lvSourceStatistic.Clear();
             statistic.DictOfSourses = new Dictionary<string, int>();
+            statistic.DictOfSoursesUnique = new Dictionary<string, int>();
+            statistic.DictOfSoursesRelevance = new Dictionary<string, int>();
             statistic.DictOfYears = new Dictionary<string, int>();
             statistic.DictOfTypes = new Dictionary<string, int>();
+            statistic.DictOfJournal = new Dictionary<string, int>();
+            statistic.DictOfConference = new Dictionary<string, int>();
+            statistic.DictOfGeography = new Dictionary<string, int>();
 
             foreach (ListViewItem item in lvLibItems.Items)
             {
-                statistic.SetSourseStatictic((LibItem)item.Tag);
                 statistic.SetYearStatistic((LibItem)item.Tag);
                 statistic.SetTypesStatistic((LibItem)item.Tag);
+                statistic.SetSourseStatictic((LibItem)item.Tag);
+                //if (item.SubItems[2].Text != "1")
+                statistic.SetSourseUniqueStatictic((LibItem)item.Tag);
+                //if (item.SubItems[2].Text == "3")
+                statistic.SetSourseRelevanceStatictic((LibItem)item.Tag);
+                statistic.SetJournalStatistic((LibItem)item.Tag);
+                statistic.SetConferenceStatistic((LibItem)item.Tag);
+                statistic.SetGeographyStatistic((LibItem)item.Tag);
             }
+
             lvSourceStatistic.Columns.Add("Источник");
-            lvSourceStatistic.Columns.Add("Количество");
-            lvSourceStatistic.Columns[0].Width = lvSourceStatistic.Width / 2;
-            lvSourceStatistic.Columns[1].Width = lvSourceStatistic.Width / 2;
+            lvSourceStatistic.Columns.Add("Первичных");
+            lvSourceStatistic.Columns.Add("Уникальных");
+            lvSourceStatistic.Columns.Add("Релевантных");
+            lvSourceStatistic.Columns[0].Width = lvSourceStatistic.Width / 4;
+            lvSourceStatistic.Columns[1].Width = lvSourceStatistic.Width / 4;
+            lvSourceStatistic.Columns[2].Width = lvSourceStatistic.Width / 4;
+            lvSourceStatistic.Columns[3].Width = lvSourceStatistic.Width / 4;
             lvSourceStatistic.Items.AddRange(statistic.DictOfSourses.OrderBy(i => i.Key).
-                Select(i => new ListViewItem(new string[] { (i.Key == "") ? "Неизв источник" : i.Key, i.Value.ToString() })).ToArray());
+                Select(i => new ListViewItem(new string[] { (i.Key == "") ? "Неизв источник" : i.Key, i.Value.ToString(),
+                    statistic.DictOfSoursesUnique[i.Key].ToString(), statistic.DictOfSoursesRelevance[i.Key].ToString() })).ToArray());
         }
 
         private void LoadYearStatistic()
@@ -321,13 +340,45 @@ namespace BibReader
         private void LoadTypeStatistic()
         {
             lvTypeOfDoc.Clear();
-            //foreach (ListViewItem item in lvLibItems.Items)
-            //    statistic.SetTypesStatistic((LibItem)item.Tag);
             lvTypeOfDoc.Columns.Add("Тип документа");
             lvTypeOfDoc.Columns.Add("Количество");
             lvTypeOfDoc.Columns[0].Width = lvTypeOfDoc.Width / 2;
             lvTypeOfDoc.Columns[1].Width = lvTypeOfDoc.Width / 2;
             lvTypeOfDoc.Items.AddRange(statistic.DictOfTypes.OrderBy(i => i.Key).
+                Select(item => new ListViewItem(new string[] { item.Key == "" ? "Неизвестный тип" : item.Key, item.Value.ToString() })).ToArray());
+        }
+
+        private void LoadJournalStatistic()
+        {
+            lvJournalStat.Clear();
+            lvJournalStat.Columns.Add("Название журнала");
+            lvJournalStat.Columns.Add("Количество");
+            lvJournalStat.Columns[0].Width = lvJournalStat.Width / 2;
+            lvJournalStat.Columns[1].Width = lvJournalStat.Width / 2;
+            lvJournalStat.Items.AddRange(statistic.DictOfJournal.OrderBy(i => i.Key).
+                Select(item => new ListViewItem(new string[] { item.Key == "" ? "Неизвестный тип" : item.Key, item.Value.ToString() })).ToArray());
+        }
+
+        private void LoadConferenceStatistic()
+        {
+            lvConferenceStat.Clear();
+            lvConferenceStat.Columns.Add("Название конференции");
+            lvConferenceStat.Columns.Add("Количество");
+            lvConferenceStat.Columns[0].Width = lvConferenceStat.Width / 2;
+            lvConferenceStat.Columns[1].Width = lvConferenceStat.Width / 2;
+            lvConferenceStat.Items.AddRange(statistic.DictOfConference.OrderBy(i => i.Key).
+                Select(item => new ListViewItem(new string[] { item.Key == "" ? "Неизвестный тип" : item.Key, item.Value.ToString() })).ToArray());
+        }
+
+        private void LoadGeographyStatistic()
+        {
+            
+            lvGeography.Clear();
+            lvGeography.Columns.Add("Страна");
+            lvGeography.Columns.Add("Количество");
+            lvGeography.Columns[0].Width = lvGeography.Width / 2;
+            lvGeography.Columns[1].Width = lvGeography.Width / 2;
+            lvGeography.Items.AddRange(statistic.DictOfGeography.OrderBy(i => i.Key).
                 Select(item => new ListViewItem(new string[] { item.Key == "" ? "Неизвестный тип" : item.Key, item.Value.ToString() })).ToArray());
         }
 
@@ -452,6 +503,10 @@ namespace BibReader
             LoadSourseStatistic();
             LoadYearStatistic();
             LoadTypeStatistic();
+            LoadJournalStatistic();
+            LoadGeographyStatistic();
+            LoadConferenceStatistic();
+
             rtbBib.Text = string.Empty;
             if (lvLibItems.Items.Count != 0)
             {
@@ -482,7 +537,7 @@ namespace BibReader
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                //MessageBox.Show(ex.Message);
             }
         }
 
@@ -802,5 +857,20 @@ namespace BibReader
                 }
             }
         }
+
+        private void btSaveStatistic_Click(object sender, EventArgs e)
+        {
+            using (var saveFile = new SaveFileDialog())
+            {
+                //MessageBox.Show(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"filesystem\newfile.bib"));
+                saveFile.InitialDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"filesystem\newfile.bib");
+                saveFile.Filter = "Файлы xls|*.xls";
+                if (saveFile.ShowDialog() == DialogResult.OK)
+                {
+                    string filePath = saveFile.FileName;
+                    
+                }
+            }
         }
+    }
 }
