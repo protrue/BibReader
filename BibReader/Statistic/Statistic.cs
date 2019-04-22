@@ -10,24 +10,33 @@ namespace BibReader.Statistic
     {
         int libItemCountFirst = 0;
         public int libItemCountAfterFirstResearch { get; private set; } = 0;
-        public Dictionary<string, int> dictOfSourses { get; set; }
-        public Dictionary<string, int> dictOfYears { get; set; }
-        public Dictionary<string, int> dictOfjournal { get; set; }
+        public Dictionary<string, int> DictOfSourses { get; set; }
+        public Dictionary<string, int> DictOfYears { get; set; }
+        public Dictionary<string, int> DictOfTypes { get; set; }
+        public Dictionary<string, int> DictOfjournal { get; set; }
 
         public void SetYearStatistic(LibItem libItem)
         {
-            if (dictOfYears.ContainsKey(libItem.Year))
-                dictOfYears[libItem.Year]++;
+            if (DictOfYears.ContainsKey(libItem.Year))
+                DictOfYears[libItem.Year]++;
             else
-                dictOfYears.Add(libItem.Year, 1);
+                DictOfYears.Add(libItem.Year, 1);
         }
 
         public void SetSourseStatictic(LibItem libItem)
         {
-            if (dictOfSourses.ContainsKey(libItem.Sourсe))
-                dictOfSourses[libItem.Sourсe]++;
+            if (DictOfSourses.ContainsKey(libItem.Sourсe))
+                DictOfSourses[libItem.Sourсe]++;
             else
-                dictOfSourses.Add(libItem.Sourсe, 1);
+                DictOfSourses.Add(libItem.Sourсe, 1);
+        }
+
+        public void SetTypesStatistic(LibItem libItem)
+        {
+            if (DictOfTypes.ContainsKey(libItem.Type))
+                DictOfTypes[libItem.Type]++;
+            else
+                DictOfTypes.Add(libItem.Type, 1);
         }
 
         public void AddLibItemsCount() => libItemCountFirst++;

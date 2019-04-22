@@ -63,17 +63,17 @@
   <ItemGroup>
     <Compile Include="AuthorsParser.cs" />
     <Compile Include="BibReaderClasses.cs" />
-    <Compile Include="ClusterizationForm.cs">
+    <Compile Include="ClassificationForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ClusterizationForm.Designer.cs">
-      <DependentUpon>ClusterizationForm.cs</DependentUpon>
+    <Compile Include="ClassificationForm.Designer.cs">
+      <DependentUpon>ClassificationForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Form1.cs">
+    <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="LibItem.cs" />
     <Compile Include="MyBibFormat.cs" />
@@ -85,11 +85,11 @@
     <Compile Include="TypesOfSourse\Conference.cs" />
     <Compile Include="TypesOfSourse\Journal.cs" />
     <Compile Include="TypesOfSourse\Enternet.cs" />
-    <EmbeddedResource Include="ClusterizationForm.resx">
-      <DependentUpon>ClusterizationForm.cs</DependentUpon>
+    <EmbeddedResource Include="ClassificationForm.resx">
+      <DependentUpon>ClassificationForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

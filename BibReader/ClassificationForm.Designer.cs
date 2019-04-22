@@ -1,6 +1,6 @@
 ﻿namespace BibReader
 {
-    partial class ClusterizationForm
+    partial class ClassificationForm
     {
         /// <summary>
         /// Required designer variable.
@@ -33,15 +33,26 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpText = new System.Windows.Forms.TabPage();
             this.tpFreqs = new System.Windows.Forms.TabPage();
+            this.btDeleteItems = new System.Windows.Forms.Button();
             this.lvFreqs = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tbRedraw = new System.Windows.Forms.Button();
-            this.btDeleteItems = new System.Windows.Forms.Button();
+            this.btSaveImage = new System.Windows.Forms.Button();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.btPrevFindedLibItem = new System.Windows.Forms.Button();
+            this.btNextFindedLibItem = new System.Windows.Forms.Button();
+            this.tbFind = new System.Windows.Forms.TextBox();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictBox)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tpText.SuspendLayout();
             this.tpFreqs.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            this.groupBox1.SuspendLayout();
+            this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
             // tbInfo
@@ -91,6 +102,7 @@
             // 
             this.tpFreqs.Controls.Add(this.btDeleteItems);
             this.tpFreqs.Controls.Add(this.lvFreqs);
+            this.tpFreqs.Controls.Add(this.groupBox1);
             this.tpFreqs.Location = new System.Drawing.Point(4, 25);
             this.tpFreqs.Name = "tpFreqs";
             this.tpFreqs.Padding = new System.Windows.Forms.Padding(3);
@@ -98,6 +110,16 @@
             this.tpFreqs.TabIndex = 1;
             this.tpFreqs.Text = "Частота";
             this.tpFreqs.UseVisualStyleBackColor = true;
+            // 
+            // btDeleteItems
+            // 
+            this.btDeleteItems.Location = new System.Drawing.Point(7, 390);
+            this.btDeleteItems.Name = "btDeleteItems";
+            this.btDeleteItems.Size = new System.Drawing.Size(144, 28);
+            this.btDeleteItems.TabIndex = 1;
+            this.btDeleteItems.Text = "Удалить";
+            this.btDeleteItems.UseVisualStyleBackColor = true;
+            this.btDeleteItems.Click += new System.EventHandler(this.btDeleteItems_Click);
             // 
             // lvFreqs
             // 
@@ -132,32 +154,108 @@
             this.tbRedraw.UseVisualStyleBackColor = true;
             this.tbRedraw.Click += new System.EventHandler(this.tbRedraw_Click);
             // 
-            // btDeleteItems
+            // btSaveImage
             // 
-            this.btDeleteItems.Location = new System.Drawing.Point(7, 390);
-            this.btDeleteItems.Name = "btDeleteItems";
-            this.btDeleteItems.Size = new System.Drawing.Size(144, 28);
-            this.btDeleteItems.TabIndex = 1;
-            this.btDeleteItems.Text = "Удалить";
-            this.btDeleteItems.UseVisualStyleBackColor = true;
-            this.btDeleteItems.Click += new System.EventHandler(this.btDeleteItems_Click);
+            this.btSaveImage.Location = new System.Drawing.Point(794, 475);
+            this.btSaveImage.Name = "btSaveImage";
+            this.btSaveImage.Size = new System.Drawing.Size(120, 43);
+            this.btSaveImage.TabIndex = 3;
+            this.btSaveImage.Text = "Сохранить картинку";
+            this.btSaveImage.UseVisualStyleBackColor = true;
+            this.btSaveImage.Click += new System.EventHandler(this.btSaveImage_Click);
             // 
-            // ClusterizationForm
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(6, 25);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(135, 22);
+            this.numericUpDown1.TabIndex = 4;
+            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            // 
+            // btPrevFindedLibItem
+            // 
+            this.btPrevFindedLibItem.Location = new System.Drawing.Point(242, 21);
+            this.btPrevFindedLibItem.Name = "btPrevFindedLibItem";
+            this.btPrevFindedLibItem.Size = new System.Drawing.Size(39, 23);
+            this.btPrevFindedLibItem.TabIndex = 17;
+            this.btPrevFindedLibItem.Text = "<<";
+            this.btPrevFindedLibItem.UseVisualStyleBackColor = true;
+            this.btPrevFindedLibItem.Click += new System.EventHandler(this.btPrevFindedLibItem_Click);
+            // 
+            // btNextFindedLibItem
+            // 
+            this.btNextFindedLibItem.Location = new System.Drawing.Point(287, 21);
+            this.btNextFindedLibItem.Name = "btNextFindedLibItem";
+            this.btNextFindedLibItem.Size = new System.Drawing.Size(39, 23);
+            this.btNextFindedLibItem.TabIndex = 16;
+            this.btNextFindedLibItem.Text = ">>";
+            this.btNextFindedLibItem.UseVisualStyleBackColor = true;
+            this.btNextFindedLibItem.Click += new System.EventHandler(this.btNextFindedLibItem_Click);
+            // 
+            // tbFind
+            // 
+            this.tbFind.Location = new System.Drawing.Point(14, 21);
+            this.tbFind.Name = "tbFind";
+            this.tbFind.Size = new System.Drawing.Size(222, 22);
+            this.tbFind.TabIndex = 14;
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.Controls.Add(this.btPrevFindedLibItem);
+            this.groupBox1.Controls.Add(this.btNextFindedLibItem);
+            this.groupBox1.Controls.Add(this.tbFind);
+            this.groupBox1.Location = new System.Drawing.Point(430, 389);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(332, 63);
+            this.groupBox1.TabIndex = 18;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Поиск";
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.checkBox1);
+            this.groupBox2.Controls.Add(this.numericUpDown1);
+            this.groupBox2.Location = new System.Drawing.Point(938, 437);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(175, 81);
+            this.groupBox2.TabIndex = 5;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Количество слов";
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(6, 54);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(119, 21);
+            this.checkBox1.TabIndex = 5;
+            this.checkBox1.Text = "Черно-белый";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            // 
+            // ClassificationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1455, 530);
+            this.Controls.Add(this.groupBox2);
+            this.Controls.Add(this.btSaveImage);
             this.Controls.Add(this.tbRedraw);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.pictBox);
-            this.Name = "ClusterizationForm";
-            this.Text = "Clusterization";
+            this.Name = "ClassificationForm";
+            this.Text = "Classification";
             this.Load += new System.EventHandler(this.ClusterizationForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictBox)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tpText.ResumeLayout(false);
             this.tpText.PerformLayout();
             this.tpFreqs.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -174,5 +272,13 @@
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.Button btDeleteItems;
         private System.Windows.Forms.Button tbRedraw;
+        private System.Windows.Forms.Button btSaveImage;
+        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.Button btPrevFindedLibItem;
+        private System.Windows.Forms.Button btNextFindedLibItem;
+        private System.Windows.Forms.TextBox tbFind;
+        private System.Windows.Forms.GroupBox groupBox2;
+        private System.Windows.Forms.CheckBox checkBox1;
     }
 }

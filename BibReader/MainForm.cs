@@ -9,6 +9,7 @@ using BibReader.Blocks;
 using BibReader.Statistic;
 using BibReader.TypesOfSourse;
 using System.Drawing;
+using System.Collections;
 
 namespace BibReader
 {
@@ -60,6 +61,7 @@ namespace BibReader
             btUnique.Enabled = false;
             btRelevance.Enabled = false;
             cbBibStyles.SelectedIndex = 0;
+            cbSearchCriterion.SelectedIndex = 0;
             // TryToLoadText();
         }
 
@@ -285,29 +287,48 @@ namespace BibReader
         private void LoadSourseStatistic()
         {
             lvSourceStatistic.Clear();
-            statistic.dictOfSourses = new Dictionary<string, int>();
+            statistic.DictOfSourses = new Dictionary<string, int>();
+            statistic.DictOfYears = new Dictionary<string, int>();
+            statistic.DictOfTypes = new Dictionary<string, int>();
+
             foreach (ListViewItem item in lvLibItems.Items)
+            {
                 statistic.SetSourseStatictic((LibItem)item.Tag);
+                statistic.SetYearStatistic((LibItem)item.Tag);
+                statistic.SetTypesStatistic((LibItem)item.Tag);
+            }
             lvSourceStatistic.Columns.Add("Источник");
             lvSourceStatistic.Columns.Add("Количество");
             lvSourceStatistic.Columns[0].Width = lvSourceStatistic.Width / 2;
             lvSourceStatistic.Columns[1].Width = lvSourceStatistic.Width / 2;
-            lvSourceStatistic.Items.AddRange(statistic.dictOfSourses.OrderBy(i => i.Key).
+            lvSourceStatistic.Items.AddRange(statistic.DictOfSourses.OrderBy(i => i.Key).
                 Select(i => new ListViewItem(new string[] { (i.Key == "") ? "Неизв источник" : i.Key, i.Value.ToString() })).ToArray());
         }
 
         private void LoadYearStatistic()
         {
             lvYearStatistic.Clear();
-            statistic.dictOfYears = new Dictionary<string, int>();
-            foreach (ListViewItem item in lvLibItems.Items)
-                statistic.SetYearStatistic((LibItem)item.Tag);
+            //foreach (ListViewItem item in lvLibItems.Items)
+            //    statistic.SetYearStatistic((LibItem)item.Tag);
             lvYearStatistic.Columns.Add("Год");
             lvYearStatistic.Columns.Add("Количество");
             lvYearStatistic.Columns[0].Width = lvYearStatistic.Width / 2;
             lvYearStatistic.Columns[1].Width = lvYearStatistic.Width / 2;
-            lvYearStatistic.Items.AddRange(statistic.dictOfYears.OrderBy(i => i.Key).
+            lvYearStatistic.Items.AddRange(statistic.DictOfYears.OrderBy(i => i.Key).
                 Select(i => new ListViewItem(new string[] { (i.Key == "") ? "Без года" : i.Key, i.Value.ToString() })).ToArray());
+        }
+
+        private void LoadTypeStatistic()
+        {
+            lvTypeOfDoc.Clear();
+            //foreach (ListViewItem item in lvLibItems.Items)
+            //    statistic.SetTypesStatistic((LibItem)item.Tag);
+            lvTypeOfDoc.Columns.Add("Тип документа");
+            lvTypeOfDoc.Columns.Add("Количество");
+            lvTypeOfDoc.Columns[0].Width = lvTypeOfDoc.Width / 2;
+            lvTypeOfDoc.Columns[1].Width = lvTypeOfDoc.Width / 2;
+            lvTypeOfDoc.Items.AddRange(statistic.DictOfTypes.OrderBy(i => i.Key).
+                Select(item => new ListViewItem(new string[] { item.Key == "" ? "Неизвестный тип" : item.Key, item.Value.ToString() })).ToArray());
         }
 
         private void MakeBibRef()
@@ -384,6 +405,8 @@ namespace BibReader
                 lvLibItems.Items[0].Selected = true;
                 lbCurrSelectedItem.Text = $"1/{lvLibItems.Items.Count}";
             }
+            else
+                lbCurrSelectedItem.Text = $"0/{lvLibItems.Items.Count}";
 
             UpdateUI();
 
@@ -428,6 +451,7 @@ namespace BibReader
         {
             LoadSourseStatistic();
             LoadYearStatistic();
+            LoadTypeStatistic();
             rtbBib.Text = string.Empty;
             if (lvLibItems.Items.Count != 0)
             {
@@ -583,14 +607,27 @@ namespace BibReader
             indexesOfLibItems.Clear();
             foreach (ListViewItem libItem in lvLibItems.Items)
             {
-                if (libItem.SubItems[0].Text.ToLower().IndexOf(tbFind.Text.ToLower())>=0)
-                    indexesOfLibItems.Add(libItem.Index);
+                switch (cbSearchCriterion.SelectedIndex)
+                {
+                    case 0:
+                        if (libItem.SubItems[0].Text.ToLower().IndexOf(tbFind.Text.ToLower()) >= 0)
+                            indexesOfLibItems.Add(libItem.Index);
+                        break;
+                    case 1:
+                        if (((LibItem)libItem.Tag).Affiliation.ToLower().IndexOf(tbFind.Text.ToLower()) >= 0)
+                            indexesOfLibItems.Add(libItem.Index);
+                        break;
+                    case 2:
+                        if (libItem.SubItems[1].Text.ToLower().IndexOf(tbFind.Text.ToLower()) >= 0)
+                            indexesOfLibItems.Add(libItem.Index);
+                        break;
+                }
             }
             if (indexesOfLibItems.Count > 0)
             {
                 lvLibItems.Select();
                 // currIndex = indexesOfLibItems[0];
-                currIndex = currIndex == indexesOfLibItems.Last() || currIndex == -1
+                currIndex = currIndex >= indexesOfLibItems.Last() || currIndex == -1
                     ? indexesOfLibItems.First()
                     : indexesOfLibItems.First(x => x > currIndex);
                 lvLibItems.Items[currIndex].Selected = true;
@@ -608,13 +645,26 @@ namespace BibReader
             indexesOfLibItems.Clear();
             foreach (ListViewItem libItem in lvLibItems.Items)
             {
-                if (libItem.SubItems[0].Text.ToLower().IndexOf(tbFind.Text.ToLower()) >= 0)
-                    indexesOfLibItems.Add(libItem.Index);
+                switch (cbSearchCriterion.SelectedIndex)
+                {
+                    case 0:
+                        if (libItem.SubItems[0].Text.ToLower().IndexOf(tbFind.Text.ToLower()) >= 0)
+                            indexesOfLibItems.Add(libItem.Index);
+                        break;
+                    case 1:
+                        if (((LibItem)libItem.Tag).Affiliation.ToLower().IndexOf(tbFind.Text.ToLower()) >= 0)
+                            indexesOfLibItems.Add(libItem.Index);
+                        break;
+                    case 2:
+                        if (libItem.SubItems[1].Text.ToLower().IndexOf(tbFind.Text.ToLower()) >= 0)
+                            indexesOfLibItems.Add(libItem.Index);
+                        break;
+                }
             }
             if (indexesOfLibItems.Count > 0)
             {
                 lvLibItems.Select();
-                currIndex = currIndex == indexesOfLibItems.First() || currIndex == -1
+                currIndex = currIndex <= indexesOfLibItems.First() || currIndex == -1
                     ? indexesOfLibItems.Last() 
                     : indexesOfLibItems.Last(x => x < currIndex);
                 lvLibItems.Items[currIndex].Selected = true;
@@ -640,7 +690,7 @@ namespace BibReader
                 if (libItem.Title != string.Empty)
                 titles += libItem.Title + "\r\n";
             }
-            var form = new ClusterizationForm() { Info = titles };
+            var form = new ClassificationForm() { Info = titles };
             form.Show();
         }
 
@@ -653,7 +703,7 @@ namespace BibReader
                 if (libItem.Keywords != string.Empty)
                     keywords += libItem.Keywords + "\r\n";
             }
-            var form = new ClusterizationForm() { Info = keywords };
+            var form = new ClassificationForm() { Info = keywords };
             form.Show();
         }
 
@@ -666,44 +716,91 @@ namespace BibReader
                 if (libItem.Abstract != string.Empty)
                 abstract_ += libItem.Abstract + "\r\n";
             }
-            var form = new ClusterizationForm() { Info = abstract_ };
+            var form = new ClassificationForm() { Info = abstract_ };
             form.Show();
         }
 
-        private void TryToLoadText()
+        private void cbSearchCriterion_SelectedIndexChanged(object sender, EventArgs e)
         {
+            currIndex = -1;
+        }
 
-            Font f = new Font(SystemFonts.DefaultFont, FontStyle.Italic);
+        private void lvLibItems_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            ListViewItemComparer sorter = lvLibItems.ListViewItemSorter as ListViewItemComparer;
 
-            for (int i = 0; i < 3; i++)
+            if (sorter == null)
             {
-                rtbBib.Select(rtbBib.TextLength, 0); rtbBib.SelectionFont = f;
-                rtbBib.SelectedText = "ITALICHELLO\n";
-                rtbBib.Select(rtbBib.TextLength, 0); rtbBib.SelectionFont = SystemFonts.DefaultFont;
-                rtbBib.SelectedText = "DEFAULTHELLO\n";
+                sorter = new ListViewItemComparer(e.Column);
+                lvLibItems.ListViewItemSorter = sorter;
+            }
+            else
+            {
+                sorter.Column = e.Column;
             }
 
-            for (int i = 0; i < 1; i++)
-            {
-                rtbBib.Select(rtbBib.TextLength, 0);
-                rtbBib.SelectedText = "DEFAULTHELLO";
-                rtbBib.Select(rtbBib.TextLength, 0); rtbBib.SelectionFont = f;
-                rtbBib.SelectedText = "ITALICHELLO";
-                rtbBib.Select(rtbBib.TextLength, 0); rtbBib.SelectionFont = SystemFonts.DefaultFont;
-                rtbBib.SelectedText = "DEFAULTHELLO\n";
+            lvLibItems.Sort();       
+        }
 
+        public class ListViewItemComparer : IComparer
+        {
+            private int column;
+            private bool numeric = false;
+
+            public int Column
+            {
+                get { return column; }
+                set { column = value; }
             }
 
-            for (int i = 0; i < 2; i++)
+            public bool Numeric
             {
-                rtbBib.SelectedText = "AUTHORS";
-                rtbBib.SelectedText = "\"" + "NAME" + "\"" + ";";
-                rtbBib.Select(rtbBib.TextLength, 0); rtbBib.SelectionFont = f;
-                rtbBib.SelectedText = "Publisher" + ";";
-                rtbBib.Select(rtbBib.TextLength, 0); rtbBib.SelectionFont = SystemFonts.DefaultFont;
-                rtbBib.SelectedText = "vol. " + "Vol" + "CommaSpace";
-                rtbBib.SelectedText = "no. " + "Number" + "CommaSpace\n";
+                get { return numeric; }
+                set { numeric = value; }
+            }
+
+            public ListViewItemComparer(int columnIndex)
+            {
+                Column = columnIndex;
+            }
+
+            public int Compare(object x, object y)
+            {
+                ListViewItem itemX = x as ListViewItem;
+                ListViewItem itemY = y as ListViewItem;
+
+                if (itemX == null && itemY == null)
+                    return 0;
+                else if (itemX == null)
+                    return -1;
+                else if (itemY == null)
+                    return 1;
+
+                if (itemX == itemY) return 0;
+
+                if (Numeric)
+                {
+                    decimal itemXVal, itemYVal;
+
+                    if (!Decimal.TryParse(itemX.SubItems[Column].Text, out itemXVal))
+                    {
+                        itemXVal = 0;
+                    }
+                    if (!Decimal.TryParse(itemY.SubItems[Column].Text, out itemYVal))
+                    {
+                        itemYVal = 0;
+                    }
+
+                    return Decimal.Compare(itemXVal, itemYVal);
+                }
+                else
+                {
+                    string itemXText = itemX.SubItems[Column].Text;
+                    string itemYText = itemY.SubItems[Column].Text;
+
+                    return String.Compare(itemXText, itemYText);
+                }
             }
         }
-    }
+        }
 }

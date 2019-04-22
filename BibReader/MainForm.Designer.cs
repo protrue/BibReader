@@ -64,10 +64,14 @@
             this.btPrintBib = new System.Windows.Forms.Button();
             this.cbBibStyles = new System.Windows.Forms.ComboBox();
             this.rtbBib = new System.Windows.Forms.RichTextBox();
-            this.tpYearStatistic = new System.Windows.Forms.TabPage();
+            this.tpStatistic = new System.Windows.Forms.TabPage();
+            this.tabControlForStatistic = new System.Windows.Forms.TabControl();
+            this.tpYearStat = new System.Windows.Forms.TabPage();
             this.lvYearStatistic = new System.Windows.Forms.ListView();
-            this.tpSourceStatistic = new System.Windows.Forms.TabPage();
+            this.tpSourses = new System.Windows.Forms.TabPage();
             this.lvSourceStatistic = new System.Windows.Forms.ListView();
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.lvTypeOfDoc = new System.Windows.Forms.ListView();
             this.lvLibItems = new System.Windows.Forms.ListView();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -76,6 +80,9 @@
             this.сохранитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.кластеризацияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.получитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.названияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ключевыеСловаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.аннотацииToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lbCurrSelectedItem = new System.Windows.Forms.Label();
             this.btFirst = new System.Windows.Forms.Button();
             this.btUnique = new System.Windows.Forms.Button();
@@ -89,15 +96,16 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btNextFindedLibItem = new System.Windows.Forms.Button();
             this.btPrevFindedLibItem = new System.Windows.Forms.Button();
-            this.названияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ключевыеСловаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.аннотацииToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cbSearchCriterion = new System.Windows.Forms.ComboBox();
             this.groupBox1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tpData.SuspendLayout();
             this.tpBib.SuspendLayout();
-            this.tpYearStatistic.SuspendLayout();
-            this.tpSourceStatistic.SuspendLayout();
+            this.tpStatistic.SuspendLayout();
+            this.tabControlForStatistic.SuspendLayout();
+            this.tpYearStat.SuspendLayout();
+            this.tpSourses.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.contextMenuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
@@ -111,7 +119,7 @@
             this.groupBox1.Controls.Add(this.tabControl);
             this.groupBox1.Location = new System.Drawing.Point(848, 33);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(676, 766);
+            this.groupBox1.Size = new System.Drawing.Size(676, 740);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Информация";
@@ -123,12 +131,11 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl.Controls.Add(this.tpData);
             this.tabControl.Controls.Add(this.tpBib);
-            this.tabControl.Controls.Add(this.tpYearStatistic);
-            this.tabControl.Controls.Add(this.tpSourceStatistic);
+            this.tabControl.Controls.Add(this.tpStatistic);
             this.tabControl.Location = new System.Drawing.Point(6, 21);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(664, 739);
+            this.tabControl.Size = new System.Drawing.Size(664, 713);
             this.tabControl.TabIndex = 0;
             this.tabControl.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl_Selected);
             // 
@@ -165,7 +172,7 @@
             this.tpData.Location = new System.Drawing.Point(4, 25);
             this.tpData.Name = "tpData";
             this.tpData.Padding = new System.Windows.Forms.Padding(3);
-            this.tpData.Size = new System.Drawing.Size(656, 710);
+            this.tpData.Size = new System.Drawing.Size(656, 684);
             this.tpData.TabIndex = 0;
             this.tpData.Text = "Данные";
             this.tpData.UseVisualStyleBackColor = true;
@@ -455,7 +462,7 @@
             this.tpBib.Location = new System.Drawing.Point(4, 25);
             this.tpBib.Name = "tpBib";
             this.tpBib.Padding = new System.Windows.Forms.Padding(3);
-            this.tpBib.Size = new System.Drawing.Size(656, 710);
+            this.tpBib.Size = new System.Drawing.Size(656, 684);
             this.tpBib.TabIndex = 1;
             this.tpBib.Text = "Библ. описания";
             this.tpBib.UseVisualStyleBackColor = true;
@@ -494,39 +501,61 @@
             this.rtbBib.TabIndex = 0;
             this.rtbBib.Text = "";
             // 
-            // tpYearStatistic
+            // tpStatistic
             // 
-            this.tpYearStatistic.Controls.Add(this.lvYearStatistic);
-            this.tpYearStatistic.Location = new System.Drawing.Point(4, 25);
-            this.tpYearStatistic.Name = "tpYearStatistic";
-            this.tpYearStatistic.Padding = new System.Windows.Forms.Padding(3);
-            this.tpYearStatistic.Size = new System.Drawing.Size(656, 710);
-            this.tpYearStatistic.TabIndex = 2;
-            this.tpYearStatistic.Text = "Statistic";
-            this.tpYearStatistic.UseVisualStyleBackColor = true;
+            this.tpStatistic.Controls.Add(this.tabControlForStatistic);
+            this.tpStatistic.Location = new System.Drawing.Point(4, 25);
+            this.tpStatistic.Name = "tpStatistic";
+            this.tpStatistic.Padding = new System.Windows.Forms.Padding(3);
+            this.tpStatistic.Size = new System.Drawing.Size(656, 684);
+            this.tpStatistic.TabIndex = 2;
+            this.tpStatistic.Text = "Статистика";
+            this.tpStatistic.UseVisualStyleBackColor = true;
+            // 
+            // tabControlForStatistic
+            // 
+            this.tabControlForStatistic.Controls.Add(this.tpYearStat);
+            this.tabControlForStatistic.Controls.Add(this.tpSourses);
+            this.tabControlForStatistic.Controls.Add(this.tabPage1);
+            this.tabControlForStatistic.Location = new System.Drawing.Point(7, 7);
+            this.tabControlForStatistic.Name = "tabControlForStatistic";
+            this.tabControlForStatistic.SelectedIndex = 0;
+            this.tabControlForStatistic.Size = new System.Drawing.Size(643, 671);
+            this.tabControlForStatistic.TabIndex = 1;
+            // 
+            // tpYearStat
+            // 
+            this.tpYearStat.Controls.Add(this.lvYearStatistic);
+            this.tpYearStat.Location = new System.Drawing.Point(4, 25);
+            this.tpYearStat.Name = "tpYearStat";
+            this.tpYearStat.Padding = new System.Windows.Forms.Padding(3);
+            this.tpYearStat.Size = new System.Drawing.Size(635, 642);
+            this.tpYearStat.TabIndex = 0;
+            this.tpYearStat.Text = "Года";
+            this.tpYearStat.UseVisualStyleBackColor = true;
             // 
             // lvYearStatistic
             // 
             this.lvYearStatistic.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.lvYearStatistic.Location = new System.Drawing.Point(3, 6);
+            this.lvYearStatistic.Location = new System.Drawing.Point(6, 6);
             this.lvYearStatistic.Name = "lvYearStatistic";
-            this.lvYearStatistic.Size = new System.Drawing.Size(647, 655);
+            this.lvYearStatistic.Size = new System.Drawing.Size(623, 627);
             this.lvYearStatistic.TabIndex = 0;
             this.lvYearStatistic.UseCompatibleStateImageBehavior = false;
             this.lvYearStatistic.View = System.Windows.Forms.View.Details;
             // 
-            // tpSourceStatistic
+            // tpSourses
             // 
-            this.tpSourceStatistic.Controls.Add(this.lvSourceStatistic);
-            this.tpSourceStatistic.Location = new System.Drawing.Point(4, 25);
-            this.tpSourceStatistic.Name = "tpSourceStatistic";
-            this.tpSourceStatistic.Padding = new System.Windows.Forms.Padding(3);
-            this.tpSourceStatistic.Size = new System.Drawing.Size(656, 710);
-            this.tpSourceStatistic.TabIndex = 3;
-            this.tpSourceStatistic.Text = "Source statistic";
-            this.tpSourceStatistic.UseVisualStyleBackColor = true;
+            this.tpSourses.Controls.Add(this.lvSourceStatistic);
+            this.tpSourses.Location = new System.Drawing.Point(4, 25);
+            this.tpSourses.Name = "tpSourses";
+            this.tpSourses.Padding = new System.Windows.Forms.Padding(3);
+            this.tpSourses.Size = new System.Drawing.Size(635, 642);
+            this.tpSourses.TabIndex = 1;
+            this.tpSourses.Text = "Источники";
+            this.tpSourses.UseVisualStyleBackColor = true;
             // 
             // lvSourceStatistic
             // 
@@ -535,10 +564,31 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.lvSourceStatistic.Location = new System.Drawing.Point(6, 6);
             this.lvSourceStatistic.Name = "lvSourceStatistic";
-            this.lvSourceStatistic.Size = new System.Drawing.Size(644, 655);
-            this.lvSourceStatistic.TabIndex = 0;
+            this.lvSourceStatistic.Size = new System.Drawing.Size(623, 627);
+            this.lvSourceStatistic.TabIndex = 1;
             this.lvSourceStatistic.UseCompatibleStateImageBehavior = false;
             this.lvSourceStatistic.View = System.Windows.Forms.View.Details;
+            // 
+            // tabPage1
+            // 
+            this.tabPage1.Controls.Add(this.lvTypeOfDoc);
+            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage1.Size = new System.Drawing.Size(635, 642);
+            this.tabPage1.TabIndex = 2;
+            this.tabPage1.Text = "Тип документа";
+            this.tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // lvTypeOfDoc
+            // 
+            this.lvTypeOfDoc.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvTypeOfDoc.Location = new System.Drawing.Point(7, 7);
+            this.lvTypeOfDoc.Name = "lvTypeOfDoc";
+            this.lvTypeOfDoc.Size = new System.Drawing.Size(622, 626);
+            this.lvTypeOfDoc.TabIndex = 0;
+            this.lvTypeOfDoc.UseCompatibleStateImageBehavior = false;
+            this.lvTypeOfDoc.View = System.Windows.Forms.View.Details;
             // 
             // lvLibItems
             // 
@@ -552,6 +602,7 @@
             this.lvLibItems.TabIndex = 2;
             this.lvLibItems.UseCompatibleStateImageBehavior = false;
             this.lvLibItems.View = System.Windows.Forms.View.Details;
+            this.lvLibItems.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvLibItems_ColumnClick);
             this.lvLibItems.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.lvItems_ItemSelectionChanged);
             this.lvLibItems.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lvItems_MouseClick);
             // 
@@ -613,8 +664,29 @@
             this.ключевыеСловаToolStripMenuItem,
             this.аннотацииToolStripMenuItem});
             this.получитьToolStripMenuItem.Name = "получитьToolStripMenuItem";
-            this.получитьToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
+            this.получитьToolStripMenuItem.Size = new System.Drawing.Size(150, 26);
             this.получитьToolStripMenuItem.Text = "Получить";
+            // 
+            // названияToolStripMenuItem
+            // 
+            this.названияToolStripMenuItem.Name = "названияToolStripMenuItem";
+            this.названияToolStripMenuItem.Size = new System.Drawing.Size(200, 26);
+            this.названияToolStripMenuItem.Text = "Названия";
+            this.названияToolStripMenuItem.Click += new System.EventHandler(this.названияToolStripMenuItem_Click);
+            // 
+            // ключевыеСловаToolStripMenuItem
+            // 
+            this.ключевыеСловаToolStripMenuItem.Name = "ключевыеСловаToolStripMenuItem";
+            this.ключевыеСловаToolStripMenuItem.Size = new System.Drawing.Size(200, 26);
+            this.ключевыеСловаToolStripMenuItem.Text = "Ключевые слова";
+            this.ключевыеСловаToolStripMenuItem.Click += new System.EventHandler(this.ключевыеСловаToolStripMenuItem_Click);
+            // 
+            // аннотацииToolStripMenuItem
+            // 
+            this.аннотацииToolStripMenuItem.Name = "аннотацииToolStripMenuItem";
+            this.аннотацииToolStripMenuItem.Size = new System.Drawing.Size(200, 26);
+            this.аннотацииToolStripMenuItem.Text = "Аннотации";
+            this.аннотацииToolStripMenuItem.Click += new System.EventHandler(this.аннотацииToolStripMenuItem_Click);
             // 
             // lbCurrSelectedItem
             // 
@@ -697,7 +769,7 @@
             // 
             // tbFind
             // 
-            this.tbFind.Location = new System.Drawing.Point(476, 106);
+            this.tbFind.Location = new System.Drawing.Point(476, 67);
             this.tbFind.Name = "tbFind";
             this.tbFind.Size = new System.Drawing.Size(222, 22);
             this.tbFind.TabIndex = 10;
@@ -706,7 +778,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(473, 79);
+            this.label1.Location = new System.Drawing.Point(473, 40);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(48, 17);
             this.label1.TabIndex = 11;
@@ -714,7 +786,7 @@
             // 
             // btNextFindedLibItem
             // 
-            this.btNextFindedLibItem.Location = new System.Drawing.Point(749, 106);
+            this.btNextFindedLibItem.Location = new System.Drawing.Point(749, 67);
             this.btNextFindedLibItem.Name = "btNextFindedLibItem";
             this.btNextFindedLibItem.Size = new System.Drawing.Size(39, 23);
             this.btNextFindedLibItem.TabIndex = 12;
@@ -724,7 +796,7 @@
             // 
             // btPrevFindedLibItem
             // 
-            this.btPrevFindedLibItem.Location = new System.Drawing.Point(704, 106);
+            this.btPrevFindedLibItem.Location = new System.Drawing.Point(704, 67);
             this.btPrevFindedLibItem.Name = "btPrevFindedLibItem";
             this.btPrevFindedLibItem.Size = new System.Drawing.Size(39, 23);
             this.btPrevFindedLibItem.TabIndex = 13;
@@ -732,32 +804,26 @@
             this.btPrevFindedLibItem.UseVisualStyleBackColor = true;
             this.btPrevFindedLibItem.Click += new System.EventHandler(this.btPrevFindedLibItem_Click);
             // 
-            // названияToolStripMenuItem
+            // cbSearchCriterion
             // 
-            this.названияToolStripMenuItem.Name = "названияToolStripMenuItem";
-            this.названияToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
-            this.названияToolStripMenuItem.Text = "Названия";
-            this.названияToolStripMenuItem.Click += new System.EventHandler(this.названияToolStripMenuItem_Click);
-            // 
-            // ключевыеСловаToolStripMenuItem
-            // 
-            this.ключевыеСловаToolStripMenuItem.Name = "ключевыеСловаToolStripMenuItem";
-            this.ключевыеСловаToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
-            this.ключевыеСловаToolStripMenuItem.Text = "Ключевые слова";
-            this.ключевыеСловаToolStripMenuItem.Click += new System.EventHandler(this.ключевыеСловаToolStripMenuItem_Click);
-            // 
-            // аннотацииToolStripMenuItem
-            // 
-            this.аннотацииToolStripMenuItem.Name = "аннотацииToolStripMenuItem";
-            this.аннотацииToolStripMenuItem.Size = new System.Drawing.Size(216, 26);
-            this.аннотацииToolStripMenuItem.Text = "Аннотации";
-            this.аннотацииToolStripMenuItem.Click += new System.EventHandler(this.аннотацииToolStripMenuItem_Click);
+            this.cbSearchCriterion.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbSearchCriterion.FormattingEnabled = true;
+            this.cbSearchCriterion.Items.AddRange(new object[] {
+            "По названию",
+            "По аннотациям",
+            "По авторам"});
+            this.cbSearchCriterion.Location = new System.Drawing.Point(476, 99);
+            this.cbSearchCriterion.Name = "cbSearchCriterion";
+            this.cbSearchCriterion.Size = new System.Drawing.Size(222, 24);
+            this.cbSearchCriterion.TabIndex = 14;
+            this.cbSearchCriterion.SelectedIndexChanged += new System.EventHandler(this.cbSearchCriterion_SelectedIndexChanged);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1536, 801);
+            this.Controls.Add(this.cbSearchCriterion);
             this.Controls.Add(this.btPrevFindedLibItem);
             this.Controls.Add(this.btNextFindedLibItem);
             this.Controls.Add(this.label1);
@@ -780,8 +846,11 @@
             this.tpData.ResumeLayout(false);
             this.tpData.PerformLayout();
             this.tpBib.ResumeLayout(false);
-            this.tpYearStatistic.ResumeLayout(false);
-            this.tpSourceStatistic.ResumeLayout(false);
+            this.tpStatistic.ResumeLayout(false);
+            this.tabControlForStatistic.ResumeLayout(false);
+            this.tpYearStat.ResumeLayout(false);
+            this.tpSourses.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
@@ -832,11 +901,9 @@
         private System.Windows.Forms.ToolStripMenuItem открытьToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem сохранитьToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem добавитьToolStripMenuItem;
-        private System.Windows.Forms.TabPage tpYearStatistic;
-        private System.Windows.Forms.TabPage tpSourceStatistic;
+        private System.Windows.Forms.TabPage tpStatistic;
         private System.Windows.Forms.ListView lvYearStatistic;
         private System.Windows.Forms.Label lbCurrSelectedItem;
-        private System.Windows.Forms.ListView lvSourceStatistic;
         private System.Windows.Forms.Button btFirst;
         private System.Windows.Forms.Button btUnique;
         private System.Windows.Forms.Button btRelevance;
@@ -856,6 +923,13 @@
         private System.Windows.Forms.ToolStripMenuItem названияToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ключевыеСловаToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem аннотацииToolStripMenuItem;
+        private System.Windows.Forms.TabControl tabControlForStatistic;
+        private System.Windows.Forms.TabPage tpYearStat;
+        private System.Windows.Forms.TabPage tpSourses;
+        private System.Windows.Forms.ListView lvSourceStatistic;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.ListView lvTypeOfDoc;
+        private System.Windows.Forms.ComboBox cbSearchCriterion;
     }
 }
 
