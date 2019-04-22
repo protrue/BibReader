@@ -10,6 +10,7 @@ using BibReader.Statistic;
 using BibReader.TypesOfSourse;
 using System.Drawing;
 using System.Collections;
+using Excel = Microsoft.Office.Interop.Excel;
 
 namespace BibReader
 {
@@ -868,9 +869,37 @@ namespace BibReader
                 if (saveFile.ShowDialog() == DialogResult.OK)
                 {
                     string filePath = saveFile.FileName;
-                    
+
+                    var app = new Excel.Application();
+                    //app.Visible = true;
+                    var wb = app.Workbooks.Add(1);
+                    ToExcel(wb, lvJournalStat);
+                    ToExcel(wb, lvConferenceStat);
+                    wb.SaveAs(filePath);
+                    wb.Close();
                 }
             }
+        }
+
+        private void ToExcel(Excel.Workbook wb, ListView list)
+        {
+
+            wb.Worksheets.Add();
+            var ws = (Excel.Worksheet)wb.Worksheets[1];
+            ws.Name = list.Name;
+            int i = 1;
+            int i2 = 1;
+            foreach (ListViewItem lvi in list.Items)
+            {
+                i = 1;
+                foreach (ListViewItem.ListViewSubItem lvs in lvi.SubItems)
+                {
+                    ws.Cells[i2, i] = lvs.Text;
+                    i++;
+                }
+                i2++;
+            }
+            
         }
     }
 }
