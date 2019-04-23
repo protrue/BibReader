@@ -10,14 +10,14 @@ namespace BibReader.Statistic
     {
         int libItemCountFirst = 0;
         public int libItemCountAfterFirstResearch { get; private set; } = 0;
-        public Dictionary<string, int> DictOfSourses { get; set; }
-        public Dictionary<string, int> DictOfSoursesUnique { get; set; }
-        public Dictionary<string, int> DictOfSoursesRelevance { get; set; }
-        public Dictionary<string, int> DictOfYears { get; set; }
-        public Dictionary<string, int> DictOfTypes { get; set; }
-        public Dictionary<string, int> DictOfJournal { get; set; }
-        public Dictionary<string, int> DictOfConference { get; set; }
-        public Dictionary<string, int> DictOfGeography { get; set; }
+        public Dictionary<string, int> DictOfSourses            { get; set; } = new Dictionary<string, int>();
+        public Dictionary<string, int> DictOfSoursesUnique      { get; set; } = new Dictionary<string, int>();
+        public Dictionary<string, int> DictOfSoursesRelevance   { get; set; } = new Dictionary<string, int>();
+        public Dictionary<string, int> DictOfYears              { get; set; } = new Dictionary<string, int>();
+        public Dictionary<string, int> DictOfTypes              { get; set; } = new Dictionary<string, int>();
+        public Dictionary<string, int> DictOfJournal            { get; set; } = new Dictionary<string, int>();
+        public Dictionary<string, int> DictOfConference         { get; set; } = new Dictionary<string, int>();
+        public Dictionary<string, int> DictOfGeography          { get; set; } = new Dictionary<string, int>();
 
         public void SetGeographyStatistic(LibItem libItem)
         {
@@ -70,7 +70,11 @@ namespace BibReader.Statistic
             if (DictOfSourses.ContainsKey(libItem.Sourсe))
                 DictOfSourses[libItem.Sourсe]++;
             else
+            {
                 DictOfSourses.Add(libItem.Sourсe, 1);
+                DictOfSoursesUnique.Add(libItem.Sourсe, 0);
+                DictOfSoursesRelevance.Add(libItem.Sourсe, 0);
+            }
         }
 
         public void SetSourseUniqueStatictic(LibItem libItem)

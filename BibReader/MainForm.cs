@@ -57,7 +57,6 @@ namespace BibReader
         {
             InitializeComponent();
             InitListViewItems();
-            var readAll = new ReadAllHeaders();
             btFirst.Enabled = false;
             btUnique.Enabled = false;
             btRelevance.Enabled = false;
@@ -203,10 +202,7 @@ namespace BibReader
             var listOfItems = univReader.Read(reader);
             ClearDataBeforeLoad();
             LoadLibItemsInLv(listOfItems);
-            
             toolStripStatusLabel1.Text = "Last opened file name: " + lastOpenedFileName;
-
-            UpdateUI();
 
             if (reader != null)
             {
@@ -215,6 +211,7 @@ namespace BibReader
                 btRelevance.Enabled = false;
                 добавитьToolStripMenuItem.Enabled = true;
             }
+            UpdateUI();
         }
 
         private void ClearDataBeforeLoad()
@@ -251,7 +248,6 @@ namespace BibReader
             var reader = GetStreamReaders();
             var listOfItems = univReader.Read(reader);
             AddLibItemsInLvItems(listOfItems);
-            UpdateUI();
 
             if (reader != null)
             {
@@ -259,6 +255,7 @@ namespace BibReader
                 btUnique.Enabled = true;
                 btRelevance.Enabled = false;
             }
+            UpdateUI();
         }
 
         private void tabControl_Selected(object sender, TabControlEventArgs e)
@@ -289,9 +286,14 @@ namespace BibReader
         private void LoadSourseStatistic()
         {
             lvSourceStatistic.Clear();
-            statistic.DictOfSourses = new Dictionary<string, int>();
-            statistic.DictOfSoursesUnique = new Dictionary<string, int>();
-            statistic.DictOfSoursesRelevance = new Dictionary<string, int>();
+            if (btUnique.Enabled)
+            {
+                statistic.DictOfSourses = new Dictionary<string, int>();
+                //if (btRelevance.Enabled)
+                statistic.DictOfSoursesUnique = new Dictionary<string, int>();
+                //if (btFirst.Enabled)
+                statistic.DictOfSoursesRelevance = new Dictionary<string, int>();
+            }
             statistic.DictOfYears = new Dictionary<string, int>();
             statistic.DictOfTypes = new Dictionary<string, int>();
             statistic.DictOfJournal = new Dictionary<string, int>();
@@ -302,11 +304,12 @@ namespace BibReader
             {
                 statistic.SetYearStatistic((LibItem)item.Tag);
                 statistic.SetTypesStatistic((LibItem)item.Tag);
-                statistic.SetSourseStatictic((LibItem)item.Tag);
-                //if (item.SubItems[2].Text != "1")
-                statistic.SetSourseUniqueStatictic((LibItem)item.Tag);
-                //if (item.SubItems[2].Text == "3")
-                statistic.SetSourseRelevanceStatictic((LibItem)item.Tag);
+                if (btUnique.Enabled)
+                    statistic.SetSourseStatictic((LibItem)item.Tag);
+                if (btRelevance.Enabled)
+                    statistic.SetSourseUniqueStatictic((LibItem)item.Tag);
+                if (btFirst.Enabled)
+                    statistic.SetSourseRelevanceStatictic((LibItem)item.Tag);
                 statistic.SetJournalStatistic((LibItem)item.Tag);
                 statistic.SetConferenceStatistic((LibItem)item.Tag);
                 statistic.SetGeographyStatistic((LibItem)item.Tag);
@@ -460,11 +463,10 @@ namespace BibReader
             else
                 lbCurrSelectedItem.Text = $"0/{lvLibItems.Items.Count}";
 
-            UpdateUI();
-
             btUnique.Enabled = true;
             btFirst.Enabled = false;
             добавитьToolStripMenuItem.Enabled = true;
+            UpdateUI();
 
         }
 
@@ -483,20 +485,20 @@ namespace BibReader
             lvLibItems.Sorting = SortOrder.Ascending;
             lvLibItems.Sort();
 
-            UpdateUI();
 
             btRelevance.Enabled = true;
             btUnique.Enabled = false;
             добавитьToolStripMenuItem.Enabled = false;
+            UpdateUI();
         }
 
         private void btRelevance_Click(object sender, EventArgs e)
         {
             RelevanceData();
-            UpdateUI();
 
             btFirst.Enabled = true;
             btRelevance.Enabled = false;
+            UpdateUI();
         }
 
         private void UpdateUI()
