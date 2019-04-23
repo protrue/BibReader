@@ -10,7 +10,7 @@ using BibReader.Statistic;
 using BibReader.TypesOfSourse;
 using System.Drawing;
 using System.Collections;
-using Excel = Microsoft.Office.Interop.Excel;
+using BibReader.Saver;
 
 namespace BibReader
 {
@@ -672,7 +672,7 @@ namespace BibReader
                             indexesOfLibItems.Add(libItem.Index);
                         break;
                     case 1:
-                        if (((LibItem)libItem.Tag).Affiliation.ToLower().IndexOf(tbFind.Text.ToLower()) >= 0)
+                        if (((LibItem)libItem.Tag).Abstract.ToLower().IndexOf(tbFind.Text.ToLower()) >= 0)
                             indexesOfLibItems.Add(libItem.Index);
                         break;
                     case 2:
@@ -681,6 +681,8 @@ namespace BibReader
                         break;
                 }
             }
+            labelFindedItemsCount.Text = indexesOfLibItems.Count.ToString();
+
             if (indexesOfLibItems.Count > 0)
             {
                 lvLibItems.Select();
@@ -719,6 +721,8 @@ namespace BibReader
                         break;
                 }
             }
+            labelFindedItemsCount.Text = indexesOfLibItems.Count.ToString();
+
             if (indexesOfLibItems.Count > 0)
             {
                 lvLibItems.Select();
@@ -866,51 +870,15 @@ namespace BibReader
 
         private void btSaveStatistic_Click(object sender, EventArgs e)
         {
-            using (var saveFile = new SaveFileDialog())
-            {
-                //MessageBox.Show(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"filesystem\newfile.bib"));
-                saveFile.InitialDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory);
-                saveFile.Filter = "Файлы xls|*.xls";
-                if (saveFile.ShowDialog() == DialogResult.OK)
-                {
-                    string filePath = saveFile.FileName;
+            ExcelSaver saver = new ExcelSaver();
+            var tps = tabControlForStatistic.TabPages;
+            var listOfTables = new List<ListView>();
 
-                    var app = new Excel.Application();
-                    var wb = app.Workbooks.Add(1);
-                    var tps = tabControlForStatistic.TabPages;
-                    foreach (TabPage tp in tps)
-                    {
-                        var lvs = tp.Controls.OfType<ListView>();
-                        ToExcel(wb, lvs.First());
-                    }
-                    wb.SaveAs(filePath);
-                    wb.Close();
-                    app.Quit();
-                    MessageBox.Show("Файл сохранен!");
-                }
-            }
+            foreach (TabPage tp in tps)
+                listOfTables.Add(tp.Controls.OfType<ListView>().First());
+            saver.Save(listOfTables);
         }
 
-        private void ToExcel(Excel.Workbook wb, ListView list)
-        {
-
-            wb.Worksheets.Add();
-            var ws = (Excel.Worksheet)wb.Worksheets[1];
-            ws.Name = list.Name;
-            int i = 1;
-            int i2 = 1;
-            foreach (ListViewItem lvi in list.Items)
-            {
-                i = 1;
-                foreach (ListViewItem.ListViewSubItem lvs in lvi.SubItems)
-                {
-                    ws.Cells[i2, i] = lvs.Text;
-                    i++;
-                }
-                i2++;
-            }
-            
-        }
 
         private void lvYearStatistic_ColumnClick(object sender, ColumnClickEventArgs e)
         {

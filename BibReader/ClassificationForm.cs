@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using BibReader.Saver;
 using Sparc.TagCloud;
 
 namespace BibReader
@@ -211,6 +212,12 @@ namespace BibReader
             else
                 wordCloud = new WordCloud.WordCloud(pictBox.Width, pictBox.Height);
 
+        }
+
+        private void tbSaveFreqsInExcel_Click(object sender, EventArgs e)
+        {
+            ExcelSaver excelSaver = new ExcelSaver();
+            excelSaver.Save(new List<ListView>() { lvFreqs });
         }
     }
 }

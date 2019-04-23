@@ -37,21 +37,22 @@
             this.lvFreqs = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.tbRedraw = new System.Windows.Forms.Button();
-            this.btSaveImage = new System.Windows.Forms.Button();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.btPrevFindedLibItem = new System.Windows.Forms.Button();
             this.btNextFindedLibItem = new System.Windows.Forms.Button();
             this.tbFind = new System.Windows.Forms.TextBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tbRedraw = new System.Windows.Forms.Button();
+            this.btSaveImage = new System.Windows.Forms.Button();
+            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.tbSaveFreqsInExcel = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictBox)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tpText.SuspendLayout();
             this.tpFreqs.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -100,6 +101,7 @@
             // 
             // tpFreqs
             // 
+            this.tpFreqs.Controls.Add(this.tbSaveFreqsInExcel);
             this.tpFreqs.Controls.Add(this.btDeleteItems);
             this.tpFreqs.Controls.Add(this.lvFreqs);
             this.tpFreqs.Controls.Add(this.groupBox1);
@@ -144,33 +146,17 @@
             this.columnHeader2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.columnHeader2.Width = 106;
             // 
-            // tbRedraw
+            // groupBox1
             // 
-            this.tbRedraw.Location = new System.Drawing.Point(794, 437);
-            this.tbRedraw.Name = "tbRedraw";
-            this.tbRedraw.Size = new System.Drawing.Size(120, 32);
-            this.tbRedraw.TabIndex = 1;
-            this.tbRedraw.Text = "Перерисовать";
-            this.tbRedraw.UseVisualStyleBackColor = true;
-            this.tbRedraw.Click += new System.EventHandler(this.tbRedraw_Click);
-            // 
-            // btSaveImage
-            // 
-            this.btSaveImage.Location = new System.Drawing.Point(794, 475);
-            this.btSaveImage.Name = "btSaveImage";
-            this.btSaveImage.Size = new System.Drawing.Size(120, 43);
-            this.btSaveImage.TabIndex = 3;
-            this.btSaveImage.Text = "Сохранить картинку";
-            this.btSaveImage.UseVisualStyleBackColor = true;
-            this.btSaveImage.Click += new System.EventHandler(this.btSaveImage_Click);
-            // 
-            // numericUpDown1
-            // 
-            this.numericUpDown1.Location = new System.Drawing.Point(6, 25);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(135, 22);
-            this.numericUpDown1.TabIndex = 4;
-            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            this.groupBox1.Controls.Add(this.btPrevFindedLibItem);
+            this.groupBox1.Controls.Add(this.btNextFindedLibItem);
+            this.groupBox1.Controls.Add(this.tbFind);
+            this.groupBox1.Location = new System.Drawing.Point(430, 389);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(332, 63);
+            this.groupBox1.TabIndex = 18;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Поиск";
             // 
             // btPrevFindedLibItem
             // 
@@ -199,17 +185,33 @@
             this.tbFind.Size = new System.Drawing.Size(222, 22);
             this.tbFind.TabIndex = 14;
             // 
-            // groupBox1
+            // tbRedraw
             // 
-            this.groupBox1.Controls.Add(this.btPrevFindedLibItem);
-            this.groupBox1.Controls.Add(this.btNextFindedLibItem);
-            this.groupBox1.Controls.Add(this.tbFind);
-            this.groupBox1.Location = new System.Drawing.Point(430, 389);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(332, 63);
-            this.groupBox1.TabIndex = 18;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Поиск";
+            this.tbRedraw.Location = new System.Drawing.Point(794, 437);
+            this.tbRedraw.Name = "tbRedraw";
+            this.tbRedraw.Size = new System.Drawing.Size(120, 32);
+            this.tbRedraw.TabIndex = 1;
+            this.tbRedraw.Text = "Перерисовать";
+            this.tbRedraw.UseVisualStyleBackColor = true;
+            this.tbRedraw.Click += new System.EventHandler(this.tbRedraw_Click);
+            // 
+            // btSaveImage
+            // 
+            this.btSaveImage.Location = new System.Drawing.Point(794, 475);
+            this.btSaveImage.Name = "btSaveImage";
+            this.btSaveImage.Size = new System.Drawing.Size(120, 43);
+            this.btSaveImage.TabIndex = 3;
+            this.btSaveImage.Text = "Сохранить картинку";
+            this.btSaveImage.UseVisualStyleBackColor = true;
+            this.btSaveImage.Click += new System.EventHandler(this.btSaveImage_Click);
+            // 
+            // numericUpDown1
+            // 
+            this.numericUpDown1.Location = new System.Drawing.Point(6, 25);
+            this.numericUpDown1.Name = "numericUpDown1";
+            this.numericUpDown1.Size = new System.Drawing.Size(135, 22);
+            this.numericUpDown1.TabIndex = 4;
+            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
             // groupBox2
             // 
@@ -233,6 +235,16 @@
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
+            // tbSaveFreqsInExcel
+            // 
+            this.tbSaveFreqsInExcel.Location = new System.Drawing.Point(7, 428);
+            this.tbSaveFreqsInExcel.Name = "tbSaveFreqsInExcel";
+            this.tbSaveFreqsInExcel.Size = new System.Drawing.Size(144, 42);
+            this.tbSaveFreqsInExcel.TabIndex = 19;
+            this.tbSaveFreqsInExcel.Text = "Сохранить в Excel";
+            this.tbSaveFreqsInExcel.UseVisualStyleBackColor = true;
+            this.tbSaveFreqsInExcel.Click += new System.EventHandler(this.tbSaveFreqsInExcel_Click);
+            // 
             // ClassificationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -251,9 +263,9 @@
             this.tpText.ResumeLayout(false);
             this.tpText.PerformLayout();
             this.tpFreqs.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
@@ -280,5 +292,6 @@
         private System.Windows.Forms.TextBox tbFind;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.Button tbSaveFreqsInExcel;
     }
 }
