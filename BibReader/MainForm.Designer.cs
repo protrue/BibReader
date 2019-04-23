@@ -73,6 +73,12 @@
             this.lvSourceStatistic = new System.Windows.Forms.ListView();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.lvTypeOfDoc = new System.Windows.Forms.ListView();
+            this.tpJournalStat = new System.Windows.Forms.TabPage();
+            this.lvJournalStat = new System.Windows.Forms.ListView();
+            this.tpGeography = new System.Windows.Forms.TabPage();
+            this.lvGeography = new System.Windows.Forms.ListView();
+            this.tpConf = new System.Windows.Forms.TabPage();
+            this.lvConferenceStat = new System.Windows.Forms.ListView();
             this.lvLibItems = new System.Windows.Forms.ListView();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.файлToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -98,12 +104,6 @@
             this.btNextFindedLibItem = new System.Windows.Forms.Button();
             this.btPrevFindedLibItem = new System.Windows.Forms.Button();
             this.cbSearchCriterion = new System.Windows.Forms.ComboBox();
-            this.tpJournalStat = new System.Windows.Forms.TabPage();
-            this.lvJournalStat = new System.Windows.Forms.ListView();
-            this.tpGeography = new System.Windows.Forms.TabPage();
-            this.lvGeography = new System.Windows.Forms.ListView();
-            this.tpConf = new System.Windows.Forms.TabPage();
-            this.lvConferenceStat = new System.Windows.Forms.ListView();
             this.groupBox1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tpData.SuspendLayout();
@@ -113,12 +113,12 @@
             this.tpYearStat.SuspendLayout();
             this.tpSourses.SuspendLayout();
             this.tabPage1.SuspendLayout();
-            this.menuStrip1.SuspendLayout();
-            this.contextMenuStrip1.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
             this.tpJournalStat.SuspendLayout();
             this.tpGeography.SuspendLayout();
             this.tpConf.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // groupBox1
@@ -569,6 +569,7 @@
             this.lvYearStatistic.TabIndex = 0;
             this.lvYearStatistic.UseCompatibleStateImageBehavior = false;
             this.lvYearStatistic.View = System.Windows.Forms.View.Details;
+            this.lvYearStatistic.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvYearStatistic_ColumnClick);
             // 
             // tpSourses
             // 
@@ -592,6 +593,7 @@
             this.lvSourceStatistic.TabIndex = 1;
             this.lvSourceStatistic.UseCompatibleStateImageBehavior = false;
             this.lvSourceStatistic.View = System.Windows.Forms.View.Details;
+            this.lvSourceStatistic.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvSourceStatistic_ColumnClick);
             // 
             // tabPage1
             // 
@@ -613,6 +615,70 @@
             this.lvTypeOfDoc.TabIndex = 0;
             this.lvTypeOfDoc.UseCompatibleStateImageBehavior = false;
             this.lvTypeOfDoc.View = System.Windows.Forms.View.Details;
+            this.lvTypeOfDoc.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvTypeOfDoc_ColumnClick);
+            // 
+            // tpJournalStat
+            // 
+            this.tpJournalStat.Controls.Add(this.lvJournalStat);
+            this.tpJournalStat.Location = new System.Drawing.Point(4, 25);
+            this.tpJournalStat.Name = "tpJournalStat";
+            this.tpJournalStat.Padding = new System.Windows.Forms.Padding(3);
+            this.tpJournalStat.Size = new System.Drawing.Size(635, 587);
+            this.tpJournalStat.TabIndex = 3;
+            this.tpJournalStat.Text = "Журналы";
+            this.tpJournalStat.UseVisualStyleBackColor = true;
+            // 
+            // lvJournalStat
+            // 
+            this.lvJournalStat.Location = new System.Drawing.Point(7, 4);
+            this.lvJournalStat.Name = "lvJournalStat";
+            this.lvJournalStat.Size = new System.Drawing.Size(622, 577);
+            this.lvJournalStat.TabIndex = 0;
+            this.lvJournalStat.UseCompatibleStateImageBehavior = false;
+            this.lvJournalStat.View = System.Windows.Forms.View.Details;
+            this.lvJournalStat.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvJournalStat_ColumnClick);
+            // 
+            // tpGeography
+            // 
+            this.tpGeography.Controls.Add(this.lvGeography);
+            this.tpGeography.Location = new System.Drawing.Point(4, 25);
+            this.tpGeography.Name = "tpGeography";
+            this.tpGeography.Padding = new System.Windows.Forms.Padding(3);
+            this.tpGeography.Size = new System.Drawing.Size(635, 587);
+            this.tpGeography.TabIndex = 4;
+            this.tpGeography.Text = "География";
+            this.tpGeography.UseVisualStyleBackColor = true;
+            // 
+            // lvGeography
+            // 
+            this.lvGeography.Location = new System.Drawing.Point(7, 7);
+            this.lvGeography.Name = "lvGeography";
+            this.lvGeography.Size = new System.Drawing.Size(622, 574);
+            this.lvGeography.TabIndex = 0;
+            this.lvGeography.UseCompatibleStateImageBehavior = false;
+            this.lvGeography.View = System.Windows.Forms.View.Details;
+            this.lvGeography.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvGeography_ColumnClick);
+            // 
+            // tpConf
+            // 
+            this.tpConf.Controls.Add(this.lvConferenceStat);
+            this.tpConf.Location = new System.Drawing.Point(4, 25);
+            this.tpConf.Name = "tpConf";
+            this.tpConf.Padding = new System.Windows.Forms.Padding(3);
+            this.tpConf.Size = new System.Drawing.Size(635, 587);
+            this.tpConf.TabIndex = 5;
+            this.tpConf.Text = "Конференции";
+            this.tpConf.UseVisualStyleBackColor = true;
+            // 
+            // lvConferenceStat
+            // 
+            this.lvConferenceStat.Location = new System.Drawing.Point(7, 7);
+            this.lvConferenceStat.Name = "lvConferenceStat";
+            this.lvConferenceStat.Size = new System.Drawing.Size(622, 574);
+            this.lvConferenceStat.TabIndex = 0;
+            this.lvConferenceStat.UseCompatibleStateImageBehavior = false;
+            this.lvConferenceStat.View = System.Windows.Forms.View.Details;
+            this.lvConferenceStat.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvConferenceStat_ColumnClick);
             // 
             // lvLibItems
             // 
@@ -842,66 +908,6 @@
             this.cbSearchCriterion.TabIndex = 14;
             this.cbSearchCriterion.SelectedIndexChanged += new System.EventHandler(this.cbSearchCriterion_SelectedIndexChanged);
             // 
-            // tpJournalStat
-            // 
-            this.tpJournalStat.Controls.Add(this.lvJournalStat);
-            this.tpJournalStat.Location = new System.Drawing.Point(4, 25);
-            this.tpJournalStat.Name = "tpJournalStat";
-            this.tpJournalStat.Padding = new System.Windows.Forms.Padding(3);
-            this.tpJournalStat.Size = new System.Drawing.Size(635, 587);
-            this.tpJournalStat.TabIndex = 3;
-            this.tpJournalStat.Text = "Журналы";
-            this.tpJournalStat.UseVisualStyleBackColor = true;
-            // 
-            // lvJournalStat
-            // 
-            this.lvJournalStat.Location = new System.Drawing.Point(7, 4);
-            this.lvJournalStat.Name = "lvJournalStat";
-            this.lvJournalStat.Size = new System.Drawing.Size(622, 577);
-            this.lvJournalStat.TabIndex = 0;
-            this.lvJournalStat.UseCompatibleStateImageBehavior = false;
-            this.lvJournalStat.View = System.Windows.Forms.View.Details;
-            // 
-            // tpGeography
-            // 
-            this.tpGeography.Controls.Add(this.lvGeography);
-            this.tpGeography.Location = new System.Drawing.Point(4, 25);
-            this.tpGeography.Name = "tpGeography";
-            this.tpGeography.Padding = new System.Windows.Forms.Padding(3);
-            this.tpGeography.Size = new System.Drawing.Size(635, 587);
-            this.tpGeography.TabIndex = 4;
-            this.tpGeography.Text = "География";
-            this.tpGeography.UseVisualStyleBackColor = true;
-            // 
-            // lvGeography
-            // 
-            this.lvGeography.Location = new System.Drawing.Point(7, 7);
-            this.lvGeography.Name = "lvGeography";
-            this.lvGeography.Size = new System.Drawing.Size(622, 574);
-            this.lvGeography.TabIndex = 0;
-            this.lvGeography.UseCompatibleStateImageBehavior = false;
-            this.lvGeography.View = System.Windows.Forms.View.Details;
-            // 
-            // tpConf
-            // 
-            this.tpConf.Controls.Add(this.lvConferenceStat);
-            this.tpConf.Location = new System.Drawing.Point(4, 25);
-            this.tpConf.Name = "tpConf";
-            this.tpConf.Padding = new System.Windows.Forms.Padding(3);
-            this.tpConf.Size = new System.Drawing.Size(635, 587);
-            this.tpConf.TabIndex = 5;
-            this.tpConf.Text = "Конференции";
-            this.tpConf.UseVisualStyleBackColor = true;
-            // 
-            // lvConferenceStat
-            // 
-            this.lvConferenceStat.Location = new System.Drawing.Point(7, 7);
-            this.lvConferenceStat.Name = "lvConferenceStat";
-            this.lvConferenceStat.Size = new System.Drawing.Size(622, 574);
-            this.lvConferenceStat.TabIndex = 0;
-            this.lvConferenceStat.UseCompatibleStateImageBehavior = false;
-            this.lvConferenceStat.View = System.Windows.Forms.View.Details;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -935,14 +941,14 @@
             this.tpYearStat.ResumeLayout(false);
             this.tpSourses.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
+            this.tpJournalStat.ResumeLayout(false);
+            this.tpGeography.ResumeLayout(false);
+            this.tpConf.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.contextMenuStrip1.ResumeLayout(false);
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            this.tpJournalStat.ResumeLayout(false);
-            this.tpGeography.ResumeLayout(false);
-            this.tpConf.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

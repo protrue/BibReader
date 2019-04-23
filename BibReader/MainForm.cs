@@ -783,37 +783,40 @@ namespace BibReader
 
         private void lvLibItems_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            ListViewItemComparer sorter = lvLibItems.ListViewItemSorter as ListViewItemComparer;
+            SortingByColumn((ListView)sender, e);  
+        }
 
+        private void SortingByColumn(ListView listView, ColumnClickEventArgs e)
+        {
+            ListViewItemComparer sorter = listView.ListViewItemSorter as ListViewItemComparer;
             if (sorter == null)
             {
                 sorter = new ListViewItemComparer(e.Column);
-                lvLibItems.ListViewItemSorter = sorter;
+                int val;
+                if (Int32.TryParse(listView.Items[0].SubItems[e.Column].Text, out val))
+                    sorter.Numeric = true;
+                else
+                    sorter.Numeric = false;
+
+                listView.ListViewItemSorter = sorter;
             }
             else
             {
+                int val;
+                if (Int32.TryParse(listView.Items[0].SubItems[e.Column].Text, out val))
+                    sorter.Numeric = true;
+                else
+                    sorter.Numeric = false;
                 sorter.Column = e.Column;
             }
-
-            lvLibItems.Sort();       
+            listView.Sort();
         }
 
         public class ListViewItemComparer : IComparer
         {
-            private int column;
-            private bool numeric = false;
+            public int Column { get; set; }
 
-            public int Column
-            {
-                get { return column; }
-                set { column = value; }
-            }
-
-            public bool Numeric
-            {
-                get { return numeric; }
-                set { numeric = value; }
-            }
+            public bool Numeric { get; set; }
 
             public ListViewItemComparer(int columnIndex)
             {
@@ -864,19 +867,24 @@ namespace BibReader
             using (var saveFile = new SaveFileDialog())
             {
                 //MessageBox.Show(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"filesystem\newfile.bib"));
-                saveFile.InitialDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"filesystem\newfile.bib");
+                saveFile.InitialDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory);
                 saveFile.Filter = "Файлы xls|*.xls";
                 if (saveFile.ShowDialog() == DialogResult.OK)
                 {
                     string filePath = saveFile.FileName;
 
                     var app = new Excel.Application();
-                    //app.Visible = true;
                     var wb = app.Workbooks.Add(1);
-                    ToExcel(wb, lvJournalStat);
-                    ToExcel(wb, lvConferenceStat);
+                    var tps = tabControlForStatistic.TabPages;
+                    foreach (TabPage tp in tps)
+                    {
+                        var lvs = tp.Controls.OfType<ListView>();
+                        ToExcel(wb, lvs.First());
+                    }
                     wb.SaveAs(filePath);
                     wb.Close();
+                    app.Quit();
+                    MessageBox.Show("Файл сохранен!");
                 }
             }
         }
@@ -900,6 +908,36 @@ namespace BibReader
                 i2++;
             }
             
+        }
+
+        private void lvYearStatistic_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            SortingByColumn((ListView)sender, e);
+        }
+
+        private void lvSourceStatistic_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            SortingByColumn((ListView)sender, e);
+        }
+
+        private void lvTypeOfDoc_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            SortingByColumn((ListView)sender, e);
+        }
+
+        private void lvJournalStat_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            SortingByColumn((ListView)sender, e);
+        }
+
+        private void lvGeography_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            SortingByColumn((ListView)sender, e);
+        }
+
+        private void lvConferenceStat_ColumnClick(object sender, ColumnClickEventArgs e)
+        {
+            SortingByColumn((ListView)sender, e);
         }
     }
 }
