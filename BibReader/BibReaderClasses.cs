@@ -140,7 +140,8 @@ namespace BibReader
         {
             string[] codesForRemove = new string[] {
                 @"\&\#38;",
-                "amp;#x2014;"
+                "amp;#x2014;",
+                "{''}"
             };
 
             foreach (var code in codesForRemove)
@@ -149,6 +150,8 @@ namespace BibReader
                 {
                     var index = title.IndexOf(code);
                     title = title.Remove(index, code.Length);
+                    if (code == "{''}")
+                        title = title.Insert(index, "”");
                 }
             }
 
