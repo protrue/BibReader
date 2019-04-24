@@ -230,7 +230,8 @@ namespace BibReader
                         else
                             SetTypeOfLibItem(currstr);
 
-                        if (currstr.Length >= 2 && (currstr.Substring(currstr.Length - 2, 2) == "}," ||
+                        if (currstr.Length >= 3 && (currstr.Substring(currstr.Length - 2, 2) == "}," ||
+                            currstr.Substring(currstr.Length - 3, 3) == "}, " ||
                             currstr.Substring(currstr.Length - 2, 2) == endStr))
                         {
                             var key = regex.Match(str).Groups[1].Value;
