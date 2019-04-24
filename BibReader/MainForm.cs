@@ -11,6 +11,7 @@ using BibReader.TypesOfSourse;
 using System.Drawing;
 using System.Collections;
 using BibReader.Saver;
+using BibReader.ColumnSorting;
 
 namespace BibReader
 {
@@ -18,7 +19,7 @@ namespace BibReader
     {
         //HashSet<string> currTitles = new HashSet<string>();
         //Dictionary<string, int> currTitles = new Dictionary<string, int>();
-        Stat statistic = new Stat();
+        FormStatistic statistic = new FormStatistic();
         List<ListViewItem> deletedNotUniqueItems = new List<ListViewItem>();
         string lastOpenedFileName = string.Empty;
         List<int> indexesOfLibItems;
@@ -69,7 +70,6 @@ namespace BibReader
         {
             foreach (var item in libItems)
             {
-                statistic.AddLibItemsCount();
 
                 var lvItem = new ListViewItem(new string[]
                 {
@@ -104,7 +104,6 @@ namespace BibReader
                 var title = ((LibItem)item.Tag).Title;
                 if (unique.isUnique(title, item.Index))
                 {
-                    statistic.AddLibItemsCountAfterFirstResearch();
                     item.SubItems[2].Text = "2";
                 }
                 else
@@ -158,7 +157,7 @@ namespace BibReader
         private void LoadLibItemsInLv(List<LibItem> libItems)
         {
             lvLibItems.Items.Clear();
-            statistic = new Stat();
+            statistic = new FormStatistic();
             //Unique.ClearDictionary();
             currIndex = -1;
             deletedNotUniqueItems.Clear();
@@ -283,129 +282,7 @@ namespace BibReader
             //}
         }
 
-        private void LoadSourseStatistic()
-        {
-            lvSourceStatistic.Clear();
-            if (btUnique.Enabled)
-            {
-                statistic.DictOfSourses = new Dictionary<string, int>();
-                //if (btRelevance.Enabled)
-                statistic.DictOfSoursesUnique = new Dictionary<string, int>();
-                //if (btFirst.Enabled)
-                statistic.DictOfSoursesRelevance = new Dictionary<string, int>();
-            }
-            statistic.DictOfYears = new Dictionary<string, int>();
-            statistic.DictOfTypes = new Dictionary<string, int>();
-            statistic.DictOfJournal = new Dictionary<string, int>();
-            statistic.DictOfConference = new Dictionary<string, int>();
-            statistic.DictOfGeography = new Dictionary<string, int>();
 
-            foreach (ListViewItem item in lvLibItems.Items)
-            {
-                statistic.SetYearStatistic((LibItem)item.Tag);
-                statistic.SetTypesStatistic((LibItem)item.Tag);
-                if (btUnique.Enabled)
-                    statistic.SetSourseStatictic((LibItem)item.Tag);
-                if (btRelevance.Enabled)
-                    statistic.SetSourseUniqueStatictic((LibItem)item.Tag);
-                if (btFirst.Enabled)
-                    statistic.SetSourseRelevanceStatictic((LibItem)item.Tag);
-                statistic.SetJournalStatistic((LibItem)item.Tag);
-                statistic.SetConferenceStatistic((LibItem)item.Tag);
-                statistic.SetGeographyStatistic((LibItem)item.Tag);
-            }
-
-            lvSourceStatistic.Columns.Add("Источник");
-            lvSourceStatistic.Columns.Add("Первичных");
-            lvSourceStatistic.Columns.Add("Уникальных");
-            lvSourceStatistic.Columns.Add("Релевантных");
-            lvSourceStatistic.Columns[0].Width = lvSourceStatistic.Width / 4;
-            lvSourceStatistic.Columns[1].Width = lvSourceStatistic.Width / 4;
-            lvSourceStatistic.Columns[2].Width = lvSourceStatistic.Width / 4;
-            lvSourceStatistic.Columns[3].Width = lvSourceStatistic.Width / 4;
-            lvSourceStatistic.Items.AddRange(statistic.DictOfSourses.OrderBy(i => i.Key).
-                Select(i => new ListViewItem(new string[] { (i.Key == "") ? "Неизв источник" : i.Key, i.Value.ToString(),
-                    statistic.DictOfSoursesUnique[i.Key].ToString(), statistic.DictOfSoursesRelevance[i.Key].ToString() })).ToArray());
-            lvSourceStatistic.Items.Add(new ListViewItem(new string[] { "ИТОГО",
-                statistic.DictOfSourses.Sum(i => i.Value).ToString(),
-                statistic.DictOfSoursesUnique.Sum(i => i.Value).ToString(),
-                statistic.DictOfSoursesRelevance.Sum(i => i.Value).ToString()
-            }));
-        }
-
-        private void LoadYearStatistic()
-        {
-            lvYearStatistic.Clear();
-            //foreach (ListViewItem item in lvLibItems.Items)
-            //    statistic.SetYearStatistic((LibItem)item.Tag);
-            lvYearStatistic.Columns.Add("Год");
-            lvYearStatistic.Columns.Add("Количество");
-            lvYearStatistic.Columns[0].Width = lvYearStatistic.Width / 2;
-            lvYearStatistic.Columns[1].Width = lvYearStatistic.Width / 2;
-            lvYearStatistic.Items.AddRange(statistic.DictOfYears.OrderBy(i => i.Key).
-                Select(i => new ListViewItem(new string[] { (i.Key == "") ? "Без года" : i.Key, i.Value.ToString() })).ToArray());
-            lvYearStatistic.Items.Add(new ListViewItem(new string[] { "ИТОГО",
-                statistic.DictOfYears.Sum(i => i.Value).ToString(),
-            }));
-        }
-
-        private void LoadTypeStatistic()
-        {
-            lvTypeOfDoc.Clear();
-            lvTypeOfDoc.Columns.Add("Тип документа");
-            lvTypeOfDoc.Columns.Add("Количество");
-            lvTypeOfDoc.Columns[0].Width = lvTypeOfDoc.Width / 2;
-            lvTypeOfDoc.Columns[1].Width = lvTypeOfDoc.Width / 2;
-            lvTypeOfDoc.Items.AddRange(statistic.DictOfTypes.OrderBy(i => i.Key).
-                Select(item => new ListViewItem(new string[] { item.Key == "" ? "Неизвестный тип" : item.Key, item.Value.ToString() })).ToArray());
-            lvTypeOfDoc.Items.Add(new ListViewItem(new string[] { "ИТОГО",
-                statistic.DictOfTypes.Sum(i => i.Value).ToString(),
-            }));
-
-        }
-
-        private void LoadJournalStatistic()
-        {
-            lvJournalStat.Clear();
-            lvJournalStat.Columns.Add("Название журнала");
-            lvJournalStat.Columns.Add("Количество");
-            lvJournalStat.Columns[0].Width = lvJournalStat.Width / 2;
-            lvJournalStat.Columns[1].Width = lvJournalStat.Width / 2;
-            lvJournalStat.Items.AddRange(statistic.DictOfJournal.OrderBy(i => i.Key).
-                Select(item => new ListViewItem(new string[] { item.Key == "" ? "Неизвестный тип" : item.Key, item.Value.ToString() })).ToArray());
-            lvJournalStat.Items.Add(new ListViewItem(new string[] { "ИТОГО",
-                statistic.DictOfJournal.Sum(i => i.Value).ToString(),
-            }));
-        }
-
-        private void LoadConferenceStatistic()
-        {
-            lvConferenceStat.Clear();
-            lvConferenceStat.Columns.Add("Название конференции");
-            lvConferenceStat.Columns.Add("Количество");
-            lvConferenceStat.Columns[0].Width = lvConferenceStat.Width / 2;
-            lvConferenceStat.Columns[1].Width = lvConferenceStat.Width / 2;
-            lvConferenceStat.Items.AddRange(statistic.DictOfConference.OrderBy(i => i.Key).
-                Select(item => new ListViewItem(new string[] { item.Key == "" ? "Неизвестный тип" : item.Key, item.Value.ToString() })).ToArray());
-            lvConferenceStat.Items.Add(new ListViewItem(new string[] { "ИТОГО",
-                statistic.DictOfConference.Sum(i => i.Value).ToString(),
-            }));
-        }
-
-        private void LoadGeographyStatistic()
-        {
-            
-            lvGeography.Clear();
-            lvGeography.Columns.Add("Страна");
-            lvGeography.Columns.Add("Количество");
-            lvGeography.Columns[0].Width = lvGeography.Width / 2;
-            lvGeography.Columns[1].Width = lvGeography.Width / 2;
-            lvGeography.Items.AddRange(statistic.DictOfGeography.OrderBy(i => i.Key).
-                Select(item => new ListViewItem(new string[] { item.Key == "" ? "Неизвестный тип" : item.Key, item.Value.ToString() })).ToArray());
-            lvGeography.Items.Add(new ListViewItem(new string[] { "ИТОГО",
-                statistic.DictOfGeography.Sum(i => i.Value).ToString(),
-            }));
-        }
 
         private void MakeBibRef()
         {
@@ -524,12 +401,12 @@ namespace BibReader
 
         private void UpdateUI()
         {
-            LoadSourseStatistic();
-            LoadYearStatistic();
-            LoadTypeStatistic();
-            LoadJournalStatistic();
-            LoadGeographyStatistic();
-            LoadConferenceStatistic();
+            statistic.LoadSourseStatistic(lvLibItems, lvSourceStatistic, btFirst, btUnique, btRelevance);
+            statistic.LoadYearStatistic(lvYearStatistic);
+            statistic.LoadTypeStatistic(lvTypeOfDoc);
+            statistic.LoadJournalStatistic(lvJournalStat);
+            statistic.LoadGeographyStatistic(lvGeography);
+            statistic.LoadConferenceStatistic(lvConferenceStat);
 
             rtbBib.Text = string.Empty;
             if (lvLibItems.Items.Count != 0)
@@ -810,83 +687,7 @@ namespace BibReader
 
         private void lvLibItems_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            SortingByColumn((ListView)sender, e);  
-        }
-
-        private void SortingByColumn(ListView listView, ColumnClickEventArgs e)
-        {
-            ListViewItemComparer sorter = listView.ListViewItemSorter as ListViewItemComparer;
-            if (sorter == null)
-            {
-                sorter = new ListViewItemComparer(e.Column);
-                int val;
-                if (Int32.TryParse(listView.Items[0].SubItems[e.Column].Text, out val))
-                    sorter.Numeric = true;
-                else
-                    sorter.Numeric = false;
-
-                listView.ListViewItemSorter = sorter;
-            }
-            else
-            {
-                int val;
-                if (Int32.TryParse(listView.Items[0].SubItems[e.Column].Text, out val))
-                    sorter.Numeric = true;
-                else
-                    sorter.Numeric = false;
-                sorter.Column = e.Column;
-            }
-            listView.Sort();
-        }
-
-        public class ListViewItemComparer : IComparer
-        {
-            public int Column { get; set; }
-
-            public bool Numeric { get; set; }
-
-            public ListViewItemComparer(int columnIndex)
-            {
-                Column = columnIndex;
-            }
-
-            public int Compare(object x, object y)
-            {
-                ListViewItem itemX = x as ListViewItem;
-                ListViewItem itemY = y as ListViewItem;
-
-                if (itemX == null && itemY == null)
-                    return 0;
-                else if (itemX == null)
-                    return -1;
-                else if (itemY == null)
-                    return 1;
-
-                if (itemX == itemY) return 0;
-
-                if (Numeric)
-                {
-                    decimal itemXVal, itemYVal;
-
-                    if (!Decimal.TryParse(itemX.SubItems[Column].Text, out itemXVal))
-                    {
-                        itemXVal = 0;
-                    }
-                    if (!Decimal.TryParse(itemY.SubItems[Column].Text, out itemYVal))
-                    {
-                        itemYVal = 0;
-                    }
-
-                    return Decimal.Compare(itemXVal, itemYVal);
-                }
-                else
-                {
-                    string itemXText = itemX.SubItems[Column].Text;
-                    string itemYText = itemY.SubItems[Column].Text;
-
-                    return String.Compare(itemXText, itemYText);
-                }
-            }
+            Sorting.SortingByColumn((ListView)sender, e);  
         }
 
         private void btSaveStatistic_Click(object sender, EventArgs e)
@@ -903,32 +704,32 @@ namespace BibReader
 
         private void lvYearStatistic_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            SortingByColumn((ListView)sender, e);
+            Sorting.SortingByColumn((ListView)sender, e);
         }
 
         private void lvSourceStatistic_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            SortingByColumn((ListView)sender, e);
+            Sorting.SortingByColumn((ListView)sender, e);
         }
 
         private void lvTypeOfDoc_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            SortingByColumn((ListView)sender, e);
+            Sorting.SortingByColumn((ListView)sender, e);
         }
 
         private void lvJournalStat_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            SortingByColumn((ListView)sender, e);
+            Sorting.SortingByColumn((ListView)sender, e);
         }
 
         private void lvGeography_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            SortingByColumn((ListView)sender, e);
+            Sorting.SortingByColumn((ListView)sender, e);
         }
 
         private void lvConferenceStat_ColumnClick(object sender, ColumnClickEventArgs e)
         {
-            SortingByColumn((ListView)sender, e);
+            Sorting.SortingByColumn((ListView)sender, e);
         }
 
         private void btSaveBibRef_Click(object sender, EventArgs e)

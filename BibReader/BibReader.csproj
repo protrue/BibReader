@@ -69,6 +69,7 @@
     <Compile Include="ClassificationForm.Designer.cs">
       <DependentUpon>ClassificationForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="ColumnSorting\Sorting.cs" />
     <Compile Include="Corpuses\Relevance.cs" />
     <Compile Include="Saver\ExcelSaver.cs" />
     <Compile Include="MainForm.cs">
@@ -82,6 +83,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Saver\WordSaver.cs" />
+    <Compile Include="Statistic\FormStatistic.cs" />
     <Compile Include="Statistic\Statistic.cs" />
     <Compile Include="Corpuses\Unique.cs" />
     <Compile Include="TypesOfSourse\Book.cs" />
