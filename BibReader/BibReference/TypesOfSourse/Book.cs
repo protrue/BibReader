@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BibReader.TypesOfSourse
+namespace BibReader.BibReference.TypesOfSourse
 {
     public class Book
     {

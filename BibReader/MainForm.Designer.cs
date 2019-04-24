@@ -867,7 +867,6 @@
             this.tbFind.Name = "tbFind";
             this.tbFind.Size = new System.Drawing.Size(222, 22);
             this.tbFind.TabIndex = 10;
-            this.tbFind.TextChanged += new System.EventHandler(this.tbFind_TextChanged);
             // 
             // label1
             // 

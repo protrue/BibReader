@@ -7,25 +7,26 @@ using System.Windows.Forms;
 using System.IO;
 using BibReader.Corpuses;
 using BibReader.Statistic;
-using BibReader.TypesOfSourse;
 using System.Drawing;
 using System.Collections;
 using BibReader.Saver;
 using BibReader.ColumnSorting;
+using BibReader.Readers;
+using BibReader.Publications;
+using BibReader.BibReference;
+using BibReader.BibReference.TypesOfSourse;
 
 namespace BibReader
 {
     public partial class MainForm : Form
     {
-        //HashSet<string> currTitles = new HashSet<string>();
-        //Dictionary<string, int> currTitles = new Dictionary<string, int>();
         FormStatistic statistic = new FormStatistic();
         List<ListViewItem> deletedNotUniqueItems = new List<ListViewItem>();
         string lastOpenedFileName = string.Empty;
         List<int> indexesOfLibItems;
         int currIndex = -1;
 
-        public StreamReader[] GetStreamReaders()
+        private StreamReader[] GetStreamReaders()
         {
             OpenFileDialog opd = new OpenFileDialog();
             opd.Multiselect = true;
@@ -43,7 +44,6 @@ namespace BibReader
             }
             return null;
         }
-
 
         private void InitListViewItems()
         {
@@ -89,7 +89,6 @@ namespace BibReader
                 lbCurrSelectedItem.Text = $"1/{lvLibItems.Items.Count}";
             }
         }
-
 
         private void UniqueTitles()
         {
@@ -198,19 +197,22 @@ namespace BibReader
         {
             var univReader = new UniversalBibReader();
             var reader = GetStreamReaders();
-            var listOfItems = univReader.Read(reader);
-            ClearDataBeforeLoad();
-            LoadLibItemsInLv(listOfItems);
-            toolStripStatusLabel1.Text = "Last opened file name: " + lastOpenedFileName;
-
             if (reader != null)
             {
-                btFirst.Enabled = false;
-                btUnique.Enabled = true;
-                btRelevance.Enabled = false;
-                добавитьToolStripMenuItem.Enabled = true;
+                var listOfItems = univReader.Read(reader);
+                ClearDataBeforeLoad();
+                LoadLibItemsInLv(listOfItems);
+                toolStripStatusLabel1.Text = "Last opened file name: " + lastOpenedFileName;
+
+                if (reader != null)
+                {
+                    btFirst.Enabled = false;
+                    btUnique.Enabled = true;
+                    btRelevance.Enabled = false;
+                    добавитьToolStripMenuItem.Enabled = true;
+                }
+                UpdateUI();
             }
-            UpdateUI();
         }
 
         private void ClearDataBeforeLoad()
@@ -245,16 +247,19 @@ namespace BibReader
         {
             var univReader = new UniversalBibReader();
             var reader = GetStreamReaders();
-            var listOfItems = univReader.Read(reader);
-            AddLibItemsInLvItems(listOfItems);
-
             if (reader != null)
             {
-                btFirst.Enabled = false;
-                btUnique.Enabled = true;
-                btRelevance.Enabled = false;
+                var listOfItems = univReader.Read(reader);
+                AddLibItemsInLvItems(listOfItems);
+
+                if (reader != null)
+                {
+                    btFirst.Enabled = false;
+                    btUnique.Enabled = true;
+                    btRelevance.Enabled = false;
+                }
+                UpdateUI();
             }
-            UpdateUI();
         }
 
         private void tabControl_Selected(object sender, TabControlEventArgs e)
@@ -281,8 +286,6 @@ namespace BibReader
             //        break;
             //}
         }
-
-
 
         private void MakeBibRef()
         {
@@ -552,11 +555,6 @@ namespace BibReader
             }
         }
 
-        private void tbFind_TextChanged(object sender, EventArgs e)
-        {
-            //lvLibItems.Items[40].Selected = true;
-        }
-
         private void btNextFindedLibItem_Click(object sender, EventArgs e)
         {
             indexesOfLibItems = new List<int>();
@@ -700,7 +698,6 @@ namespace BibReader
                 listOfTables.Add(tp.Controls.OfType<ListView>().First());
             saver.Save(listOfTables);
         }
-
 
         private void lvYearStatistic_ColumnClick(object sender, ColumnClickEventArgs e)
         {

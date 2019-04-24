@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace BibReader
+namespace BibReader.Publications
 {
     public class LibItem
     {

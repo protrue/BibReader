@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace BibReader.TypesOfSourse
+namespace BibReader.BibReference.TypesOfSourse
 {
    
     public class Enternet
