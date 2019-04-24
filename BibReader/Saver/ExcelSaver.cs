@@ -12,6 +12,17 @@ namespace BibReader.Saver
 {
     class ExcelSaver
     {
+        Dictionary<string, string> WorksheetNames = new Dictionary<string, string>()
+        {
+            {"lvSourceStatistic", "Источники" },
+            {"lvYearStatistic", "Год" },
+            {"lvTypeOfDoc", "Тип документа" },
+            {"lvJournalStat", "Журналы" },
+            {"lvConferenceStat", "Конференции" },
+            {"lvGeography", "География" },
+            {"lvFreqs", "Частоный словарь" },
+        };
+
         public void Save(List<ListView> listOfTables)
         {
             using (var saveFile = new SaveFileDialog())
@@ -40,7 +51,7 @@ namespace BibReader.Saver
         {
             wb.Worksheets.Add();
             var ws = (Excel.Worksheet)wb.Worksheets[1];
-            ws.Name = list.Name;
+            ws.Name = WorksheetNames.ContainsKey(list.Name) ? WorksheetNames[list.Name] : list.Name;
             int i = 1;
             foreach (ColumnHeader column in list.Columns)
             {
