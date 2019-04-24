@@ -33,6 +33,7 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tpText = new System.Windows.Forms.TabPage();
             this.tpFreqs = new System.Windows.Forms.TabPage();
+            this.tbSaveFreqsInExcel = new System.Windows.Forms.Button();
             this.btDeleteItems = new System.Windows.Forms.Button();
             this.lvFreqs = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -46,7 +47,7 @@
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.tbSaveFreqsInExcel = new System.Windows.Forms.Button();
+            this.checkBoxFreq = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictBox)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tpText.SuspendLayout();
@@ -112,6 +113,16 @@
             this.tpFreqs.TabIndex = 1;
             this.tpFreqs.Text = "Частота";
             this.tpFreqs.UseVisualStyleBackColor = true;
+            // 
+            // tbSaveFreqsInExcel
+            // 
+            this.tbSaveFreqsInExcel.Location = new System.Drawing.Point(7, 428);
+            this.tbSaveFreqsInExcel.Name = "tbSaveFreqsInExcel";
+            this.tbSaveFreqsInExcel.Size = new System.Drawing.Size(144, 42);
+            this.tbSaveFreqsInExcel.TabIndex = 19;
+            this.tbSaveFreqsInExcel.Text = "Сохранить в Excel";
+            this.tbSaveFreqsInExcel.UseVisualStyleBackColor = true;
+            this.tbSaveFreqsInExcel.Click += new System.EventHandler(this.tbSaveFreqsInExcel_Click);
             // 
             // btDeleteItems
             // 
@@ -235,21 +246,22 @@
             this.checkBox1.UseVisualStyleBackColor = true;
             this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
-            // tbSaveFreqsInExcel
+            // checkBoxFreq
             // 
-            this.tbSaveFreqsInExcel.Location = new System.Drawing.Point(7, 428);
-            this.tbSaveFreqsInExcel.Name = "tbSaveFreqsInExcel";
-            this.tbSaveFreqsInExcel.Size = new System.Drawing.Size(144, 42);
-            this.tbSaveFreqsInExcel.TabIndex = 19;
-            this.tbSaveFreqsInExcel.Text = "Сохранить в Excel";
-            this.tbSaveFreqsInExcel.UseVisualStyleBackColor = true;
-            this.tbSaveFreqsInExcel.Click += new System.EventHandler(this.tbSaveFreqsInExcel_Click);
+            this.checkBoxFreq.AutoSize = true;
+            this.checkBoxFreq.Location = new System.Drawing.Point(1139, 447);
+            this.checkBoxFreq.Name = "checkBoxFreq";
+            this.checkBoxFreq.Size = new System.Drawing.Size(131, 21);
+            this.checkBoxFreq.TabIndex = 6;
+            this.checkBoxFreq.Text = "Слово+частота";
+            this.checkBoxFreq.UseVisualStyleBackColor = true;
             // 
             // ClassificationForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1455, 530);
+            this.Controls.Add(this.checkBoxFreq);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.btSaveImage);
             this.Controls.Add(this.tbRedraw);
@@ -269,6 +281,7 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -293,5 +306,6 @@
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Button tbSaveFreqsInExcel;
+        private System.Windows.Forms.CheckBox checkBoxFreq;
     }
 }

@@ -106,6 +106,7 @@
             this.cbSearchCriterion = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.labelFindedItemsCount = new System.Windows.Forms.Label();
+            this.btSaveBibRef = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tpData.SuspendLayout();
@@ -468,6 +469,7 @@
             // 
             // tpBib
             // 
+            this.tpBib.Controls.Add(this.btSaveBibRef);
             this.tpBib.Controls.Add(this.btPrintBib);
             this.tpBib.Controls.Add(this.cbBibStyles);
             this.tpBib.Controls.Add(this.rtbBib);
@@ -509,7 +511,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rtbBib.Location = new System.Drawing.Point(7, 48);
             this.rtbBib.Name = "rtbBib";
-            this.rtbBib.Size = new System.Drawing.Size(643, 613);
+            this.rtbBib.Size = new System.Drawing.Size(643, 572);
             this.rtbBib.TabIndex = 0;
             this.rtbBib.Text = "";
             // 
@@ -927,6 +929,16 @@
             this.labelFindedItemsCount.Size = new System.Drawing.Size(0, 17);
             this.labelFindedItemsCount.TabIndex = 16;
             // 
+            // btSaveBibRef
+            // 
+            this.btSaveBibRef.Location = new System.Drawing.Point(7, 626);
+            this.btSaveBibRef.Name = "btSaveBibRef";
+            this.btSaveBibRef.Size = new System.Drawing.Size(124, 52);
+            this.btSaveBibRef.TabIndex = 3;
+            this.btSaveBibRef.Text = "Сохранить в Word";
+            this.btSaveBibRef.UseVisualStyleBackColor = true;
+            this.btSaveBibRef.Click += new System.EventHandler(this.btSaveBibRef_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -1053,6 +1065,7 @@
         private System.Windows.Forms.ListView lvConferenceStat;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label labelFindedItemsCount;
+        private System.Windows.Forms.Button btSaveBibRef;
     }
 }
 

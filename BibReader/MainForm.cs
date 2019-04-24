@@ -326,6 +326,11 @@ namespace BibReader
             lvSourceStatistic.Items.AddRange(statistic.DictOfSourses.OrderBy(i => i.Key).
                 Select(i => new ListViewItem(new string[] { (i.Key == "") ? "Неизв источник" : i.Key, i.Value.ToString(),
                     statistic.DictOfSoursesUnique[i.Key].ToString(), statistic.DictOfSoursesRelevance[i.Key].ToString() })).ToArray());
+            lvSourceStatistic.Items.Add(new ListViewItem(new string[] { "ИТОГО",
+                statistic.DictOfSourses.Sum(i => i.Value).ToString(),
+                statistic.DictOfSoursesUnique.Sum(i => i.Value).ToString(),
+                statistic.DictOfSoursesRelevance.Sum(i => i.Value).ToString()
+            }));
         }
 
         private void LoadYearStatistic()
@@ -339,6 +344,9 @@ namespace BibReader
             lvYearStatistic.Columns[1].Width = lvYearStatistic.Width / 2;
             lvYearStatistic.Items.AddRange(statistic.DictOfYears.OrderBy(i => i.Key).
                 Select(i => new ListViewItem(new string[] { (i.Key == "") ? "Без года" : i.Key, i.Value.ToString() })).ToArray());
+            lvYearStatistic.Items.Add(new ListViewItem(new string[] { "ИТОГО",
+                statistic.DictOfYears.Sum(i => i.Value).ToString(),
+            }));
         }
 
         private void LoadTypeStatistic()
@@ -350,6 +358,10 @@ namespace BibReader
             lvTypeOfDoc.Columns[1].Width = lvTypeOfDoc.Width / 2;
             lvTypeOfDoc.Items.AddRange(statistic.DictOfTypes.OrderBy(i => i.Key).
                 Select(item => new ListViewItem(new string[] { item.Key == "" ? "Неизвестный тип" : item.Key, item.Value.ToString() })).ToArray());
+            lvTypeOfDoc.Items.Add(new ListViewItem(new string[] { "ИТОГО",
+                statistic.DictOfTypes.Sum(i => i.Value).ToString(),
+            }));
+
         }
 
         private void LoadJournalStatistic()
@@ -361,6 +373,9 @@ namespace BibReader
             lvJournalStat.Columns[1].Width = lvJournalStat.Width / 2;
             lvJournalStat.Items.AddRange(statistic.DictOfJournal.OrderBy(i => i.Key).
                 Select(item => new ListViewItem(new string[] { item.Key == "" ? "Неизвестный тип" : item.Key, item.Value.ToString() })).ToArray());
+            lvJournalStat.Items.Add(new ListViewItem(new string[] { "ИТОГО",
+                statistic.DictOfJournal.Sum(i => i.Value).ToString(),
+            }));
         }
 
         private void LoadConferenceStatistic()
@@ -372,6 +387,9 @@ namespace BibReader
             lvConferenceStat.Columns[1].Width = lvConferenceStat.Width / 2;
             lvConferenceStat.Items.AddRange(statistic.DictOfConference.OrderBy(i => i.Key).
                 Select(item => new ListViewItem(new string[] { item.Key == "" ? "Неизвестный тип" : item.Key, item.Value.ToString() })).ToArray());
+            lvConferenceStat.Items.Add(new ListViewItem(new string[] { "ИТОГО",
+                statistic.DictOfConference.Sum(i => i.Value).ToString(),
+            }));
         }
 
         private void LoadGeographyStatistic()
@@ -384,6 +402,9 @@ namespace BibReader
             lvGeography.Columns[1].Width = lvGeography.Width / 2;
             lvGeography.Items.AddRange(statistic.DictOfGeography.OrderBy(i => i.Key).
                 Select(item => new ListViewItem(new string[] { item.Key == "" ? "Неизвестный тип" : item.Key, item.Value.ToString() })).ToArray());
+            lvGeography.Items.Add(new ListViewItem(new string[] { "ИТОГО",
+                statistic.DictOfGeography.Sum(i => i.Value).ToString(),
+            }));
         }
 
         private void MakeBibRef()
@@ -908,6 +929,12 @@ namespace BibReader
         private void lvConferenceStat_ColumnClick(object sender, ColumnClickEventArgs e)
         {
             SortingByColumn((ListView)sender, e);
+        }
+
+        private void btSaveBibRef_Click(object sender, EventArgs e)
+        {
+            WordSaver saver = new WordSaver();
+            saver.Save(rtbBib);
         }
     }
 }

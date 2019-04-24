@@ -129,9 +129,16 @@ namespace BibReader
             else
                 wordCloud = new WordCloud.WordCloud(pictBox.Width, pictBox.Height);
 
-            var image = wordCloud.Draw(
-                lvFreqs.Items.Cast<ListViewItem>().Select(item => item.SubItems[0].Text).ToList(),
-                lvFreqs.Items.Cast<ListViewItem>().Select(item => Convert.ToInt32(item.SubItems[1].Text)).ToList()
+            Image image;
+            if(checkBoxFreq.Checked)
+                image = wordCloud.Draw(
+                    lvFreqs.Items.Cast<ListViewItem>().Select(item => item.SubItems[0].Text + "(" + item.SubItems[1].Text + ")").ToList(),
+                    lvFreqs.Items.Cast<ListViewItem>().Select(item => Convert.ToInt32(item.SubItems[1].Text)).ToList()
+                );
+            else
+                image = wordCloud.Draw(
+                    lvFreqs.Items.Cast<ListViewItem>().Select(item => item.SubItems[0].Text).ToList(),
+                    lvFreqs.Items.Cast<ListViewItem>().Select(item => Convert.ToInt32(item.SubItems[1].Text)).ToList()
                 );
             pictBox.Image = image;
         }
