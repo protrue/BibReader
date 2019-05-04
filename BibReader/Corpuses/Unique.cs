@@ -29,7 +29,7 @@ namespace BibReader.Corpuses
                 return false;
         }
 
-        private bool IsUnique(string title) => !UniqueTitles.ContainsKey(title) && UniqueTitles.Select(pair => LevenshteinDistance(pair.Key, title)).Min() > distance;
+        private bool IsUnique(string title) => UniqueTitles.Count == 0 || !UniqueTitles.ContainsKey(title) && UniqueTitles.Select(pair => LevenshteinDistance(pair.Key, title)).Min() > distance;
 
         public int IndexOfTitle(string title) => UniqueTitles[Normalize(title)];
 
@@ -98,7 +98,7 @@ namespace BibReader.Corpuses
 
         private int LevenshteinDistance(string fstWord, string sndWord)
         {
-            if (fstWord == "" || fstWord == null)
+            if (sndWord == "" || sndWord == null)
                 return int.MaxValue;
             else if (Math.Abs(sndWord.Length - fstWord.Length) > distance)
                 return int.MaxValue;
