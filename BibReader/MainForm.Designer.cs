@@ -61,6 +61,7 @@
             this.lbTitle = new System.Windows.Forms.Label();
             this.lbAuthors = new System.Windows.Forms.Label();
             this.tpBib = new System.Windows.Forms.TabPage();
+            this.btSaveBibRef = new System.Windows.Forms.Button();
             this.btPrintBib = new System.Windows.Forms.Button();
             this.cbBibStyles = new System.Windows.Forms.ComboBox();
             this.rtbBib = new System.Windows.Forms.RichTextBox();
@@ -106,7 +107,6 @@
             this.cbSearchCriterion = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.labelFindedItemsCount = new System.Windows.Forms.Label();
-            this.btSaveBibRef = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tpData.SuspendLayout();
@@ -198,7 +198,6 @@
             this.tbSourсe.Name = "tbSourсe";
             this.tbSourсe.Size = new System.Drawing.Size(471, 22);
             this.tbSourсe.TabIndex = 27;
-            this.tbSourсe.TextChanged += new System.EventHandler(this.tbSourсe_TextChanged);
             // 
             // tbKeywords
             // 
@@ -210,7 +209,6 @@
             this.tbKeywords.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbKeywords.Size = new System.Drawing.Size(471, 55);
             this.tbKeywords.TabIndex = 26;
-            this.tbKeywords.TextChanged += new System.EventHandler(this.tbKeywords_TextChanged);
             // 
             // tbAffiliation
             // 
@@ -222,7 +220,6 @@
             this.tbAffiliation.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbAffiliation.Size = new System.Drawing.Size(471, 60);
             this.tbAffiliation.TabIndex = 25;
-            this.tbAffiliation.TextChanged += new System.EventHandler(this.tbAffiliation_TextChanged);
             // 
             // tbUrl
             // 
@@ -234,7 +231,6 @@
             this.tbUrl.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbUrl.Size = new System.Drawing.Size(471, 59);
             this.tbUrl.TabIndex = 24;
-            this.tbUrl.TextChanged += new System.EventHandler(this.tbUrl_TextChanged);
             // 
             // tbDoi
             // 
@@ -244,7 +240,6 @@
             this.tbDoi.Name = "tbDoi";
             this.tbDoi.Size = new System.Drawing.Size(471, 22);
             this.tbDoi.TabIndex = 23;
-            this.tbDoi.TextChanged += new System.EventHandler(this.tbDoi_TextChanged);
             // 
             // tbPages
             // 
@@ -254,7 +249,6 @@
             this.tbPages.Name = "tbPages";
             this.tbPages.Size = new System.Drawing.Size(471, 22);
             this.tbPages.TabIndex = 22;
-            this.tbPages.TextChanged += new System.EventHandler(this.tbPages_TextChanged);
             // 
             // tbNumber
             // 
@@ -264,7 +258,6 @@
             this.tbNumber.Name = "tbNumber";
             this.tbNumber.Size = new System.Drawing.Size(471, 22);
             this.tbNumber.TabIndex = 21;
-            this.tbNumber.TextChanged += new System.EventHandler(this.tbNumber_TextChanged);
             // 
             // tbPublisher
             // 
@@ -274,7 +267,6 @@
             this.tbPublisher.Name = "tbPublisher";
             this.tbPublisher.Size = new System.Drawing.Size(471, 22);
             this.tbPublisher.TabIndex = 20;
-            this.tbPublisher.TextChanged += new System.EventHandler(this.tbPublisher_TextChanged);
             // 
             // tbVolume
             // 
@@ -284,7 +276,6 @@
             this.tbVolume.Name = "tbVolume";
             this.tbVolume.Size = new System.Drawing.Size(471, 22);
             this.tbVolume.TabIndex = 19;
-            this.tbVolume.TextChanged += new System.EventHandler(this.tbVolume_TextChanged);
             // 
             // tbYear
             // 
@@ -294,7 +285,6 @@
             this.tbYear.Name = "tbYear";
             this.tbYear.Size = new System.Drawing.Size(471, 22);
             this.tbYear.TabIndex = 18;
-            this.tbYear.TextChanged += new System.EventHandler(this.tbYear_TextChanged);
             // 
             // tbJournalName
             // 
@@ -304,7 +294,6 @@
             this.tbJournalName.Name = "tbJournalName";
             this.tbJournalName.Size = new System.Drawing.Size(471, 22);
             this.tbJournalName.TabIndex = 17;
-            this.tbJournalName.TextChanged += new System.EventHandler(this.tbJournalName_TextChanged);
             // 
             // tbAbstract
             // 
@@ -316,7 +305,6 @@
             this.tbAbstract.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbAbstract.Size = new System.Drawing.Size(471, 96);
             this.tbAbstract.TabIndex = 16;
-            this.tbAbstract.TextChanged += new System.EventHandler(this.tbAbstract_TextChanged);
             // 
             // tbTitle
             // 
@@ -327,7 +315,6 @@
             this.tbTitle.Name = "tbTitle";
             this.tbTitle.Size = new System.Drawing.Size(471, 22);
             this.tbTitle.TabIndex = 15;
-            this.tbTitle.TextChanged += new System.EventHandler(this.tbTitle_TextChanged);
             // 
             // tbAuthors
             // 
@@ -339,7 +326,6 @@
             this.tbAuthors.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbAuthors.Size = new System.Drawing.Size(471, 84);
             this.tbAuthors.TabIndex = 14;
-            this.tbAuthors.TextChanged += new System.EventHandler(this.tbAuthors_TextChanged);
             // 
             // lbNumber
             // 
@@ -481,6 +467,16 @@
             this.tpBib.Text = "Библ. описания";
             this.tpBib.UseVisualStyleBackColor = true;
             // 
+            // btSaveBibRef
+            // 
+            this.btSaveBibRef.Location = new System.Drawing.Point(7, 626);
+            this.btSaveBibRef.Name = "btSaveBibRef";
+            this.btSaveBibRef.Size = new System.Drawing.Size(124, 52);
+            this.btSaveBibRef.TabIndex = 3;
+            this.btSaveBibRef.Text = "Сохранить в Word";
+            this.btSaveBibRef.UseVisualStyleBackColor = true;
+            this.btSaveBibRef.Click += new System.EventHandler(this.btSaveBibRef_Click);
+            // 
             // btPrintBib
             // 
             this.btPrintBib.Location = new System.Drawing.Point(230, 17);
@@ -573,7 +569,6 @@
             this.lvYearStatistic.TabIndex = 0;
             this.lvYearStatistic.UseCompatibleStateImageBehavior = false;
             this.lvYearStatistic.View = System.Windows.Forms.View.Details;
-            this.lvYearStatistic.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvYearStatistic_ColumnClick);
             // 
             // tpSourses
             // 
@@ -597,7 +592,6 @@
             this.lvSourceStatistic.TabIndex = 1;
             this.lvSourceStatistic.UseCompatibleStateImageBehavior = false;
             this.lvSourceStatistic.View = System.Windows.Forms.View.Details;
-            this.lvSourceStatistic.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvSourceStatistic_ColumnClick);
             // 
             // tabPage1
             // 
@@ -619,7 +613,6 @@
             this.lvTypeOfDoc.TabIndex = 0;
             this.lvTypeOfDoc.UseCompatibleStateImageBehavior = false;
             this.lvTypeOfDoc.View = System.Windows.Forms.View.Details;
-            this.lvTypeOfDoc.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvTypeOfDoc_ColumnClick);
             // 
             // tpJournalStat
             // 
@@ -640,7 +633,6 @@
             this.lvJournalStat.TabIndex = 0;
             this.lvJournalStat.UseCompatibleStateImageBehavior = false;
             this.lvJournalStat.View = System.Windows.Forms.View.Details;
-            this.lvJournalStat.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvJournalStat_ColumnClick);
             // 
             // tpGeography
             // 
@@ -661,7 +653,6 @@
             this.lvGeography.TabIndex = 0;
             this.lvGeography.UseCompatibleStateImageBehavior = false;
             this.lvGeography.View = System.Windows.Forms.View.Details;
-            this.lvGeography.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvGeography_ColumnClick);
             // 
             // tpConf
             // 
@@ -682,7 +673,6 @@
             this.lvConferenceStat.TabIndex = 0;
             this.lvConferenceStat.UseCompatibleStateImageBehavior = false;
             this.lvConferenceStat.View = System.Windows.Forms.View.Details;
-            this.lvConferenceStat.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvConferenceStat_ColumnClick);
             // 
             // lvLibItems
             // 
@@ -696,7 +686,6 @@
             this.lvLibItems.TabIndex = 2;
             this.lvLibItems.UseCompatibleStateImageBehavior = false;
             this.lvLibItems.View = System.Windows.Forms.View.Details;
-            this.lvLibItems.ColumnClick += new System.Windows.Forms.ColumnClickEventHandler(this.lvLibItems_ColumnClick);
             this.lvLibItems.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.lvItems_ItemSelectionChanged);
             this.lvLibItems.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lvItems_MouseClick);
             // 
@@ -927,16 +916,6 @@
             this.labelFindedItemsCount.Name = "labelFindedItemsCount";
             this.labelFindedItemsCount.Size = new System.Drawing.Size(0, 17);
             this.labelFindedItemsCount.TabIndex = 16;
-            // 
-            // btSaveBibRef
-            // 
-            this.btSaveBibRef.Location = new System.Drawing.Point(7, 626);
-            this.btSaveBibRef.Name = "btSaveBibRef";
-            this.btSaveBibRef.Size = new System.Drawing.Size(124, 52);
-            this.btSaveBibRef.TabIndex = 3;
-            this.btSaveBibRef.Text = "Сохранить в Word";
-            this.btSaveBibRef.UseVisualStyleBackColor = true;
-            this.btSaveBibRef.Click += new System.EventHandler(this.btSaveBibRef_Click);
             // 
             // MainForm
             // 

@@ -10,29 +10,27 @@ namespace BibReader.ColumnSorting
 {
     class Sorting
     {
-        public static void SortingByColumn(ListView listView, ColumnClickEventArgs e)
+        public static void SortingByColumn(ListView listView, int columnNumber)
         {
-            ListViewItemComparer sorter = listView.ListViewItemSorter as ListViewItemComparer;
+            var sorter = (ListViewItemComparer)listView.ListViewItemSorter;
+
             if (sorter == null)
             {
-                sorter = new ListViewItemComparer(e.Column);
-                int val;
-                if (Int32.TryParse(listView.Items[0].SubItems[e.Column].Text, out val))
-                    sorter.Numeric = true;
-                else
-                    sorter.Numeric = false;
-
+                sorter = new ListViewItemComparer(columnNumber);
                 listView.ListViewItemSorter = sorter;
             }
             else
             {
-                int val;
-                if (Int32.TryParse(listView.Items[0].SubItems[e.Column].Text, out val))
-                    sorter.Numeric = true;
-                else
-                    sorter.Numeric = false;
-                sorter.Column = e.Column;
+                sorter.Column = columnNumber;
             }
+
+            decimal val;
+            if (listView.Items.Count != 0)
+            if (Decimal.TryParse(listView.Items[0].SubItems[columnNumber].Text, out val))
+                sorter.Numeric = true;
+            else
+                sorter.Numeric = false;
+
             listView.Sort();
         }
 
@@ -49,8 +47,8 @@ namespace BibReader.ColumnSorting
 
             public int Compare(object x, object y)
             {
-                ListViewItem itemX = x as ListViewItem;
-                ListViewItem itemY = y as ListViewItem;
+                var itemX = x as ListViewItem;
+                var itemY = y as ListViewItem;
 
                 if (itemX == null && itemY == null)
                     return 0;
@@ -67,11 +65,11 @@ namespace BibReader.ColumnSorting
 
                     if (!Decimal.TryParse(itemX.SubItems[Column].Text, out itemXVal))
                     {
-                        itemXVal = 0;
+                        itemXVal = decimal.MaxValue;
                     }
                     if (!Decimal.TryParse(itemY.SubItems[Column].Text, out itemYVal))
                     {
-                        itemYVal = 0;
+                        itemYVal = decimal.MaxValue;
                     }
 
                     return Decimal.Compare(itemXVal, itemYVal);

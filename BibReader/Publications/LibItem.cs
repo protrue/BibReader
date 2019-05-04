@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -77,6 +78,9 @@ namespace BibReader.Publications
         public bool KeywordsIsEmpty => Keywords == string.Empty ? true : false;
         public bool AffiliationIsEmpty => Affiliation == string.Empty ? true : false;
 
-
+        public PropertyInfo Getbyname(string name)
+        {
+            return GetType().GetProperty(name.Substring(2));
+        }
     }
 }

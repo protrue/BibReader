@@ -10,32 +10,30 @@ namespace BibReader.Corpuses
     class Unique
     {
         const int distance = 5;
-        Dictionary<string, int> currTitles = new Dictionary<string, int>();
+        Dictionary<string, int> UniqueTitles = new Dictionary<string, int>();
 
         public Unique() {
-            currTitles = new Dictionary<string, int>();
+            UniqueTitles = new Dictionary<string, int>();
         }
 
 
-        public bool isUnique(string title, int positoin)
+        public bool IsUnique(string title, int positoin)
         {
             title = Normalize(title);
-            if (isUnique(title))
+            if (IsUnique(title))
             {
-                currTitles.Add(title, positoin);
+                UniqueTitles.Add(title, positoin);
                 return true;
             }
             else
                 return false;
         }
 
-        private bool isUnique(string title) => !currTitles.ContainsKey(title) && LevenshteinDistance(currTitles, title) > distance ? true : false;
+        private bool IsUnique(string title) => !UniqueTitles.ContainsKey(title) && UniqueTitles.Select(pair => LevenshteinDistance(pair.Key, title)).Min() > distance;
 
-        public void ClearDictionary() => currTitles.Clear();
+        public int IndexOfTitle(string title) => UniqueTitles[Normalize(title)];
 
-        public int IndexOfTitle(string title) => currTitles[Normalize(title)];
-
-        public bool ContainsKey(string title) => currTitles.ContainsKey(Normalize(title));
+        public bool ContainsKey(string title) => UniqueTitles.ContainsKey(Normalize(title));
 
         public void FindImportantData(LibItem savedItem, LibItem currItem)
         {
@@ -46,7 +44,7 @@ namespace BibReader.Corpuses
 
         private string Normalize(string sentence)
         {
-            var resultContainer = new StringBuilder(100);
+            var resultContainer = new StringBuilder(sentence.Length);
             var lowerSentece = sentence.ToLower();
             foreach (var c in lowerSentece)
             {
@@ -63,7 +61,7 @@ namespace BibReader.Corpuses
         {
             int fstWordLength = fstWord.Length, sndWordLength = sndWord.Length;
             int[,] ed = new int[fstWordLength, sndWordLength];
-            int minValueInRow = 100;
+            int minValueInRow = int.MaxValue;
 
             ed[0, 0] = (fstWord[0] == sndWord[0]) ? 0 : 1;
             for (int i = 1; i < fstWordLength; i++)
@@ -78,20 +76,16 @@ namespace BibReader.Corpuses
 
             for (int j = 1; j < sndWordLength; j++)
             {
-                minValueInRow = 100;
+                minValueInRow = int.MaxValue;
                 for (int i = 1; i < fstWordLength; i++)
                 {
                     if (fstWord[i] == sndWord[j])
-                    {
-                        // Операция не требуется
                         ed[i, j] = ed[i - 1, j - 1];
-                    }
                     else
-                    {
-                        // Минимум между удалением, вставкой и заменой
-                        ed[i, j] = Math.Min(ed[i - 1, j] + 1,
-                            Math.Min(ed[i, j - 1] + 1, ed[i - 1, j - 1] + 1));
-                    }
+                        ed[i, j] = Math.Min(
+                            ed[i - 1, j] + 1,
+                            Math.Min(ed[i, j - 1] + 1, ed[i - 1, j - 1] + 1)
+                            );
                     if (ed[i, j] < minValueInRow)
                         minValueInRow = ed[i, j];
                 }
@@ -102,22 +96,14 @@ namespace BibReader.Corpuses
             return ed[fstWordLength - 1, sndWordLength - 1];
         }
 
-        private int LevenshteinDistance(Dictionary<string, int> currTitles, string word)
+        private int LevenshteinDistance(string fstWord, string sndWord)
         {
-            var minDistance = 10000;
-            int ed;
-            foreach (var title in currTitles.Keys)
-            {
-                if (title == "" || title == null)
-                    ed = 10000;
-                else if (Math.Abs(word.Length - title.Length) > distance)
-                    ed = 10000;
-                else
-                    ed = EditDistance(word, title);
-                if (ed < minDistance)
-                    minDistance = ed;
-            }
-            return minDistance;
+            if (fstWord == "" || fstWord == null)
+                return int.MaxValue;
+            else if (Math.Abs(sndWord.Length - fstWord.Length) > distance)
+                return int.MaxValue;
+            else
+                return EditDistance(fstWord, sndWord);
         }
 
         private void KeywordsComplement(LibItem savedItem, LibItem currItem)
