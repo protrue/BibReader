@@ -78,7 +78,7 @@ namespace BibReader.Publications
         public bool KeywordsIsEmpty => Keywords == string.Empty ? true : false;
         public bool AffiliationIsEmpty => Affiliation == string.Empty ? true : false;
 
-        public PropertyInfo Getbyname(string name)
+        public PropertyInfo GetProperty(string name)
         {
             return GetType().GetProperty(name.Substring(2));
         }

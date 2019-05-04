@@ -12,28 +12,28 @@ namespace BibReader.Corpuses
         const int distance = 5;
         Dictionary<string, int> UniqueTitles = new Dictionary<string, int>();
 
-        public Unique() {
-            UniqueTitles = new Dictionary<string, int>();
-        }
+        //public Unique() {
+        //    UniqueTitles = new Dictionary<string, int>();
+        //}
 
 
-        public bool IsUnique(string title, int positoin)
+        public int FindCopyPosition(LibItem item, int positoin)
         {
-            title = Normalize(title);
+            var title = Normalize(item.Title);
             if (IsUnique(title))
             {
                 UniqueTitles.Add(title, positoin);
-                return true;
+                return -1;
             }
             else
-                return false;
+            {
+                return UniqueTitles.ContainsKey(title) ? UniqueTitles[title] :-2;
+            }
         }
 
         private bool IsUnique(string title) => UniqueTitles.Count == 0 || !UniqueTitles.ContainsKey(title) && UniqueTitles.Select(pair => LevenshteinDistance(pair.Key, title)).Min() > distance;
 
-        public int IndexOfTitle(string title) => UniqueTitles[Normalize(title)];
-
-        public bool ContainsKey(string title) => UniqueTitles.ContainsKey(Normalize(title));
+        private int IndexOfTitle(string title) => UniqueTitles[Normalize(title)];
 
         public void FindImportantData(LibItem savedItem, LibItem currItem)
         {

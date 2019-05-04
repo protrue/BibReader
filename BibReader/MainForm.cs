@@ -31,23 +31,25 @@ namespace BibReader
 
         private StreamReader[] GetStreamReaders()
         {
-            var opd = new OpenFileDialog
+            using (var opd = new OpenFileDialog
             {
                 Multiselect = true,
                 Filter = "Файлы bib|*.bib"
-            };
-            if (opd.ShowDialog() == DialogResult.OK)
+            })
             {
-                StreamReader[] streamReaders = new StreamReader[opd.FileNames.Length];
-                for(var i =0;i<opd.FileNames.Length;i++)
+                if (opd.ShowDialog() == DialogResult.OK)
                 {
-                    var reader = new StreamReader(opd.FileNames[i]);
-                    streamReaders[i] = reader;
+                    var streamReaders = new StreamReader[opd.FileNames.Length];
+                    for (var i = 0; i < opd.FileNames.Length; i++)
+                    {
+                        var reader = new StreamReader(opd.FileNames[i]);
+                        streamReaders[i] = reader;
+                    }
+                    lastOpenedFileName = opd.FileNames.Last();
+                    return streamReaders;
                 }
-                lastOpenedFileName = opd.FileNames.Last();
-                return streamReaders;
+                return null;
             }
-            return null;
         }
 
         private void InitListViewItems()
@@ -58,25 +60,17 @@ namespace BibReader
             lvLibItems.Columns[1].Width = lvLibItems.Width / 2;
         }
 
-        private static void ColumnSort(object sender, ColumnClickEventArgs e)
-        {
-            Sorting.SortingByColumn((ListView)sender, e.Column);
-        }
-
         private void InitListViewEvent()
         {
             var lists = Controls.OfType<ListView>();
             var tps = tabControlForStatistic.TabPages;
             var listOfTables = new List<ListView>();
-
             foreach (TabPage tp in tps)
                 listOfTables.Add(tp.Controls.OfType<ListView>().First());
             listOfTables.AddRange(lists);
-
-            foreach (var listView in listOfTables)
-            {
-                listView.ColumnClick += new ColumnClickEventHandler(ColumnSort);
-            }
+            listOfTables.ForEach(listView => listView.ColumnClick += new ColumnClickEventHandler(
+                (sender, e) => Sorting.SortingByColumn((ListView)sender, e.Column))
+                );
         }
 
         private void InitTextBoxTextChangedEvent()
@@ -84,14 +78,13 @@ namespace BibReader
             var textBoxes = tabControl.TabPages["tpData"].Controls.OfType<TextBox>();
             foreach (var tb in textBoxes)
                 tb.TextChanged += TextBoxTextChanged;
-
         }
 
         private void TextBoxTextChanged(object sender, EventArgs e)
         {
             PropertyInfo info = null;
             if (lvLibItems.Items.Count != 0)
-                info = ((LibItem)lvLibItems.SelectedItems[0].Tag).Getbyname(((TextBox)sender).Name);
+                info = ((LibItem)lvLibItems.SelectedItems[0].Tag).GetProperty(((TextBox)sender).Name);
             if (info != null)
                 info.SetValue((LibItem)lvLibItems.SelectedItems[0].Tag, ((TextBox)sender).Text);
         }
@@ -107,22 +100,20 @@ namespace BibReader
             btRelevance.Enabled = false;
             cbBibStyles.SelectedIndex = 0;
             cbSearchCriterion.SelectedIndex = 0;
-            // TryToLoadText();
         }
 
         private void AddLibItemsInLvItems(List<LibItem> libItems)
         {
             foreach (var item in libItems)
             {
-
                 var lvItem = new ListViewItem(new string[]
                 {
                     item.Title,
-                    item.Authors
+                    item.Authors,
+                    "1",
                 });
 
                 lvItem.Tag = item;
-                lvItem.SubItems.Add("1");
                 lvLibItems.Items.Add(lvItem);
             }
             lvLibItems.Sorting = SortOrder.Ascending;
@@ -132,6 +123,7 @@ namespace BibReader
                 lvLibItems.Items[0].Selected = true;
                 lbCurrSelectedItem.Text = $"1/{lvLibItems.Items.Count}";
             }
+            libItems.Clear();
         }
 
         private void UniqueTitles()
@@ -143,20 +135,19 @@ namespace BibReader
 
             foreach (ListViewItem item in lvLibItems.Items)
             {
-                //var ed = 100;
-                var title = ((LibItem)item.Tag).Title;
-                if (unique.IsUnique(title, item.Index))
+                int position;
+                if ((position = unique.FindCopyPosition((LibItem)item.Tag, item.Index)) == -1)
                 {
                     item.SubItems[2].Text = "2";
                 }
                 else
                 {
                     item.Remove();
-                    item.SubItems[2].Text = "1";
+                    //item.SubItems[2].Text = "1";
                     deletedLibItems.Add(item);
-                    if (unique.ContainsKey(title))
+                    if (position != -2)
                         unique.FindImportantData(
-                            (LibItem)lvLibItems.Items[unique.IndexOfTitle(title)].Tag,
+                            (LibItem)lvLibItems.Items[position].Tag,
                             (LibItem)item.Tag
                             );
                 }
@@ -164,7 +155,6 @@ namespace BibReader
                     pbLoadUniqueData.Value += (int)step;
             }
             pbLoadUniqueData.Value = 100;
-            //Unique.ClearDictionary();
             MessageBox.Show("Готово!");
             pbLoadUniqueData.Value = 0;
         }
@@ -185,7 +175,6 @@ namespace BibReader
                 else
                 {
                     item.Remove();
-                    item.SubItems[2].Text = "1";
                     deletedLibItems.Add(item);
                 }
 
@@ -242,15 +231,15 @@ namespace BibReader
         private void открытьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var univReader = new UniversalBibReader();
-            var reader = GetStreamReaders();
-            if (reader != null)
+            var readers = GetStreamReaders();
+            if (readers != null)
             {
-                var listOfItems = univReader.Read(reader);
+                var listOfItems = univReader.Read(readers);
                 ClearDataBeforeLoad();
                 LoadLibItems(listOfItems);
                 toolStripStatusLabel1.Text = "Last opened file name: " + lastOpenedFileName;
 
-                if (reader != null)
+                if (readers != null)
                 {
                     btFirst.Enabled = false;
                     btUnique.Enabled = true;
@@ -295,8 +284,8 @@ namespace BibReader
             var reader = GetStreamReaders();
             if (reader != null)
             {
-                var listOfItems = univReader.Read(reader);
-                AddLibItemsInLvItems(listOfItems);
+                var libItems = univReader.Read(reader);
+                AddLibItemsInLvItems(libItems);
 
                 if (reader != null)
                 {
@@ -426,7 +415,6 @@ namespace BibReader
         private void btRelevance_Click(object sender, EventArgs e)
         {
             RelevanceData();
-
             btFirst.Enabled = true;
             btRelevance.Enabled = false;
             UpdateUI();
