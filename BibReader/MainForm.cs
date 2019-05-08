@@ -332,7 +332,7 @@ namespace BibReader
                 Int32.TryParse(libItem.Volume, out int volume);
                 Int32.TryParse(libItem.Number, out int number);
                 Int32.TryParse(libItem.Year, out int year);
-                var authors = parser.GetAuthors(libItem.Sourсe);
+                var authors = parser.ParseAuthors(libItem.Sourсe);
                 switch (((LibItem)item.Tag).Type)
                 {
                     case "conference":
@@ -386,14 +386,6 @@ namespace BibReader
             deletedLibItems.Clear();
             lvLibItems.Sorting = SortOrder.Ascending;
             lvLibItems.Sort();
-            if (lvLibItems.Items.Count != 0)
-            {
-                lvLibItems.Items[0].Selected = true;
-                lbCurrSelectedItem.Text = $"1/{lvLibItems.Items.Count}";
-            }
-            else
-                lbCurrSelectedItem.Text = $"0/{lvLibItems.Items.Count}";
-
             btUnique.Enabled = true;
             btFirst.Enabled = false;
             добавитьToolStripMenuItem.Enabled = true;
@@ -420,7 +412,7 @@ namespace BibReader
             UpdateUI();
         }
 
-        private void UpdateUI()
+        private void UpdateStatistic()
         {
             statistic.LoadSourseStatistic(lvLibItems, lvSourceStatistic, btFirst, btUnique, btRelevance);
             statistic.LoadYearStatistic(lvYearStatistic);
@@ -428,8 +420,17 @@ namespace BibReader
             statistic.LoadJournalStatistic(lvJournalStat);
             statistic.LoadGeographyStatistic(lvGeography);
             statistic.LoadConferenceStatistic(lvConferenceStat);
+        }
 
-            rtbBib.Text = string.Empty;
+        private void UpdateUI()
+        {
+            UpdateStatistic();
+            UpdateBibReference();
+            SelectFstLibItem();
+        }
+
+        private void SelectFstLibItem()
+        {
             if (lvLibItems.Items.Count != 0)
             {
                 lvLibItems.Items[0].Selected = true;
@@ -453,6 +454,11 @@ namespace BibReader
                 tbYear.Text = string.Empty;
                 lbCurrSelectedItem.Text = $"0/{lvLibItems.Items.Count}";
             }
+        }
+
+        private void UpdateBibReference()
+        {
+            rtbBib.Text = string.Empty;
             try
             {
                 MakeBibRef();
@@ -466,12 +472,8 @@ namespace BibReader
         private void lvItems_MouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Right)
-            {
                 if (lvLibItems.FocusedItem.Bounds.Contains(e.Location) == true)
-                {
                     contextMenuStrip1.Show(Cursor.Position);
-                }
-            }
         }
 
         private void contextMenuStrip1_Click(object sender, EventArgs e)
@@ -587,63 +589,49 @@ namespace BibReader
 
         private void названияToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var libItems = GetListOfLibItemsFromLv();
-            string titles = string.Empty;
-            foreach(var libItem in libItems)
-            {
-                if (libItem.Title != string.Empty)
-                titles += libItem.Title + "\r\n";
-            }
+            string titles = string.Join("\r\n",
+                GetListOfLibItemsFromLv()
+                .Where(item => item.Title != string.Empty)
+                .Select(item => item.Title)
+                );
             var form = new ClassificationForm() { Info = titles };
             form.Show();
         }
 
         private void ключевыеСловаToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var libItems = GetListOfLibItemsFromLv();
-            string keywords = string.Empty;
-            foreach (var libItem in libItems)
-            {
-                if (libItem.Keywords != string.Empty)
-                    keywords += libItem.Keywords + "\r\n";
-            }
+            string keywords = string.Join("\r\n", 
+                GetListOfLibItemsFromLv()
+                .Where(item => item.Keywords != string.Empty)
+                .Select(item => item.Keywords)
+                );
             var form = new ClassificationForm() { Info = keywords };
             form.Show();
         }
 
         private void аннотацииToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            var libItems = GetListOfLibItemsFromLv();
-            string abstract_ = string.Empty;
-            foreach (var libItem in libItems)
-            {
-                if (libItem.Abstract != string.Empty)
-                abstract_ += libItem.Abstract + "\r\n";
-            }
+            string abstract_ = string.Join("\r\n", 
+                GetListOfLibItemsFromLv()
+                .Where(item => item.Abstract != string.Empty)
+                .Select(item => item.Abstract)
+                );
             var form = new ClassificationForm() { Info = abstract_ };
             form.Show();
         }
 
-        private void cbSearchCriterion_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            currIndex = -1;
-        }
+        private void cbSearchCriterion_SelectedIndexChanged(object sender, EventArgs e) => currIndex = -1;
 
         private void btSaveStatistic_Click(object sender, EventArgs e)
         {
-            ExcelSaver saver = new ExcelSaver();
             var tps = tabControlForStatistic.TabPages;
             var listOfTables = new List<ListView>();
 
             foreach (TabPage tp in tps)
                 listOfTables.Add(tp.Controls.OfType<ListView>().First());
-            saver.Save(listOfTables);
+            ExcelSaver.Save(listOfTables);
         }
 
-        private void btSaveBibRef_Click(object sender, EventArgs e)
-        {
-            WordSaver saver = new WordSaver();
-            saver.Save(rtbBib);
-        }
+        private void btSaveBibRef_Click(object sender, EventArgs e) => WordSaver.Save(rtbBib);
     }
 }

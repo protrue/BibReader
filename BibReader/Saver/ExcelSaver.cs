@@ -9,7 +9,7 @@ namespace BibReader.Saver
 {
     class ExcelSaver
     {
-        Dictionary<string, string> WorksheetNames = new Dictionary<string, string>()
+        static Dictionary<string, string> WorksheetNames = new Dictionary<string, string>()
         {
             {"lvSourceStatistic", "Источники" },
             {"lvYearStatistic", "Год" },
@@ -20,7 +20,7 @@ namespace BibReader.Saver
             {"lvFreqs", "Частоный словарь" },
         };
 
-        public void Save(List<ListView> listOfTables)
+        public static void Save(List<ListView> listOfTables)
         {
             using (var saveFile = new SaveFileDialog())
             {
@@ -44,7 +44,7 @@ namespace BibReader.Saver
             }
         }
 
-        private void ToExcel(Excel.Workbook wb, ListView list)
+        private static void ToExcel(Excel.Workbook wb, ListView list)
         {
             wb.Worksheets.Add();
             var ws = (Excel.Worksheet)wb.Worksheets[1];

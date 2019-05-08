@@ -223,8 +223,7 @@ namespace BibReader
 
         private void tbSaveFreqsInExcel_Click(object sender, EventArgs e)
         {
-            ExcelSaver excelSaver = new ExcelSaver();
-            excelSaver.Save(new List<ListView>() { lvFreqs });
+            ExcelSaver.Save(new List<ListView>() { lvFreqs });
         }
     }
 }

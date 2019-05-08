@@ -10,7 +10,7 @@ namespace BibReader.Saver
 {
     class WordSaver
     {
-        public void Save(RichTextBox richTextBox)
+        public static void Save(RichTextBox richTextBox)
         {
             using (var saveFile = new SaveFileDialog())
             {
