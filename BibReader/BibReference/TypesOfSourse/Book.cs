@@ -47,8 +47,7 @@ namespace BibReader.BibReference.TypesOfSourse
             const string DateRus = "дата обращения";
             const string Point = ".";
             string result = string.Empty;
-            AuthorsParser authorsParser = new AuthorsParser();
-            Authors = authorsParser.MakeAuthorsForGOST(Authors);
+            Authors = AuthorsParser.MakeAuthorsForGOST(Authors);
             if (Authors.Length < 4)
             {
                 result += string.Join(", ", Authors);
@@ -97,8 +96,7 @@ namespace BibReader.BibReference.TypesOfSourse
             //MakeAuthorsForHarvard(Authors);
             //rtb.Text += string.Join("", Authors);
             rtb.Select(rtb.TextLength, 0);
-            AuthorsParser authorsParser = new AuthorsParser();
-            rtb.SelectedText = authorsParser.MakeAuthorsForHarvard(Authors);
+            rtb.SelectedText = AuthorsParser.MakeAuthorsForHarvard(Authors);
             rtb.SelectedText = Space;
             rtb.SelectedText = Lparenthesis + Year + Rparenthesis + PointSpace;
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
@@ -149,8 +147,7 @@ namespace BibReader.BibReference.TypesOfSourse
             //MakeAuthorsForAPA(Authors);
             //rtb.Text += string.Join("", Authors);
             rtb.Select(rtb.TextLength, 0);
-            AuthorsParser authorsParser = new AuthorsParser();
-            rtb.SelectedText = authorsParser.MakeAuthorsForAPA(Authors);
+            rtb.SelectedText = AuthorsParser.MakeAuthorsForAPA(Authors);
             rtb.SelectedText = Space;
             rtb.SelectedText = Lparenthesis + Year + Rparenthesis + PointSpace;
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
@@ -204,8 +201,7 @@ namespace BibReader.BibReference.TypesOfSourse
             //else
             //    MessageBox.Show("Вы не добавили страну, ссылка будет не верна!");
             rtb.Select(rtb.TextLength, 0);
-            AuthorsParser authorsParser = new AuthorsParser();
-            rtb.SelectedText = authorsParser.MakeAuthorsForIEEE(Authors) + CommaSpace;
+            rtb.SelectedText = AuthorsParser.MakeAuthorsForIEEE(Authors) + CommaSpace;
 
             //MakeAuthorsForIEEE(Authors);
             //if (Authors.Length < 6)

@@ -51,8 +51,7 @@ namespace BibReader.BibReference.TypesOfSourse
             const string Commaspace = ", ";
             string result = string.Empty;
 
-            AuthorsParser authorsParser = new AuthorsParser();
-            Authors = authorsParser.MakeAuthorsForGOST(Authors);
+            Authors = AuthorsParser.MakeAuthorsForGOST(Authors);
             result += string.Join(", ", Authors);
             result += Space;
             result += Name + Space;
@@ -88,8 +87,7 @@ namespace BibReader.BibReference.TypesOfSourse
             //rtb.Text += string.Join(" и ", Authors);
             rtb.Select(rtb.TextLength, 0);
 
-            AuthorsParser authorsParser = new AuthorsParser();
-            rtb.SelectedText = authorsParser.MakeAuthorsForHarvard(Authors);
+            rtb.SelectedText = AuthorsParser.MakeAuthorsForHarvard(Authors);
             rtb.SelectedText = Space;
             rtb.SelectedText = Lparenthesis + Year + Rparenthesis + PointSpace;
 
@@ -127,7 +125,6 @@ namespace BibReader.BibReference.TypesOfSourse
             if (Link != "")
                 rtb.SelectedText = Space + Avaliable + Link + Space + Lpar + DateRus + Date.ToString("dd MMM yyyy") + Rpar + Point;
 
-
         }
 
         public void MakeAPA(ref RichTextBox rtb)
@@ -146,8 +143,7 @@ namespace BibReader.BibReference.TypesOfSourse
             //MakeAuthorsForAPA(Authors);
             //rtb.Text += string.Join("", Authors);
             rtb.Select(rtb.TextLength, 0);
-            AuthorsParser authorsParser = new AuthorsParser();
-            rtb.SelectedText = authorsParser.MakeAuthorsForAPA(Authors);
+            rtb.SelectedText = AuthorsParser.MakeAuthorsForAPA(Authors);
             rtb.SelectedText = Space;
             rtb.SelectedText = Lparenthesis + Year + Rparenthesis + PointSpace;
 
@@ -198,8 +194,7 @@ namespace BibReader.BibReference.TypesOfSourse
             //MakeAuthorsForIEEE(Authors);
             //rtb.Text += string.Join("", Authors);
             //rtb.Text += CommaSpace;
-            AuthorsParser authorsParser = new AuthorsParser();
-            rtb.SelectedText = authorsParser.MakeAuthorsForIEEE(Authors) + CommaSpace;
+            rtb.SelectedText = AuthorsParser.MakeAuthorsForIEEE(Authors) + CommaSpace;
 
 
             rtb.SelectedText = "\"" + Name + "\"" + CommaSpace;

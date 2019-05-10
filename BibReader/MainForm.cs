@@ -327,12 +327,12 @@ namespace BibReader
             foreach (ListViewItem item in lvLibItems.Items)
             {
                 var libItem = (LibItem)item.Tag;
-                var parser = new AuthorsParser();
-                parser.Authors = libItem.Authors;
+                //var parser = new AuthorsParser();
+                //parser.Authors = libItem.Authors;
                 Int32.TryParse(libItem.Volume, out int volume);
                 Int32.TryParse(libItem.Number, out int number);
                 Int32.TryParse(libItem.Year, out int year);
-                var authors = parser.ParseAuthors(libItem.Sourсe);
+                var authors = AuthorsParser.ParseAuthors(libItem.Authors, libItem.Sourсe);
                 switch (((LibItem)item.Tag).Type)
                 {
                     case "conference":

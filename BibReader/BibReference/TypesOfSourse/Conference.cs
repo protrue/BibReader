@@ -42,8 +42,7 @@ namespace BibReader.BibReference.TypesOfSourse
             const string DoubleSlash = " // ";
             var result = string.Empty;
 
-            AuthorsParser authorsParser = new AuthorsParser();
-            Authors = authorsParser.MakeAuthorsForGOST(Authors);
+            Authors = AuthorsParser.MakeAuthorsForGOST(Authors);
             result += string.Join(", ", Authors) + Spase;
 
             result += Report + PointSpace;
@@ -76,8 +75,7 @@ namespace BibReader.BibReference.TypesOfSourse
             //MakeAuthorsForHarvard(Authors);
             //rtb.Text += string.Join(" и ", Authors);
             rtb.Select(rtb.TextLength, 0);
-            AuthorsParser authorsParser = new AuthorsParser();
-            rtb.SelectedText = authorsParser.MakeAuthorsForHarvard(Authors);
+            rtb.SelectedText = AuthorsParser.MakeAuthorsForHarvard(Authors);
             rtb.SelectedText = Space;
 
             rtb.SelectedText = Lparenthesis + Year + Rparenthesis + PointSpace;
@@ -116,8 +114,7 @@ namespace BibReader.BibReference.TypesOfSourse
             //MakeAuthorsForAPA(Authors);
             //rtb.Text += string.Join("", Authors);
             rtb.Select(rtb.TextLength, 0);
-            AuthorsParser authorsParser = new AuthorsParser();
-            rtb.SelectedText = authorsParser.MakeAuthorsForAPA(Authors);
+            rtb.SelectedText = AuthorsParser.MakeAuthorsForAPA(Authors);
             rtb.SelectedText = Space;
             rtb.SelectedText = Lparenthesis + Year + Rparenthesis + PointSpace;
             rtb.SelectedText = Report + PointSpace + In;
@@ -153,8 +150,7 @@ namespace BibReader.BibReference.TypesOfSourse
             //rtb.Text += string.Join("", Authors);
             //rtb.Text += CommaSpace;
             rtb.Select(rtb.TextLength, 0);
-            AuthorsParser authorsParser = new AuthorsParser();
-            rtb.SelectedText = authorsParser.MakeAuthorsForIEEE(Authors) + CommaSpace;
+            rtb.SelectedText = AuthorsParser.MakeAuthorsForIEEE(Authors) + CommaSpace;
 
             rtb.SelectedText = "\"" + Report + Comma + "\"" + Space + In;
 
