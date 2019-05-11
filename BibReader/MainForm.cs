@@ -131,7 +131,7 @@ namespace BibReader
             var libItemsCount = lvLibItems.Items.Count;
             double step = libItemsCount / 100;
             pbLoadUniqueData.Step = (int)step;
-            Unique unique = new Unique();
+            var unique = new Unique();
 
             foreach (ListViewItem item in lvLibItems.Items)
             {
@@ -142,7 +142,6 @@ namespace BibReader
                 }
                 else
                 {
-                    item.Remove();
                     //item.SubItems[2].Text = "1";
                     deletedLibItems.Add(item);
                     if (position != -2)
@@ -150,6 +149,7 @@ namespace BibReader
                             (LibItem)lvLibItems.Items[position].Tag,
                             (LibItem)item.Tag
                             );
+                    item.Remove();
                 }
                 if (pbLoadUniqueData.Value + step <= 100)
                     pbLoadUniqueData.Value += (int)step;
@@ -174,8 +174,8 @@ namespace BibReader
                 }
                 else
                 {
-                    item.Remove();
                     deletedLibItems.Add(item);
+                    item.Remove();
                 }
 
                 if (pbLoadUniqueData.Value + step <= 100)
@@ -195,7 +195,7 @@ namespace BibReader
             AddLibItemsInLvItems(libItems);
         }
 
-        private List<LibItem> GetListOfLibItemsFromLv()
+        private List<LibItem> GetLibItems()
         {
             var libItems = new List<LibItem>();
             foreach (ListViewItem item in lvLibItems.Items)
@@ -272,7 +272,7 @@ namespace BibReader
                 {
                     string filePath = saveFile.FileName;
                     MyBibFormat bibFormat = new MyBibFormat();
-                    var libItems = GetListOfLibItemsFromLv();
+                    var libItems = GetLibItems();
                     bibFormat.Write(libItems, filePath);
                 }
             }
@@ -414,7 +414,14 @@ namespace BibReader
 
         private void UpdateStatistic()
         {
-            statistic.LoadSourseStatistic(lvLibItems, lvSourceStatistic, btFirst, btUnique, btRelevance);
+            Stat.Corpus corpus = Stat.Corpus.First;
+            if (btRelevance.Enabled)
+                corpus = Stat.Corpus.Unique;
+            if (btFirst.Enabled)
+                corpus = Stat.Corpus.Relevance;
+
+            Stat.CalculateStatistic(GetLibItems(), corpus);
+            statistic.LoadSourseStatistic(lvSourceStatistic);
             statistic.LoadYearStatistic(lvYearStatistic);
             statistic.LoadTypeStatistic(lvTypeOfDoc);
             statistic.LoadJournalStatistic(lvJournalStat);
@@ -590,7 +597,7 @@ namespace BibReader
         private void названияToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string titles = string.Join("\r\n",
-                GetListOfLibItemsFromLv()
+                GetLibItems()
                 .Where(item => item.Title != string.Empty)
                 .Select(item => item.Title)
                 );
@@ -601,7 +608,7 @@ namespace BibReader
         private void ключевыеСловаToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string keywords = string.Join("\r\n", 
-                GetListOfLibItemsFromLv()
+                GetLibItems()
                 .Where(item => item.Keywords != string.Empty)
                 .Select(item => item.Keywords)
                 );
@@ -612,7 +619,7 @@ namespace BibReader
         private void аннотацииToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string abstract_ = string.Join("\r\n", 
-                GetListOfLibItemsFromLv()
+                GetLibItems()
                 .Where(item => item.Abstract != string.Empty)
                 .Select(item => item.Abstract)
                 );

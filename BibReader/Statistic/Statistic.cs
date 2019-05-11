@@ -9,18 +9,54 @@ namespace BibReader.Statistic
 {
     public class Stat
     {
-        int libItemCountFirst = 0;
-        public int libItemCountAfterFirstResearch { get; private set; } = 0;
-        public Dictionary<string, int> DictOfSourses            { get; set; } = new Dictionary<string, int>();
-        public Dictionary<string, int> DictOfSoursesUnique      { get; set; } = new Dictionary<string, int>();
-        public Dictionary<string, int> DictOfSoursesRelevance   { get; set; } = new Dictionary<string, int>();
-        public Dictionary<string, int> DictOfYears              { get; set; } = new Dictionary<string, int>();
-        public Dictionary<string, int> DictOfTypes              { get; set; } = new Dictionary<string, int>();
-        public Dictionary<string, int> DictOfJournal            { get; set; } = new Dictionary<string, int>();
-        public Dictionary<string, int> DictOfConference         { get; set; } = new Dictionary<string, int>();
-        public Dictionary<string, int> DictOfGeography          { get; set; } = new Dictionary<string, int>();
+        public static Dictionary<string, int> Sourses            { get; private set; } = new Dictionary<string, int>();
+        public static Dictionary<string, int> SoursesUnique      { get; private set; } = new Dictionary<string, int>();
+        public static Dictionary<string, int> SoursesRelevance   { get; private set; } = new Dictionary<string, int>();
+        public static Dictionary<string, int> Years              { get; private set; } = new Dictionary<string, int>();
+        public static Dictionary<string, int> Types              { get; private set; } = new Dictionary<string, int>();
+        public static Dictionary<string, int> Journal            { get; private set; } = new Dictionary<string, int>();
+        public static Dictionary<string, int> Conference         { get; private set; } = new Dictionary<string, int>();
+        public static Dictionary<string, int> Geography          { get; private set; } = new Dictionary<string, int>();
 
-        public void SetGeographyStatistic(LibItem libItem)
+        public enum Corpus
+        {
+            First,
+            Unique,
+            Relevance
+        }
+
+        public static void CalculateStatistic(List<LibItem> libItems, Corpus corpus)
+        {
+            if (corpus == Corpus.First)
+            {
+                Sourses = new Dictionary<string, int>();
+                SoursesUnique = new Dictionary<string, int>();
+                SoursesRelevance = new Dictionary<string, int>();
+            }
+            Years = new Dictionary<string, int>();
+            Types = new Dictionary<string, int>();
+            Journal = new Dictionary<string, int>();
+            Conference = new Dictionary<string, int>();
+            Geography = new Dictionary<string, int>();
+
+            foreach (var item in libItems)
+            {
+                SetYearStatistic(item);
+                SetTypesStatistic(item);
+                if (corpus == Corpus.First)
+                    SetSourseStatictic(item);
+                if (corpus == Corpus.Unique)
+                    SetSourseUniqueStatictic(item);
+                if (corpus == Corpus.Relevance)
+                    SetSourseRelevanceStatictic(item);
+                SetJournalStatistic(item);
+                SetConferenceStatistic(item);
+                SetGeographyStatistic(item);
+            }
+        }
+
+
+        private static void SetGeographyStatistic(LibItem libItem)
         {
             if (libItem.Affiliation != string.Empty)
             {
@@ -29,82 +65,77 @@ namespace BibReader.Statistic
                 {
                     var infoArray = aff.Split(',');
 
-                    if (DictOfGeography.ContainsKey(infoArray.Last()))
-                        DictOfGeography[infoArray.Last()]++;
+                    if (Geography.ContainsKey(infoArray.Last()))
+                        Geography[infoArray.Last()]++;
                     else
-                        DictOfGeography.Add(infoArray.Last(), 1);
+                        Geography.Add(infoArray.Last(), 1);
                 }
             }
         }
 
-        public void SetYearStatistic(LibItem libItem)
+        private static void SetYearStatistic(LibItem libItem)
         {
-            if (DictOfYears.ContainsKey(libItem.Year))
-                DictOfYears[libItem.Year]++;
+            if (Years.ContainsKey(libItem.Year))
+                Years[libItem.Year]++;
             else
-                DictOfYears.Add(libItem.Year, 1);
+                Years.Add(libItem.Year, 1);
         }
 
-        public void SetJournalStatistic(LibItem libItem)
+        private static void SetJournalStatistic(LibItem libItem)
         {
             if (libItem.Type == "journal" && libItem.JournalName != string.Empty)
-            if (DictOfJournal.ContainsKey(libItem.JournalName))
-                DictOfJournal[libItem.JournalName]++;
+            if (Journal.ContainsKey(libItem.JournalName))
+                Journal[libItem.JournalName]++;
             else
-                DictOfJournal.Add(libItem.JournalName, 1);
+                Journal.Add(libItem.JournalName, 1);
         }
 
-        public void SetConferenceStatistic(LibItem libItem)
+        private static void SetConferenceStatistic(LibItem libItem)
         {
             if (libItem.Type == "conference")
             {
                 var title = libItem.Booktitle == string.Empty ? libItem.JournalName : libItem.Booktitle;
-                if (DictOfConference.ContainsKey(title))
-                    DictOfConference[title]++;
+                if (Conference.ContainsKey(title))
+                    Conference[title]++;
                 else
-                    DictOfConference.Add(title, 1);
+                    Conference.Add(title, 1);
             }
         }
 
-        public void SetSourseStatictic(LibItem libItem)
+        private static void SetSourseStatictic(LibItem libItem)
         {
-            if (DictOfSourses.ContainsKey(libItem.Sourсe))
-                DictOfSourses[libItem.Sourсe]++;
+            if (Sourses.ContainsKey(libItem.Sourсe))
+                Sourses[libItem.Sourсe]++;
             else
             {
-                DictOfSourses.Add(libItem.Sourсe, 1);
-                DictOfSoursesUnique.Add(libItem.Sourсe, 0);
-                DictOfSoursesRelevance.Add(libItem.Sourсe, 0);
+                Sourses.Add(libItem.Sourсe, 1);
+                SoursesUnique.Add(libItem.Sourсe, 0);
+                SoursesRelevance.Add(libItem.Sourсe, 0);
             }
         }
 
-        public void SetSourseUniqueStatictic(LibItem libItem)
+        private static void SetSourseUniqueStatictic(LibItem libItem)
         {
-            if (DictOfSoursesUnique.ContainsKey(libItem.Sourсe))
-                DictOfSoursesUnique[libItem.Sourсe]++;
+            if (SoursesUnique.ContainsKey(libItem.Sourсe))
+                SoursesUnique[libItem.Sourсe]++;
             else
-                DictOfSoursesUnique.Add(libItem.Sourсe, 1);
+                SoursesUnique.Add(libItem.Sourсe, 1);
         }
 
-        public void SetSourseRelevanceStatictic(LibItem libItem)
+        private static void SetSourseRelevanceStatictic(LibItem libItem)
         {
-            if (DictOfSoursesRelevance.ContainsKey(libItem.Sourсe))
-                DictOfSoursesRelevance[libItem.Sourсe]++;
+            if (SoursesRelevance.ContainsKey(libItem.Sourсe))
+                SoursesRelevance[libItem.Sourсe]++;
             else
-                DictOfSoursesRelevance.Add(libItem.Sourсe, 1);
+                SoursesRelevance.Add(libItem.Sourсe, 1);
         }
 
-        public void SetTypesStatistic(LibItem libItem)
+        private static void SetTypesStatistic(LibItem libItem)
         {
-            if (DictOfTypes.ContainsKey(libItem.Type))
-                DictOfTypes[libItem.Type]++;
+            if (Types.ContainsKey(libItem.Type))
+                Types[libItem.Type]++;
             else
-                DictOfTypes.Add(libItem.Type, 1);
+                Types.Add(libItem.Type, 1);
         }
-
-        public void AddLibItemsCount() => libItemCountFirst++;
-
-        public void AddLibItemsCountAfterFirstResearch() => libItemCountAfterFirstResearch++;
-
     }
 }

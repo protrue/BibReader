@@ -12,10 +12,6 @@ namespace BibReader.Corpuses
         const int distance = 5;
         Dictionary<string, int> UniqueTitles = new Dictionary<string, int>();
 
-        //public Unique() {
-        //    UniqueTitles = new Dictionary<string, int>();
-        //}
-
 
         public int FindCopyPosition(LibItem item, int positoin)
         {
@@ -33,8 +29,6 @@ namespace BibReader.Corpuses
 
         private bool IsUnique(string title) => UniqueTitles.Count == 0 || !UniqueTitles.ContainsKey(title) && UniqueTitles.Select(pair => LevenshteinDistance(pair.Key, title)).Min() > distance;
 
-        private int IndexOfTitle(string title) => UniqueTitles[Normalize(title)];
-
         public void FindImportantData(LibItem savedItem, LibItem currItem)
         {
             AbstractComplement(savedItem, currItem);
@@ -42,7 +36,7 @@ namespace BibReader.Corpuses
             AffiliationComplement(savedItem, currItem);
         }
 
-        private string Normalize(string sentence)
+        private static string Normalize(string sentence)
         {
             var resultContainer = new StringBuilder(sentence.Length);
             var lowerSentece = sentence.ToLower();
@@ -57,7 +51,7 @@ namespace BibReader.Corpuses
             return resultContainer.ToString();
         }
 
-        private int EditDistance(string fstWord, string sndWord)
+        private static int EditDistance(string fstWord, string sndWord)
         {
             int fstWordLength = fstWord.Length, sndWordLength = sndWord.Length;
             int[,] ed = new int[fstWordLength, sndWordLength];
@@ -96,7 +90,7 @@ namespace BibReader.Corpuses
             return ed[fstWordLength - 1, sndWordLength - 1];
         }
 
-        private int LevenshteinDistance(string fstWord, string sndWord)
+        private static int LevenshteinDistance(string fstWord, string sndWord)
         {
             if (sndWord == "" || sndWord == null)
                 return int.MaxValue;
@@ -106,27 +100,23 @@ namespace BibReader.Corpuses
                 return EditDistance(fstWord, sndWord);
         }
 
-        private void KeywordsComplement(LibItem savedItem, LibItem currItem)
+        private static void KeywordsComplement(LibItem savedItem, LibItem currItem)
         {
             if (savedItem.KeywordsIsEmpty && !currItem.KeywordsIsEmpty)
                 savedItem.Keywords = currItem.Keywords;
         }
 
-        private void AbstractComplement(LibItem savedItem, LibItem currItem)
+        private static void AbstractComplement(LibItem savedItem, LibItem currItem)
         {
             if (savedItem.AbstractIsEmpty && !currItem.AbstractIsEmpty)
                 savedItem.Abstract = currItem.Abstract;
 
         }
 
-        private void AffiliationComplement(LibItem savedItem, LibItem currItem)
+        private static void AffiliationComplement(LibItem savedItem, LibItem currItem)
         {
             if (savedItem.AffiliationIsEmpty && !currItem.AffiliationIsEmpty)
                 savedItem.Affiliation = currItem.Affiliation;
         }
-
-
     }
-
-
 }
