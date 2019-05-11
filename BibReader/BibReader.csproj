@@ -87,7 +87,7 @@
     <Compile Include="Saver\MyBibFormat.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Saver\WordSaver.cs" />
+    <Compile Include="Saver\DocSaver.cs" />
     <Compile Include="Statistic\FormStatistic.cs" />
     <Compile Include="Statistic\Statistic.cs" />
     <Compile Include="Corpuses\Unique.cs" />
