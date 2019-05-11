@@ -11,9 +11,9 @@ namespace BibReader.Readers
 {
     public class UniversalBibReader
     {
-        Tags myDictinaries = new Tags();
+        Tags tags = new Tags();
 
-        private string WhereFrom(string str)
+        private string FindSource(string str)
         {
             switch(str.Substring(0, "title".Length))
             {
@@ -27,7 +27,7 @@ namespace BibReader.Readers
             return "";
         }
 
-        private string pretreatmentTitle(string title)
+        private string PretreatTitle(string title)
         {
             string[] codesForRemove = new string[] {
                 @"\&\#38;",
@@ -45,10 +45,7 @@ namespace BibReader.Readers
                         title = title.Insert(index, "”");
                 }
             }
-
-            title = FindOriginalTitle(title);
-
-            return title;
+            return FindOriginalTitle(title);
         }
 
         private string FindOriginalTitle(string title)
@@ -59,104 +56,101 @@ namespace BibReader.Readers
             var value = regex.Match(title).Groups[1].Value;
             if (value != "")
             {
-                myDictinaries.TagValues["originalTitle"] = value;
+                tags.TagValues["originalTitle"] = value;
                 var index = title.IndexOf(value);
                 title = title.Remove(index - 1, value.Length + 2);
             }
-
             return title;
         }
 
-        private bool isScienceDirectEnd(string str) => 
-            (str.Length >= "abstract = ".Length + 1 && str.Substring(0, "abstract = ".Length + 1) == "abstract = \"")
-            ? true 
-            : false;
+        private bool IsScienceDirectEnd(string str) =>
+            (str.Length >= "abstract = ".Length + 1 && str.Substring(0, "abstract = ".Length + 1) == "abstract = \"");
 
-        private void ScienceDirectFix(string str)
+        private void FixScienceDirect(string str)
         {
             var template = @"(.+?)\s=\s""(.+?)""";
             var regex = new Regex(template);
            
             var key = regex.Match(str).Groups[1].Value;
             var value = regex.Match(str).Groups[2].Value;
-            if (myDictinaries.TagRework.ContainsKey(key) && myDictinaries.TagValues.ContainsKey(myDictinaries.TagRework[key]))
-                myDictinaries.TagValues[myDictinaries.TagRework[key]] = value;
+            if (tags.TagRework.ContainsKey(key) && tags.TagValues.ContainsKey(tags.TagRework[key]))
+                tags.TagValues[tags.TagRework[key]] = value;
         }
 
         private void SetTypeOfLibItem(string str)
         {
             var index = str.IndexOf('{');
-            myDictinaries.TagValues["type"] = myDictinaries.TagRework[str.Substring(1, index - 1).ToLower()];
+            tags.TagValues["type"] = tags.TagRework[str.Substring(1, index - 1).ToLower()];
         }
 
-        private List<LibItem> ReadFile(StreamReader reader, List<LibItem> Items)
+        private bool IsEndOfTag(string currstr) =>
+            currstr.Length >= 3 &&
+            (currstr.Substring(currstr.Length - 2, 2) == "}," ||
+            currstr.Substring(currstr.Length - 3, 3) == "}, " ||
+            currstr.Substring(currstr.Length - 2, 2) == "\",");
+
+        private List<LibItem> GetLibItems(StreamReader reader)
         {
+            List<LibItem> Items = new List<LibItem>();
             var template = @"\s?(.+?)\s?=\s?(""|{{|{)(.+?)(""|}}|}),";
             var regex = new Regex(template);
-            string str = "", currstr = "";
-            const string endStr = "\",";
-            myDictinaries = new Tags();
-            myDictinaries.Init();
+            string tagString = "", newLine = "";
+            tags = new Tags();
 
             if (reader == null)
                 return Items;
-            currstr = reader.ReadLine();
-            while (currstr == null || currstr == "" || currstr[0] != '@')
+            newLine = reader.ReadLine();
+            while (newLine == null || newLine == "" || newLine[0] != '@')
             {
-                if (currstr == null)
+                if (newLine == null)
                     return Items;
-                currstr = reader.ReadLine();
+                newLine = reader.ReadLine();
             }
-            SetTypeOfLibItem(currstr);
+            SetTypeOfLibItem(newLine);
             while (!reader.EndOfStream)
             {
-               
-                currstr = reader.ReadLine();
-                while (currstr == "" || currstr != "}" && (currstr.Length > 2 && currstr.Substring(currstr.Length - 2, 2) != ",}"))
+                newLine = reader.ReadLine();
+                while (newLine == "" || newLine != "}" && (newLine.Length > 2 && newLine.Substring(newLine.Length - 2, 2) != ",}"))
                 {
-                    if (currstr != "")
+                    if (newLine != "")
                     {
-                        if (currstr[0] != '@')
-                            str += currstr;
+                        if (newLine[0] != '@')
+                            tagString += newLine;
                         else
-                            SetTypeOfLibItem(currstr);
+                            SetTypeOfLibItem(newLine);
 
-                        if (currstr.Length >= 3 && (currstr.Substring(currstr.Length - 2, 2) == "}," ||
-                            currstr.Substring(currstr.Length - 3, 3) == "}, " ||
-                            currstr.Substring(currstr.Length - 2, 2) == endStr))
+                        if (IsEndOfTag(newLine))
                         {
-                            var key = regex.Match(str).Groups[1].Value;
-                            var value = regex.Match(str).Groups[3].Value;
+                            var key = regex.Match(tagString).Groups[1].Value;
+                            var value = regex.Match(tagString).Groups[3].Value;
                             if (key == "title" || key == "Title" || key == "source")
                             {
-                                value = pretreatmentTitle(value);
-                                if (myDictinaries.TagValues["source"] == "")
-                                    myDictinaries.TagValues["source"] = WhereFrom(str);
+                                value = PretreatTitle(value);
+                                if (tags.TagValues["source"] == "")
+                                    tags.TagValues["source"] = FindSource(tagString);
                                 if (key == "source")
-                                    myDictinaries.TagValues["source"] = value;
+                                    tags.TagValues["source"] = value;
                             }
-                            if (myDictinaries.TagRework.ContainsKey(key))
-                                myDictinaries.TagValues[myDictinaries.TagRework[key]] = value;
-                            str = "";
+                            if (tags.TagRework.ContainsKey(key))
+                                tags.TagValues[tags.TagRework[key]] = value;
+                            tagString = "";
                         }
                     }
-                    currstr = reader.ReadLine();
-                    if (currstr == null)
+                    newLine = reader.ReadLine();
+                    if (newLine == null)
                         break;
                 }
-                if (str != string.Empty)
-                    ScienceDirectFix(str);
-                if (currstr == null)
+                if (tagString != string.Empty)
+                    FixScienceDirect(tagString);
+                if (newLine == null)
                     break;
-                str = string.Empty;
-                var newItem = new LibItem(myDictinaries.TagValues);
+                tagString = string.Empty;
+                var newItem = new LibItem(tags.TagValues);
                 Items.Add(newItem);
-                myDictinaries = new Tags();
-                myDictinaries.Init();
+                tags = new Tags();
             }
             reader.Close();
             return Items;
-
         }
 
         public List<LibItem> Read(StreamReader[] readers)
@@ -164,7 +158,7 @@ namespace BibReader.Readers
             var Items = new List<LibItem>();
             if (readers != null)
                 foreach (var reader in readers)
-                    Items = ReadFile(reader, Items);
+                    Items.AddRange(GetLibItems(reader));
             return Items;
         }
     }

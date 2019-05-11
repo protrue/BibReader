@@ -219,9 +219,9 @@ namespace BibReader
             var readers = GetStreamReaders();
             if (readers != null)
             {
-                var listOfItems = univReader.Read(readers);
+                var libItems = univReader.Read(readers);
                 ClearDataBeforeLoad();
-                LoadLibItems(listOfItems);
+                LoadLibItems(libItems);
                 toolStripStatusLabel1.Text = "Last opened file name: " + lastOpenedFileName;
 
                 if (readers != null)

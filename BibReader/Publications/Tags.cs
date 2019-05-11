@@ -11,7 +11,7 @@ namespace BibReader.Publications
         public Dictionary<string, string> TagRework;
         public Dictionary<string, string> TagValues;
 
-        public void Init()
+        public Tags()
         {
             TagRework = new Dictionary<string, string>
             {
