@@ -8,7 +8,7 @@ using System.Windows.Forms;
 
 namespace BibReader.Saver
 {
-    class WordSaver
+    class DocSaver
     {
         public static void Save(RichTextBox richTextBox)
         {

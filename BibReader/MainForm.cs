@@ -256,9 +256,7 @@ namespace BibReader
                 if (saveFile.ShowDialog() == DialogResult.OK)
                 {
                     string filePath = saveFile.FileName;
-                    MyBibFormat bibFormat = new MyBibFormat();
-                    var libItems = GetLibItems();
-                    bibFormat.Write(libItems, filePath);
+                    MyBibFormat.Write(GetLibItems(), filePath);
                 }
             }
         }
@@ -624,6 +622,6 @@ namespace BibReader
             ExcelSaver.Save(listOfTables);
         }
 
-        private void btSaveBibRef_Click(object sender, EventArgs e) => WordSaver.Save(rtbBib);
+        private void btSaveBibRef_Click(object sender, EventArgs e) => DocSaver.Save(rtbBib);
     }
 }

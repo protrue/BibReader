@@ -10,7 +10,7 @@ namespace BibReader.Saver
 {
     public class MyBibFormat
     {
-        public void Write(List<LibItem> libItems, string path)
+        public static void Write(List<LibItem> libItems, string path)
         {
             using (var writer = new StreamWriter(path, false))
             {
