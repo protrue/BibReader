@@ -131,28 +131,13 @@ namespace BibReader
             var libItemsCount = lvLibItems.Items.Count;
             double step = libItemsCount / 100;
             pbLoadUniqueData.Step = (int)step;
-            var unique = new Unique();
-
-            foreach (ListViewItem item in lvLibItems.Items)
+            var unique = new Unique(GetLibItems());
+            int i = 0;
+            foreach (var item in unique.LibItemIndexesForDeleting)
             {
-                int position;
-                if ((position = unique.FindCopyPosition((LibItem)item.Tag, item.Index)) == -1)
-                {
-                    item.SubItems[2].Text = "2";
-                }
-                else
-                {
-                    //item.SubItems[2].Text = "1";
-                    deletedLibItems.Add(item);
-                    if (position != -2)
-                        unique.FindImportantData(
-                            (LibItem)lvLibItems.Items[position].Tag,
-                            (LibItem)item.Tag
-                            );
-                    item.Remove();
-                }
-                if (pbLoadUniqueData.Value + step <= 100)
-                    pbLoadUniqueData.Value += (int)step;
+                deletedLibItems.Add(lvLibItems.Items[item - i]);
+                lvLibItems.Items.RemoveAt(item - i);
+                i++;
             }
             pbLoadUniqueData.Value = 100;
             MessageBox.Show("Готово!");

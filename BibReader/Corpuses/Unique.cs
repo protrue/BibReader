@@ -11,25 +11,57 @@ namespace BibReader.Corpuses
     {
         const int distance = 5;
         Dictionary<string, int> UniqueTitles = new Dictionary<string, int>();
+        public HashSet<int> LibItemIndexesForDeleting { get; private set; } = new HashSet<int>();
 
-
-        public int FindCopyPosition(LibItem item, int positoin)
+        public Unique(List<LibItem> libItems)
         {
-            var title = Normalize(item.Title);
-            if (IsUnique(title))
+            int position, i = 0;
+            foreach (var item in libItems)
             {
-                UniqueTitles.Add(title, positoin);
-                return -1;
-            }
-            else
-            {
-                return UniqueTitles.ContainsKey(title) ? UniqueTitles[title] :-2;
+                if ((position = FindCopyPosition(item)) == -1)
+                    UniqueTitles.Add(Normalize(item.Title), i);
+                else
+                {
+                    LibItemIndexesForDeleting.Add(i);
+                    FindImportantData(libItems[position], item);
+                }
+                i++;
             }
         }
 
-        private bool IsUnique(string title) => UniqueTitles.Count == 0 || !UniqueTitles.ContainsKey(title) && UniqueTitles.Select(pair => LevenshteinDistance(pair.Key, title)).Min() > distance;
+        private int FindCopyPosition(LibItem item)
+        {
+            var title = Normalize(item.Title);
+            string copy = null;
+            if (IsUnique(title) && (copy = GetTitleCopy(title)) == null)
+                return -1;
+            else
+                return 
+                    copy != null 
+                    ? UniqueTitles[copy]
+                    : UniqueTitles[title];
+        }
 
-        public void FindImportantData(LibItem savedItem, LibItem currItem)
+        private bool IsUnique(string title) =>
+            UniqueTitles.Count == 0 ||
+            !UniqueTitles.ContainsKey(title);
+
+        private string GetTitleCopy(string title)
+        {
+            int ld, min = distance;
+            string ldTitle = null;
+            foreach(var utitle in UniqueTitles.Keys)
+            {
+                if (min > (ld = LevenshteinDistance(utitle, title)))
+                {
+                    min = ld;
+                    ldTitle = utitle;
+                }
+            }
+            return ldTitle;
+        }
+
+        private static void FindImportantData(LibItem savedItem, LibItem currItem)
         {
             AbstractComplement(savedItem, currItem);
             KeywordsComplement(savedItem, currItem);
@@ -41,12 +73,8 @@ namespace BibReader.Corpuses
             var resultContainer = new StringBuilder(sentence.Length);
             var lowerSentece = sentence.ToLower();
             foreach (var c in lowerSentece)
-            {
                 if (char.IsLetterOrDigit(c) || c == ' ')
-                {
                     resultContainer.Append(c);
-                }
-            }
 
             return resultContainer.ToString();
         }
@@ -110,7 +138,6 @@ namespace BibReader.Corpuses
         {
             if (savedItem.AbstractIsEmpty && !currItem.AbstractIsEmpty)
                 savedItem.Abstract = currItem.Abstract;
-
         }
 
         private static void AffiliationComplement(LibItem savedItem, LibItem currItem)

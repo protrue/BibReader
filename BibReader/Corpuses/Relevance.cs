@@ -8,7 +8,7 @@ namespace BibReader.Corpuses
 {
     class Relevance
     {
-        public static bool isRelevance(string pages, string authors) => isRelevancePages(pages) && authors != "" ? true : false;
+        public static bool isRelevance(string pages, string authors) => isRelevancePages(pages) && authors != "";
 
         private static bool isRelevancePages(string pages)
         {
@@ -36,8 +36,6 @@ namespace BibReader.Corpuses
             Int32.TryParse(pageEnd, out intPageEnd);
 
             return intPageEnd - intPageBegin > 3 ? true : false;
-
         }
-
     }
 }
