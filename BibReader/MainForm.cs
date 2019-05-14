@@ -220,44 +220,13 @@ namespace BibReader
             if (readers != null)
             {
                 var libItems = univReader.Read(readers);
-                ClearDataBeforeLoad();
                 LoadLibItems(libItems);
                 toolStripStatusLabel1.Text = "Last opened file name: " + lastOpenedFileName;
-
-                if (readers != null)
-                {
-                    btFirst.Enabled = false;
-                    btUnique.Enabled = true;
-                    btRelevance.Enabled = false;
-                    добавитьToolStripMenuItem.Enabled = true;
-                }
+                btFirst.Enabled = false;
+                btUnique.Enabled = true;
+                btRelevance.Enabled = false;
+                добавитьToolStripMenuItem.Enabled = true;
                 UpdateUI();
-            }
-        }
-
-        private void ClearDataBeforeLoad()
-        {
-            lvSourceStatistic.Clear();
-            lvYearStatistic.Clear();
-            lbCurrSelectedItem.Text = "";
-            rtbBib.Clear();
-            var tbs = tabControl.TabPages["tpData"].Controls.OfType<TextBox>();
-            foreach (var tb in tbs)
-                tb.Text = string.Empty;
-        }
-
-        private void сохранитьToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            using (var saveFile = new SaveFileDialog())
-            {
-                //MessageBox.Show(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"filesystem\newfile.bib"));
-                saveFile.InitialDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"filesystem\newfile.bib");
-                saveFile.Filter = "Файлы bib|*.bib";
-                if (saveFile.ShowDialog() == DialogResult.OK)
-                {
-                    string filePath = saveFile.FileName;
-                    MyBibFormat.Write(GetLibItems(), filePath);
-                }
             }
         }
 
@@ -270,39 +239,11 @@ namespace BibReader
                 var libItems = univReader.Read(reader);
                 AddLibItemsInLvItems(libItems);
 
-                if (reader != null)
-                {
-                    btFirst.Enabled = false;
-                    btUnique.Enabled = true;
-                    btRelevance.Enabled = false;
-                }
+                btFirst.Enabled = false;
+                btUnique.Enabled = true;
+                btRelevance.Enabled = false;
                 UpdateUI();
             }
-        }
-
-        private void tabControl_Selected(object sender, TabControlEventArgs e)
-        {
-            //switch (e.TabPage.Name)
-            //{
-
-            //    case "tpYearStatistic":
-            //        LoadYearStatistic();
-            //        break;
-            //    case "tpSourceStatistic":
-            //        LoadSourseStatistic();
-            //        break;
-            //    case "tpBib":
-            //        rtbBib.Text = string.Empty;
-            //        try
-            //        {
-            //            MakeBibRef();
-            //        }
-            //        catch(Exception ex)
-            //        {
-            //            MessageBox.Show(ex.Message);
-            //        }
-            //        break;
-            //}
         }
 
         private void MakeBibRef()
@@ -373,14 +314,11 @@ namespace BibReader
             btFirst.Enabled = false;
             добавитьToolStripMenuItem.Enabled = true;
             UpdateUI();
-
         }
 
         private void btUnique_Click(object sender, EventArgs e)
         {
-            pbLoadUniqueData.Value = 0;
             UniqueTitles();
-
             btRelevance.Enabled = true;
             btUnique.Enabled = false;
             добавитьToolStripMenuItem.Enabled = false;
@@ -469,11 +407,7 @@ namespace BibReader
         private void contextMenuStrip1_Click(object sender, EventArgs e)
         {
             lvLibItems.SelectedItems[0].Remove();
-            if (lvLibItems.Items.Count > 0)
-            {
-                lvLibItems.Items[0].Selected = true;
-                lbCurrSelectedItem.Text = $"1/{lvLibItems.Items.Count}";
-            }
+            SelectFstLibItem();
         }
 
         //private void tbTitle_TextChanged(object sender, EventArgs e)
@@ -520,8 +454,8 @@ namespace BibReader
             if (indexesOfLibItems.Count > 0)
             {
                 lvLibItems.Select();
-                // currIndex = indexesOfLibItems[0];
-                currIndex = currIndex >= indexesOfLibItems.Last() || currIndex == -1
+                currIndex = 
+                    currIndex >= indexesOfLibItems.Last() || currIndex == -1
                     ? indexesOfLibItems.First()
                     : indexesOfLibItems.First(x => x > currIndex);
                 lvLibItems.Items[currIndex].Selected = true;
@@ -529,8 +463,6 @@ namespace BibReader
             }
             else
                 MessageBox.Show("Элементы не найдены!");
-            
-           
         }
 
         private void btPrevFindedLibItem_Click(object sender, EventArgs e)
@@ -560,7 +492,8 @@ namespace BibReader
             if (indexesOfLibItems.Count > 0)
             {
                 lvLibItems.Select();
-                currIndex = currIndex <= indexesOfLibItems.First() || currIndex == -1
+                currIndex = 
+                    currIndex <= indexesOfLibItems.First() || currIndex == -1
                     ? indexesOfLibItems.Last() 
                     : indexesOfLibItems.Last(x => x < currIndex);
                 lvLibItems.Items[currIndex].Selected = true;
@@ -568,7 +501,6 @@ namespace BibReader
             }
             else
                 MessageBox.Show("Элементы не найдены!");
-
         }
 
         private void btPrintBib_Click(object sender, EventArgs e)
@@ -612,16 +544,22 @@ namespace BibReader
 
         private void cbSearchCriterion_SelectedIndexChanged(object sender, EventArgs e) => currIndex = -1;
 
-        private void btSaveStatistic_Click(object sender, EventArgs e)
-        {
-            var tps = tabControlForStatistic.TabPages;
-            var listOfTables = new List<ListView>();
-
-            foreach (TabPage tp in tps)
-                listOfTables.Add(tp.Controls.OfType<ListView>().First());
-            ExcelSaver.Save(listOfTables);
-        }
+        private void btSaveStatistic_Click(object sender, EventArgs e) => ExcelSaver.Save(GetStatisticListViews());
 
         private void btSaveBibRef_Click(object sender, EventArgs e) => DocSaver.Save(rtbBib);
+
+        private void корпусДокументовToolStripMenuItem_Click(object sender, EventArgs e) => MyBibFormat.Save(GetLibItems());
+
+        private void библОписанияToolStripMenuItem_Click(object sender, EventArgs e) => DocSaver.Save(rtbBib);
+
+        private void статистикуToolStripMenuItem_Click(object sender, EventArgs e) => ExcelSaver.Save(GetStatisticListViews());
+
+        private List<ListView> GetStatisticListViews()
+        {
+            var listOfTables = new List<ListView>();
+            foreach (TabPage tp in tabControlForStatistic.TabPages)
+                listOfTables.Add(tp.Controls.OfType<ListView>().First());
+            return listOfTables;
+        }
     }
 }

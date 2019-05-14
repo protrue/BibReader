@@ -86,6 +86,9 @@
             this.открытьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.добавитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.сохранитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.корпусДокументовToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.библОписанияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.статистикуToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.классификацияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.получитьToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.названияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -150,7 +153,6 @@
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(664, 713);
             this.tabControl.TabIndex = 0;
-            this.tabControl.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl_Selected);
             // 
             // tpData
             // 
@@ -555,7 +557,7 @@
             this.tpYearStat.Padding = new System.Windows.Forms.Padding(3);
             this.tpYearStat.Size = new System.Drawing.Size(635, 587);
             this.tpYearStat.TabIndex = 0;
-            this.tpYearStat.Text = "Года";
+            this.tpYearStat.Text = "Годы";
             this.tpYearStat.UseVisualStyleBackColor = true;
             // 
             // lvYearStatistic
@@ -727,10 +729,34 @@
             // 
             // сохранитьToolStripMenuItem
             // 
+            this.сохранитьToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.корпусДокументовToolStripMenuItem,
+            this.библОписанияToolStripMenuItem,
+            this.статистикуToolStripMenuItem});
             this.сохранитьToolStripMenuItem.Name = "сохранитьToolStripMenuItem";
             this.сохранитьToolStripMenuItem.Size = new System.Drawing.Size(158, 26);
             this.сохранитьToolStripMenuItem.Text = "Сохранить";
-            this.сохранитьToolStripMenuItem.Click += new System.EventHandler(this.сохранитьToolStripMenuItem_Click);
+            // 
+            // корпусДокументовToolStripMenuItem
+            // 
+            this.корпусДокументовToolStripMenuItem.Name = "корпусДокументовToolStripMenuItem";
+            this.корпусДокументовToolStripMenuItem.Size = new System.Drawing.Size(220, 26);
+            this.корпусДокументовToolStripMenuItem.Text = "Корпус документов";
+            this.корпусДокументовToolStripMenuItem.Click += new System.EventHandler(this.корпусДокументовToolStripMenuItem_Click);
+            // 
+            // библОписанияToolStripMenuItem
+            // 
+            this.библОписанияToolStripMenuItem.Name = "библОписанияToolStripMenuItem";
+            this.библОписанияToolStripMenuItem.Size = new System.Drawing.Size(220, 26);
+            this.библОписанияToolStripMenuItem.Text = "Библ. описания";
+            this.библОписанияToolStripMenuItem.Click += new System.EventHandler(this.библОписанияToolStripMenuItem_Click);
+            // 
+            // статистикуToolStripMenuItem
+            // 
+            this.статистикуToolStripMenuItem.Name = "статистикуToolStripMenuItem";
+            this.статистикуToolStripMenuItem.Size = new System.Drawing.Size(220, 26);
+            this.статистикуToolStripMenuItem.Text = "Статистику";
+            this.статистикуToolStripMenuItem.Click += new System.EventHandler(this.статистикуToolStripMenuItem_Click);
             // 
             // классификацияToolStripMenuItem
             // 
@@ -1044,6 +1070,9 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label labelFindedItemsCount;
         private System.Windows.Forms.Button btSaveBibRef;
+        private System.Windows.Forms.ToolStripMenuItem корпусДокументовToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem библОписанияToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem статистикуToolStripMenuItem;
     }
 }
 
