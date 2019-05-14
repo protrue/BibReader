@@ -10,7 +10,7 @@ namespace BibReader.Statistic
 {
     class FormStatistic
     {
-        public void LoadSourseStatistic(ListView lvSourceStatistic)
+        public static void LoadSourseStatistic(ListView lvSourceStatistic)
         {
             lvSourceStatistic.Clear();
             lvSourceStatistic.Columns.Add("Источник");
@@ -43,7 +43,7 @@ namespace BibReader.Statistic
             ));
         }
 
-        public void LoadYearStatistic(ListView lvYearStatistic)
+        public static void LoadYearStatistic(ListView lvYearStatistic)
         {
             lvYearStatistic.Clear();
             lvYearStatistic.Columns.Add("Год");
@@ -63,7 +63,7 @@ namespace BibReader.Statistic
             }));
         }
 
-        public void LoadTypeStatistic(ListView lvTypeOfDoc)
+        public static void LoadTypeStatistic(ListView lvTypeOfDoc)
         {
             lvTypeOfDoc.Clear();
             lvTypeOfDoc.Columns.Add("Тип документа");
@@ -84,7 +84,7 @@ namespace BibReader.Statistic
 
         }
 
-        public void LoadJournalStatistic(ListView lvJournalStat)
+        public static void LoadJournalStatistic(ListView lvJournalStat)
         {
             lvJournalStat.Clear();
             lvJournalStat.Columns.Add("Название журнала");
@@ -104,7 +104,7 @@ namespace BibReader.Statistic
             }));
         }
 
-        public void LoadConferenceStatistic(ListView lvConferenceStat)
+        public static void LoadConferenceStatistic(ListView lvConferenceStat)
         {
             lvConferenceStat.Clear();
             lvConferenceStat.Columns.Add("Название конференции");
@@ -124,7 +124,7 @@ namespace BibReader.Statistic
             }));
         }
 
-        public void LoadGeographyStatistic(ListView lvGeography)
+        public static void LoadGeographyStatistic(ListView lvGeography)
         {
 
             lvGeography.Clear();

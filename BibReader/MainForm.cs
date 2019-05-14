@@ -23,10 +23,8 @@ namespace BibReader
     {
         // Сущности journalName и BookTitle разделить
 
-        FormStatistic statistic = new FormStatistic();
         List<ListViewItem> deletedLibItems = new List<ListViewItem>();
         string lastOpenedFileName = string.Empty;
-        List<int> indexesOfLibItems;
         int currIndex = -1;
 
         private StreamReader[] GetStreamReaders()
@@ -174,7 +172,6 @@ namespace BibReader
         private void LoadLibItems(List<LibItem> libItems)
         {
             lvLibItems.Items.Clear();
-            statistic = new FormStatistic();
             currIndex = -1;
             deletedLibItems.Clear();
             AddLibItemsInLvItems(libItems);
@@ -342,12 +339,12 @@ namespace BibReader
                 corpus = Stat.Corpus.Relevance;
 
             Stat.CalculateStatistic(GetLibItems(), corpus);
-            statistic.LoadSourseStatistic(lvSourceStatistic);
-            statistic.LoadYearStatistic(lvYearStatistic);
-            statistic.LoadTypeStatistic(lvTypeOfDoc);
-            statistic.LoadJournalStatistic(lvJournalStat);
-            statistic.LoadGeographyStatistic(lvGeography);
-            statistic.LoadConferenceStatistic(lvConferenceStat);
+            FormStatistic.LoadSourseStatistic(lvSourceStatistic);
+            FormStatistic.LoadYearStatistic(lvYearStatistic);
+            FormStatistic.LoadTypeStatistic(lvTypeOfDoc);
+            FormStatistic.LoadJournalStatistic(lvJournalStat);
+            FormStatistic.LoadGeographyStatistic(lvGeography);
+            FormStatistic.LoadConferenceStatistic(lvConferenceStat);
         }
 
         private void UpdateUI()
@@ -429,7 +426,7 @@ namespace BibReader
 
         private void btNextFindedLibItem_Click(object sender, EventArgs e)
         {
-            indexesOfLibItems = new List<int>();
+            var indexesOfLibItems = new List<int>();
             indexesOfLibItems.Clear();
             foreach (ListViewItem libItem in lvLibItems.Items)
             {
@@ -467,7 +464,7 @@ namespace BibReader
 
         private void btPrevFindedLibItem_Click(object sender, EventArgs e)
         {
-            indexesOfLibItems = new List<int>();
+            var indexesOfLibItems = new List<int>();
             indexesOfLibItems.Clear();
             foreach (ListViewItem libItem in lvLibItems.Items)
             {
