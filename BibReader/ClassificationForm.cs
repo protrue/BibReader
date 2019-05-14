@@ -14,16 +14,9 @@ namespace BibReader
 {
     public partial class ClassificationForm : Form
     {
-        List<int> indexesOfLibItems;
         int currIndex = -1;
-
         List<string> BlackList = new List<string>();
-        IEnumerable<TagCloudTag> words;
-        WordCloud.WordCloud wordCloud;
-
-        TagCloudAnalyzer tagCloudAnalyzer = new TagCloudAnalyzer();
-        TagCloudSetting tagCloudSetting = new TagCloudSetting();
-        TagCloudTag tagCloudTag = new TagCloudTag();
+        TagCloudSetting TagCloudSetting = new TagCloudSetting();
 
         public string Info
         {
@@ -36,72 +29,40 @@ namespace BibReader
             InitializeComponent();
         }
 
-        private void ClusterizationForm_Load(object sender, EventArgs e)
+        private IEnumerable<TagCloudTag> GetCloudTags()
         {
-            //tagCloudTag.Category = 1;
-            //tagCloudTag.Count = 100;
-            //tagCloudTag.Text = "wow";
-
-            //tagCloudSetting.Lemmatizer = new LemmaSharp.Lemmatizer();
-            //tagCloudSetting.MaxCloudSize = 1000;
-            //tagCloudSetting.NumCategories = 2;
-            //var stop = tagCloudSetting.StopWords;
-            //var regex = tagCloudSetting.WordFinder;
-
-            //var tags = tagCloudAnalyzer.ComputeTagCloud(IEnumerable<string> phrases);
-            //tags.Shuffle();
-
-            tagCloudSetting.MaxCloudSize = 10;
-            tagCloudAnalyzer = new TagCloudAnalyzer(tagCloudSetting);
-            words = tagCloudAnalyzer.ComputeTagCloud(Info.Split(new string[] { "\r\n" }, StringSplitOptions.None));
-
-            //Info = (string.Join(
-            //    Environment.NewLine,
-            //    words.Select(p => "[" + p.Count + "] \t" + p.Text).ToArray()));
-
-            wordCloud = new WordCloud.WordCloud(pictBox.Width, pictBox.Height);
-            var image = wordCloud.Draw(
-                words.Select(word => word.Text).ToList(),
-                words.Select(word => word.Count).ToList()
+            TagCloudSetting.MaxCloudSize = (int)nudWordsCount.Value + BlackList.Count;
+            return
+                new TagCloudAnalyzer(TagCloudSetting)
+                .ComputeTagCloud(
+                    Info.Split(new string[] { "\r\n" }, StringSplitOptions.None)
                 );
-            pictBox.Image = image;
-
-            numericUpDown1.Value = tagCloudSetting.MaxCloudSize;
-
-            var regex = tagCloudSetting.WordFinder;
-            var stopWords = tagCloudSetting.StopWords;
-            var lemmatizer = tagCloudSetting.Lemmatizer;
         }
 
-        private void LoadWordAndFreqs()
+        private void ClusterizationForm_Load(object sender, EventArgs e)
+        {
+            nudWordsCount.Value = 10;
+            LoadWordAndFreqs(GetCloudTags());
+            Draw();
+        }
+
+        private void LoadWordAndFreqs(IEnumerable<TagCloudTag> cloudTags)
         {
             lvFreqs.Items.Clear();
-            foreach(var word in words)
+            foreach(var tag in cloudTags)
             {
-                if (!BlackList.Contains(word.Text))
-                lvFreqs.Items.Add(
-                    new ListViewItem(new string[] {
-                        word.Text,
-                        word.Count.ToString()
-                    })
+                if (!BlackList.Contains(tag.Text))
+                    lvFreqs.Items.Add(
+                        new ListViewItem(
+                            new string[] {
+                                tag.Text,
+                                tag.Count.ToString()
+                            }
+                        )
                     );
             }
             lvFreqs.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent);
             lvFreqs.AutoResizeColumn(1, ColumnHeaderAutoResizeStyle.HeaderSize);
-        }
-
-        private void tabControl1_Selected(object sender, TabControlEventArgs e)
-        {
-            switch(e.TabPage.Name)
-            {
-                case "tpText":
-                    
-                    break;
-
-                case "tpFreqs":
-                    LoadWordAndFreqs();
-                    break;
-            }
         }
 
         private void btDeleteItems_Click(object sender, EventArgs e)
@@ -111,61 +72,37 @@ namespace BibReader
                 BlackList.Add(item.SubItems[0].Text);
                 lvFreqs.Items.Remove(item);
             }
-            tagCloudSetting.MaxCloudSize = (int)numericUpDown1.Value + BlackList.Count;
-            tagCloudAnalyzer = new TagCloudAnalyzer(tagCloudSetting);
-            words = tagCloudAnalyzer.ComputeTagCloud(Info.Split(new string[] { "\r\n" }, StringSplitOptions.None));
-            LoadWordAndFreqs();
+            LoadWordAndFreqs(GetCloudTags());
         }
 
-        private void tbRedraw_Click(object sender, EventArgs e)
-        {
-            Draw();
-        }
+        private void tbRedraw_Click(object sender, EventArgs e) => Draw();
 
         private void Draw()
         {
-            if (checkBox1.Checked)
-                wordCloud = new WordCloud.WordCloud(pictBox.Width, pictBox.Height, false, Color.Black);
-            else
-                wordCloud = new WordCloud.WordCloud(pictBox.Width, pictBox.Height);
+            var wordCloud = 
+                checkBoxImageIsBlack.Checked
+                ? new WordCloud.WordCloud(pictBox.Width, pictBox.Height, false, Color.Black)
+                : new WordCloud.WordCloud(pictBox.Width, pictBox.Height);
 
-            Image image;
-            if(checkBoxFreq.Checked)
-                image = wordCloud.Draw(
+            pictBox.Image = 
+                checkBoxFreq.Checked
+                ? wordCloud.Draw(
                     lvFreqs.Items.Cast<ListViewItem>().Select(item => item.SubItems[0].Text + "(" + item.SubItems[1].Text + ")").ToList(),
                     lvFreqs.Items.Cast<ListViewItem>().Select(item => Convert.ToInt32(item.SubItems[1].Text)).ToList()
-                );
-            else
-                image = wordCloud.Draw(
+                )
+                : wordCloud.Draw(
                     lvFreqs.Items.Cast<ListViewItem>().Select(item => item.SubItems[0].Text).ToList(),
                     lvFreqs.Items.Cast<ListViewItem>().Select(item => Convert.ToInt32(item.SubItems[1].Text)).ToList()
                 );
-            pictBox.Image = image;
         }
 
-        private void btSaveImage_Click(object sender, EventArgs e)
-        {
-            using (FileDialog fileDialog = new SaveFileDialog())
-            {
-                fileDialog.Filter = "bmp(*.bmp) | *.bmp | jpeg(*.jpeg) | *.jpeg | png(*.png) | *.png | tiff(*.tiff) | *.tiff";
-                if (fileDialog.ShowDialog() == DialogResult.OK)
-                    pictBox.Image.Save(fileDialog.FileName);
-            }
-        }
+        private void btSaveImage_Click(object sender, EventArgs e) => ImageSaver.Save(pictBox.Image);
 
-        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
-        {
-            tagCloudSetting.MaxCloudSize = (int)numericUpDown1.Value + BlackList.Count;
-            tagCloudAnalyzer = new TagCloudAnalyzer(tagCloudSetting);
-            words = tagCloudAnalyzer.ComputeTagCloud(Info.Split(new string[] { "\r\n" }, StringSplitOptions.None));
-
-            LoadWordAndFreqs();
-            // Draw();
-        }
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e) => LoadWordAndFreqs(GetCloudTags());
 
         private void btPrevFindedLibItem_Click(object sender, EventArgs e)
         {
-            indexesOfLibItems = new List<int>();
+            var indexesOfLibItems = new List<int>();
             indexesOfLibItems.Clear();
             foreach (ListViewItem freqs in lvFreqs.Items)
             {
@@ -189,7 +126,7 @@ namespace BibReader
 
         private void btNextFindedLibItem_Click(object sender, EventArgs e)
         {
-            indexesOfLibItems = new List<int>();
+            var indexesOfLibItems = new List<int>();
             indexesOfLibItems.Clear();
             foreach (ListViewItem freqs in lvFreqs.Items)
             {
@@ -199,7 +136,6 @@ namespace BibReader
             if (indexesOfLibItems.Count > 0)
             {
                 lvFreqs.Select();
-                // currIndex = indexesOfLibItems[0];
                 currIndex = currIndex >= indexesOfLibItems.Last() || currIndex == -1
                     ? indexesOfLibItems.First()
                     : indexesOfLibItems.First(x => x > currIndex);
@@ -212,18 +148,6 @@ namespace BibReader
                 MessageBox.Show("Элементы не найдены!");
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            if(checkBox1.Checked)
-                wordCloud = new WordCloud.WordCloud(pictBox.Width, pictBox.Height, false, Color.Black);
-            else
-                wordCloud = new WordCloud.WordCloud(pictBox.Width, pictBox.Height);
-
-        }
-
-        private void tbSaveFreqsInExcel_Click(object sender, EventArgs e)
-        {
-            ExcelSaver.Save(new List<ListView>() { lvFreqs });
-        }
+        private void tbSaveFreqsInExcel_Click(object sender, EventArgs e) => ExcelSaver.Save(new List<ListView>() { lvFreqs });
     }
 }

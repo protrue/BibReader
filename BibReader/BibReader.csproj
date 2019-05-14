@@ -84,6 +84,7 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Publications\LibItem.cs" />
+    <Compile Include="Saver\ImageSaver.cs" />
     <Compile Include="Saver\MyBibFormat.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

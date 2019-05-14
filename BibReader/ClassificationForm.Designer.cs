@@ -44,16 +44,16 @@
             this.tbFind = new System.Windows.Forms.TextBox();
             this.tbRedraw = new System.Windows.Forms.Button();
             this.btSaveImage = new System.Windows.Forms.Button();
-            this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.nudWordsCount = new System.Windows.Forms.NumericUpDown();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.checkBoxImageIsBlack = new System.Windows.Forms.CheckBox();
             this.checkBoxFreq = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictBox)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tpText.SuspendLayout();
             this.tpFreqs.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudWordsCount)).BeginInit();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -87,7 +87,7 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(776, 505);
             this.tabControl1.TabIndex = 2;
-            this.tabControl1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
+            //this.tabControl1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
             // 
             // tpText
             // 
@@ -216,18 +216,18 @@
             this.btSaveImage.UseVisualStyleBackColor = true;
             this.btSaveImage.Click += new System.EventHandler(this.btSaveImage_Click);
             // 
-            // numericUpDown1
+            // nudWordsCount
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(6, 25);
-            this.numericUpDown1.Name = "numericUpDown1";
-            this.numericUpDown1.Size = new System.Drawing.Size(135, 22);
-            this.numericUpDown1.TabIndex = 4;
-            this.numericUpDown1.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
+            this.nudWordsCount.Location = new System.Drawing.Point(6, 25);
+            this.nudWordsCount.Name = "nudWordsCount";
+            this.nudWordsCount.Size = new System.Drawing.Size(135, 22);
+            this.nudWordsCount.TabIndex = 4;
+            this.nudWordsCount.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged);
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.checkBox1);
-            this.groupBox2.Controls.Add(this.numericUpDown1);
+            this.groupBox2.Controls.Add(this.checkBoxImageIsBlack);
+            this.groupBox2.Controls.Add(this.nudWordsCount);
             this.groupBox2.Location = new System.Drawing.Point(938, 437);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(175, 81);
@@ -235,16 +235,15 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Количество слов";
             // 
-            // checkBox1
+            // checkBoxImageIsBlack
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(6, 54);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(119, 21);
-            this.checkBox1.TabIndex = 5;
-            this.checkBox1.Text = "Черно-белый";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.checkBoxImageIsBlack.AutoSize = true;
+            this.checkBoxImageIsBlack.Location = new System.Drawing.Point(6, 54);
+            this.checkBoxImageIsBlack.Name = "checkBoxImageIsBlack";
+            this.checkBoxImageIsBlack.Size = new System.Drawing.Size(119, 21);
+            this.checkBoxImageIsBlack.TabIndex = 5;
+            this.checkBoxImageIsBlack.Text = "Черно-белый";
+            this.checkBoxImageIsBlack.UseVisualStyleBackColor = true;
             // 
             // checkBoxFreq
             // 
@@ -277,7 +276,7 @@
             this.tpFreqs.ResumeLayout(false);
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.nudWordsCount)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
@@ -298,13 +297,13 @@
         private System.Windows.Forms.Button btDeleteItems;
         private System.Windows.Forms.Button tbRedraw;
         private System.Windows.Forms.Button btSaveImage;
-        private System.Windows.Forms.NumericUpDown numericUpDown1;
+        private System.Windows.Forms.NumericUpDown nudWordsCount;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Button btPrevFindedLibItem;
         private System.Windows.Forms.Button btNextFindedLibItem;
         private System.Windows.Forms.TextBox tbFind;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox checkBoxImageIsBlack;
         private System.Windows.Forms.Button tbSaveFreqsInExcel;
         private System.Windows.Forms.CheckBox checkBoxFreq;
     }
