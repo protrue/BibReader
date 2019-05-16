@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BibReference\AuthorsParser.cs" />
+    <Compile Include="Finder\Finder.cs" />
     <Compile Include="Publications\Tags.cs" />
     <Compile Include="Readers\BibReaderClasses.cs" />
     <Compile Include="ClassificationForm.cs">

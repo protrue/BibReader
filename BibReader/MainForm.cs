@@ -26,6 +26,7 @@ namespace BibReader
         List<ListViewItem> deletedLibItems = new List<ListViewItem>();
         string lastOpenedFileName = string.Empty;
         int currIndex = -1;
+        Finder.Finder finder = new Finder.Finder();
 
         private StreamReader[] GetStreamReaders()
         {
@@ -427,7 +428,6 @@ namespace BibReader
         private void btNextFindedLibItem_Click(object sender, EventArgs e)
         {
             var indexesOfLibItems = new List<int>();
-            indexesOfLibItems.Clear();
             foreach (ListViewItem libItem in lvLibItems.Items)
             {
                 switch (cbSearchCriterion.SelectedIndex)
@@ -460,12 +460,37 @@ namespace BibReader
             }
             else
                 MessageBox.Show("Элементы не найдены!");
+
+            switch (cbSearchCriterion.SelectedIndex)
+            {
+                case 0:
+                    currIndex = finder.GetIndex(
+                        Finder.Finder.MakeListOfIndexes(tbFind.Text, lvLibItems, 0),
+                        Finder.Finder.Prev
+                    );
+                    break;
+                case 1:
+                    currIndex = finder.GetIndex(
+                        Finder.Finder.MakeListOfIndexes(
+                            tbFind.Text, 
+                            lvLibItems.Items.Cast<ListViewItem>().Select(item => ((LibItem)item.Tag).Abstract).ToList()
+                        ),
+                        Finder.Finder.Prev
+                    );
+                    break;
+                case 2:
+                    currIndex = finder.GetIndex(
+                        Finder.Finder.MakeListOfIndexes(tbFind.Text, lvLibItems, 1),
+                        Finder.Finder.Prev
+                    );
+                    break;
+            }
+            Finder.Finder.SelectItem(lvLibItems, currIndex);
         }
 
         private void btPrevFindedLibItem_Click(object sender, EventArgs e)
         {
             var indexesOfLibItems = new List<int>();
-            indexesOfLibItems.Clear();
             foreach (ListViewItem libItem in lvLibItems.Items)
             {
                 switch (cbSearchCriterion.SelectedIndex)

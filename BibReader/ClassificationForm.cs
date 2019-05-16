@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using BibReader.Saver;
 using Sparc.TagCloud;
+using BibReader.Finder;
 
 namespace BibReader
 {
@@ -17,6 +18,7 @@ namespace BibReader
         int currIndex = -1;
         List<string> BlackList = new List<string>();
         TagCloudSetting TagCloudSetting = new TagCloudSetting();
+        Finder.Finder finder = new Finder.Finder();
 
         public string Info
         {
@@ -100,52 +102,23 @@ namespace BibReader
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e) => LoadWordAndFreqs(GetCloudTags());
 
+
         private void btPrevFindedLibItem_Click(object sender, EventArgs e)
         {
-            var indexesOfLibItems = new List<int>();
-            indexesOfLibItems.Clear();
-            foreach (ListViewItem freqs in lvFreqs.Items)
-            {
-                if (freqs.SubItems[0].Text.ToLower().IndexOf(tbFind.Text.ToLower()) >= 0)
-                    indexesOfLibItems.Add(freqs.Index);
-            }
-            if (indexesOfLibItems.Count > 0)
-            {
-                lvFreqs.Select();
-                currIndex = currIndex <= indexesOfLibItems.First() || currIndex == -1
-                    ? indexesOfLibItems.Last()
-                    : indexesOfLibItems.Last(x => x < currIndex);
-                foreach (ListViewItem item in lvFreqs.SelectedItems)
-                    item.Selected = false;
-                lvFreqs.Items[currIndex].Selected = true;
-                lvFreqs.EnsureVisible(currIndex);
-            }
-            else
-                MessageBox.Show("Элементы не найдены!");
+            currIndex = finder.GetIndex(
+                Finder.Finder.MakeListOfIndexes(tbFind.Text, lvFreqs, 0),
+                Finder.Finder.Prev
+            );
+            Finder.Finder.SelectItem(lvFreqs, currIndex);
         }
 
         private void btNextFindedLibItem_Click(object sender, EventArgs e)
         {
-            var indexesOfLibItems = new List<int>();
-            indexesOfLibItems.Clear();
-            foreach (ListViewItem freqs in lvFreqs.Items)
-            {
-                if (freqs.SubItems[0].Text.ToLower().IndexOf(tbFind.Text.ToLower()) >= 0)
-                    indexesOfLibItems.Add(freqs.Index);
-            }
-            if (indexesOfLibItems.Count > 0)
-            {
-                lvFreqs.Select();
-                currIndex = currIndex >= indexesOfLibItems.Last() || currIndex == -1
-                    ? indexesOfLibItems.First()
-                    : indexesOfLibItems.First(x => x > currIndex);
-                foreach (ListViewItem item in lvFreqs.SelectedItems)
-                    item.Selected = false;
-                lvFreqs.Items[currIndex].Selected = true;
-                lvFreqs.EnsureVisible(currIndex);
-            }
-            else
-                MessageBox.Show("Элементы не найдены!");
+            currIndex = finder.GetIndex(
+                Finder.Finder.MakeListOfIndexes(tbFind.Text, lvFreqs, 0),
+                Finder.Finder.Next
+            );
+            Finder.Finder.SelectItem(lvFreqs, currIndex);
         }
 
         private void tbSaveFreqsInExcel_Click(object sender, EventArgs e) => ExcelSaver.Save(new List<ListView>() { lvFreqs });
