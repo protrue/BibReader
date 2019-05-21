@@ -110,6 +110,7 @@
             this.cbSearchCriterion = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.labelFindedItemsCount = new System.Windows.Forms.Label();
+            this.фильтрыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tpData.SuspendLayout();
@@ -696,7 +697,8 @@
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.файлToolStripMenuItem,
-            this.классификацияToolStripMenuItem});
+            this.классификацияToolStripMenuItem,
+            this.фильтрыToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1536, 28);
@@ -943,6 +945,13 @@
             this.labelFindedItemsCount.Size = new System.Drawing.Size(0, 17);
             this.labelFindedItemsCount.TabIndex = 16;
             // 
+            // фильтрыToolStripMenuItem
+            // 
+            this.фильтрыToolStripMenuItem.Name = "фильтрыToolStripMenuItem";
+            this.фильтрыToolStripMenuItem.Size = new System.Drawing.Size(83, 24);
+            this.фильтрыToolStripMenuItem.Text = "Фильтры";
+            this.фильтрыToolStripMenuItem.Click += new System.EventHandler(this.фильтрыToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -1073,6 +1082,7 @@
         private System.Windows.Forms.ToolStripMenuItem корпусДокументовToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem библОписанияToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem статистикуToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem фильтрыToolStripMenuItem;
     }
 }
 

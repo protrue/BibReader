@@ -12,9 +12,11 @@ namespace BibReader.Corpuses
         const int distance = 5;
         Dictionary<string, int> UniqueTitles = new Dictionary<string, int>();
         public HashSet<int> LibItemIndexesForDeleting { get; private set; } = new HashSet<int>();
+        public List<LibItem> UniqueLibItems { get; private set; } = new List<LibItem>();
 
         public Unique(List<LibItem> libItems)
         {
+            UniqueLibItems = libItems.ToList();
             int position, i = 0;
             foreach (var item in libItems)
             {
@@ -24,6 +26,7 @@ namespace BibReader.Corpuses
                 {
                     LibItemIndexesForDeleting.Add(i);
                     FindImportantData(libItems[position], item);
+                    UniqueLibItems.Remove(item);
                 }
                 i++;
             }

@@ -9,9 +9,9 @@ namespace BibReader.Statistic
 {
     public class Stat
     {
-        public static Dictionary<string, int> Sourses            { get; private set; } = new Dictionary<string, int>();
-        public static Dictionary<string, int> SoursesUnique      { get; private set; } = new Dictionary<string, int>();
-        public static Dictionary<string, int> SoursesRelevance   { get; private set; } = new Dictionary<string, int>();
+        public static Dictionary<string, int> Sources            { get; private set; } = new Dictionary<string, int>();
+        public static Dictionary<string, int> SourcesUnique      { get; private set; } = new Dictionary<string, int>();
+        public static Dictionary<string, int> SourcesRelevance   { get; private set; } = new Dictionary<string, int>();
         public static Dictionary<string, int> Years              { get; private set; } = new Dictionary<string, int>();
         public static Dictionary<string, int> Types              { get; private set; } = new Dictionary<string, int>();
         public static Dictionary<string, int> Journal            { get; private set; } = new Dictionary<string, int>();
@@ -29,9 +29,9 @@ namespace BibReader.Statistic
         {
             if (corpus == Corpus.First)
             {
-                Sourses = new Dictionary<string, int>();
-                SoursesUnique = new Dictionary<string, int>();
-                SoursesRelevance = new Dictionary<string, int>();
+                Sources = new Dictionary<string, int>();
+                SourcesUnique = new Dictionary<string, int>();
+                SourcesRelevance = new Dictionary<string, int>();
             }
             Years = new Dictionary<string, int>();
             Types = new Dictionary<string, int>();
@@ -104,30 +104,30 @@ namespace BibReader.Statistic
 
         private static void SetSourseStatictic(LibItem libItem)
         {
-            if (Sourses.ContainsKey(libItem.Sourсe))
-                Sourses[libItem.Sourсe]++;
+            if (Sources.ContainsKey(libItem.Sourсe))
+                Sources[libItem.Sourсe]++;
             else
             {
-                Sourses.Add(libItem.Sourсe, 1);
-                SoursesUnique.Add(libItem.Sourсe, 0);
-                SoursesRelevance.Add(libItem.Sourсe, 0);
+                Sources.Add(libItem.Sourсe, 1);
+                SourcesUnique.Add(libItem.Sourсe, 0);
+                SourcesRelevance.Add(libItem.Sourсe, 0);
             }
         }
 
         private static void SetSourseUniqueStatictic(LibItem libItem)
         {
-            if (SoursesUnique.ContainsKey(libItem.Sourсe))
-                SoursesUnique[libItem.Sourсe]++;
+            if (SourcesUnique.ContainsKey(libItem.Sourсe))
+                SourcesUnique[libItem.Sourсe]++;
             else
-                SoursesUnique.Add(libItem.Sourсe, 1);
+                SourcesUnique.Add(libItem.Sourсe, 1);
         }
 
         private static void SetSourseRelevanceStatictic(LibItem libItem)
         {
-            if (SoursesRelevance.ContainsKey(libItem.Sourсe))
-                SoursesRelevance[libItem.Sourсe]++;
+            if (SourcesRelevance.ContainsKey(libItem.Sourсe))
+                SourcesRelevance[libItem.Sourсe]++;
             else
-                SoursesRelevance.Add(libItem.Sourсe, 1);
+                SourcesRelevance.Add(libItem.Sourсe, 1);
         }
 
         private static void SetTypesStatistic(LibItem libItem)

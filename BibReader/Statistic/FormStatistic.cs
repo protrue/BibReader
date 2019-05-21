@@ -22,13 +22,13 @@ namespace BibReader.Statistic
             lvSourceStatistic.Columns[2].Width = lvSourceStatistic.Width / 4;
             lvSourceStatistic.Columns[3].Width = lvSourceStatistic.Width / 4;
             lvSourceStatistic.Items.AddRange(
-                Stat.Sourses.OrderBy(i => i.Key).
+                Stat.Sources.OrderBy(i => i.Key).
                 Select(i => new ListViewItem(
                     new string[] {
                         (i.Key == "") ? "Неизв источник" : i.Key,
                         i.Value.ToString(),
-                        Stat.SoursesUnique[i.Key].ToString(),
-                        Stat.SoursesRelevance[i.Key].ToString()
+                        Stat.SourcesUnique[i.Key].ToString(),
+                        Stat.SourcesRelevance[i.Key].ToString()
                     })
                 )
                 .ToArray()
@@ -36,9 +36,9 @@ namespace BibReader.Statistic
             lvSourceStatistic.Items.Add(new ListViewItem(
                 new string[] {
                     "ИТОГО",
-                    Stat.Sourses.Sum(i => i.Value).ToString(),
-                    Stat.SoursesUnique.Sum(i => i.Value).ToString(),
-                    Stat.SoursesRelevance.Sum(i => i.Value).ToString()
+                    Stat.Sources.Sum(i => i.Value).ToString(),
+                    Stat.SourcesUnique.Sum(i => i.Value).ToString(),
+                    Stat.SourcesRelevance.Sum(i => i.Value).ToString()
                 }
             ));
         }

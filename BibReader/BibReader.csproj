@@ -66,6 +66,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BibReference\AuthorsParser.cs" />
+    <Compile Include="Filters.cs" />
+    <Compile Include="FiltersForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FiltersForm.Designer.cs">
+      <DependentUpon>FiltersForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Finder\Finder.cs" />
     <Compile Include="Publications\Tags.cs" />
     <Compile Include="Readers\BibReaderClasses.cs" />
@@ -99,6 +106,9 @@
     <Compile Include="BibReference\TypesOfSourse\Enternet.cs" />
     <EmbeddedResource Include="ClassificationForm.resx">
       <DependentUpon>ClassificationForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FiltersForm.resx">
+      <DependentUpon>FiltersForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

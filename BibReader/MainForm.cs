@@ -24,6 +24,7 @@ namespace BibReader
         // Сущности journalName и BookTitle разделить
 
         List<ListViewItem> deletedLibItems = new List<ListViewItem>();
+        List<LibItem> libItems = new List<LibItem>();
         string lastOpenedFileName = string.Empty;
         int currIndex = -1;
         Finder.Finder finder = new Finder.Finder();
@@ -101,15 +102,15 @@ namespace BibReader
             cbSearchCriterion.SelectedIndex = 0;
         }
 
-        private void AddLibItemsInLvItems(List<LibItem> libItems)
+        private void AddLibItemsInLvItems()
         {
-            foreach (var item in libItems)
+            lvLibItems.Items.Clear();
+            foreach (var item in Filters.Filter(libItems))
             {
                 var lvItem = new ListViewItem(new string[]
                 {
                     item.Title,
                     item.Authors,
-                    "1",
                 });
 
                 lvItem.Tag = item;
@@ -122,7 +123,6 @@ namespace BibReader
                 lvLibItems.Items[0].Selected = true;
                 lbCurrSelectedItem.Text = $"1/{lvLibItems.Items.Count}";
             }
-            libItems.Clear();
         }
 
         private void UniqueTitles()
@@ -130,7 +130,7 @@ namespace BibReader
             var libItemsCount = lvLibItems.Items.Count;
             double step = libItemsCount / 100;
             pbLoadUniqueData.Step = (int)step;
-            var unique = new Unique(GetLibItems());
+            var unique = new Unique(lvLibItems.Items.Cast<ListViewItem>().Select(item => (LibItem)item.Tag).ToList());
             int i = 0;
             foreach (var item in unique.LibItemIndexesForDeleting)
             {
@@ -138,6 +138,7 @@ namespace BibReader
                 lvLibItems.Items.RemoveAt(item - i);
                 i++;
             }
+            libItems = unique.UniqueLibItems;
             pbLoadUniqueData.Value = 100;
             MessageBox.Show("Готово!");
             pbLoadUniqueData.Value = 0;
@@ -152,14 +153,11 @@ namespace BibReader
                 var pages = ((LibItem)item.Tag).Pages;
                 var authors = ((LibItem)item.Tag).Authors;
 
-                if (Relevance.isRelevance(pages, authors))
-                {
-                    item.SubItems[2].Text = "3";
-                }
-                else
+                if (!Relevance.isRelevance(pages, authors))
                 {
                     deletedLibItems.Add(item);
                     item.Remove();
+                    libItems.Remove((LibItem)item.Tag);
                 }
 
                 if (pbLoadUniqueData.Value + step <= 100)
@@ -170,20 +168,12 @@ namespace BibReader
             pbLoadUniqueData.Value = 0;
         }
 
-        private void LoadLibItems(List<LibItem> libItems)
+        private void LoadLibItems()
         {
             lvLibItems.Items.Clear();
             currIndex = -1;
             deletedLibItems.Clear();
-            AddLibItemsInLvItems(libItems);
-        }
-
-        private List<LibItem> GetLibItems()
-        {
-            var libItems = new List<LibItem>();
-            foreach (ListViewItem item in lvLibItems.Items)
-                libItems.Add((LibItem)item.Tag);
-            return libItems;
+            AddLibItemsInLvItems();
         }
 
         private void lvItems_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
@@ -217,8 +207,10 @@ namespace BibReader
             var readers = GetStreamReaders();
             if (readers != null)
             {
-                var libItems = univReader.Read(readers);
-                LoadLibItems(libItems);
+                libItems.Clear();
+                libItems.AddRange(univReader.Read(readers));
+                LoadFilters();
+                LoadLibItems();
                 toolStripStatusLabel1.Text = "Last opened file name: " + lastOpenedFileName;
                 btFirst.Enabled = false;
                 btUnique.Enabled = true;
@@ -228,15 +220,27 @@ namespace BibReader
             }
         }
 
+        private void LoadFilters()
+        {
+            UpdateStatistic();
+            Filters.Clear();
+            Filters.Conferences.AddRange(Stat.Conference.Keys.Select(key => key));
+            Filters.Years.AddRange(Stat.Years.Keys.Select(key => key));
+            Filters.Geography.AddRange(Stat.Geography.Keys.Select(key => key));
+            Filters.Journals.AddRange(Stat.Journal.Keys.Select(key => key));
+            Filters.Types.AddRange(Stat.Types.Keys.Select(key => key));
+            Filters.Source.AddRange(Stat.Sources.Keys.Select(key => key));
+        }
+
         private void добавитьToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var univReader = new UniversalBibReader();
             var reader = GetStreamReaders();
             if (reader != null)
             {
-                var libItems = univReader.Read(reader);
-                AddLibItemsInLvItems(libItems);
-
+                libItems.AddRange(univReader.Read(reader));
+                // LoadFilters();
+                AddLibItemsInLvItems();
                 btFirst.Enabled = false;
                 btUnique.Enabled = true;
                 btRelevance.Enabled = false;
@@ -308,6 +312,7 @@ namespace BibReader
             deletedLibItems.Clear();
             lvLibItems.Sorting = SortOrder.Ascending;
             lvLibItems.Sort();
+            libItems = lvLibItems.Items.Cast<ListViewItem>().Select(item => (LibItem)item.Tag).ToList();
             btUnique.Enabled = true;
             btFirst.Enabled = false;
             добавитьToolStripMenuItem.Enabled = true;
@@ -339,7 +344,7 @@ namespace BibReader
             if (btFirst.Enabled)
                 corpus = Stat.Corpus.Relevance;
 
-            Stat.CalculateStatistic(GetLibItems(), corpus);
+            Stat.CalculateStatistic(libItems, corpus);
             FormStatistic.LoadSourseStatistic(lvSourceStatistic);
             FormStatistic.LoadYearStatistic(lvYearStatistic);
             FormStatistic.LoadTypeStatistic(lvTypeOfDoc);
@@ -364,20 +369,9 @@ namespace BibReader
             }
             else
             {
-                tbAbstract.Text = string.Empty;
-                tbAffiliation.Text = string.Empty;
-                tbAuthors.Text = string.Empty;
-                tbDoi.Text = string.Empty;
-                tbJournalName.Text = string.Empty;
-                tbKeywords.Text = string.Empty;
-                tbNumber.Text = string.Empty;
-                tbPages.Text = string.Empty;
-                tbPublisher.Text = string.Empty;
-                tbSourсe.Text = string.Empty;
-                tbTitle.Text = string.Empty;
-                tbUrl.Text = string.Empty;
-                tbVolume.Text = string.Empty;
-                tbYear.Text = string.Empty;
+                var textBoxes = tabControl.TabPages["tpData"].Controls.OfType<TextBox>();
+                foreach (var tb in textBoxes)
+                    tb.Text = string.Empty;
                 lbCurrSelectedItem.Text = $"0/{lvLibItems.Items.Count}";
             }
         }
@@ -427,40 +421,6 @@ namespace BibReader
 
         private void btNextFindedLibItem_Click(object sender, EventArgs e)
         {
-            var indexesOfLibItems = new List<int>();
-            foreach (ListViewItem libItem in lvLibItems.Items)
-            {
-                switch (cbSearchCriterion.SelectedIndex)
-                {
-                    case 0:
-                        if (libItem.SubItems[0].Text.ToLower().IndexOf(tbFind.Text.ToLower()) >= 0)
-                            indexesOfLibItems.Add(libItem.Index);
-                        break;
-                    case 1:
-                        if (((LibItem)libItem.Tag).Abstract.ToLower().IndexOf(tbFind.Text.ToLower()) >= 0)
-                            indexesOfLibItems.Add(libItem.Index);
-                        break;
-                    case 2:
-                        if (libItem.SubItems[1].Text.ToLower().IndexOf(tbFind.Text.ToLower()) >= 0)
-                            indexesOfLibItems.Add(libItem.Index);
-                        break;
-                }
-            }
-            labelFindedItemsCount.Text = indexesOfLibItems.Count.ToString();
-
-            if (indexesOfLibItems.Count > 0)
-            {
-                lvLibItems.Select();
-                currIndex = 
-                    currIndex >= indexesOfLibItems.Last() || currIndex == -1
-                    ? indexesOfLibItems.First()
-                    : indexesOfLibItems.First(x => x > currIndex);
-                lvLibItems.Items[currIndex].Selected = true;
-                lvLibItems.EnsureVisible(currIndex);
-            }
-            else
-                MessageBox.Show("Элементы не найдены!");
-
             switch (cbSearchCriterion.SelectedIndex)
             {
                 case 0:
@@ -534,7 +494,7 @@ namespace BibReader
         private void названияToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string titles = string.Join("\r\n",
-                GetLibItems()
+                libItems
                 .Where(item => item.Title != string.Empty)
                 .Select(item => item.Title)
                 );
@@ -545,7 +505,7 @@ namespace BibReader
         private void ключевыеСловаToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string keywords = string.Join("\r\n", 
-                GetLibItems()
+                libItems
                 .Where(item => item.Keywords != string.Empty)
                 .Select(item => item.Keywords)
                 );
@@ -556,7 +516,7 @@ namespace BibReader
         private void аннотацииToolStripMenuItem_Click(object sender, EventArgs e)
         {
             string abstract_ = string.Join("\r\n", 
-                GetLibItems()
+                libItems
                 .Where(item => item.Abstract != string.Empty)
                 .Select(item => item.Abstract)
                 );
@@ -570,7 +530,7 @@ namespace BibReader
 
         private void btSaveBibRef_Click(object sender, EventArgs e) => DocSaver.Save(rtbBib);
 
-        private void корпусДокументовToolStripMenuItem_Click(object sender, EventArgs e) => MyBibFormat.Save(GetLibItems());
+        private void корпусДокументовToolStripMenuItem_Click(object sender, EventArgs e) => MyBibFormat.Save(libItems);
 
         private void библОписанияToolStripMenuItem_Click(object sender, EventArgs e) => DocSaver.Save(rtbBib);
 
@@ -582,6 +542,25 @@ namespace BibReader
             foreach (TabPage tp in tabControlForStatistic.TabPages)
                 listOfTables.Add(tp.Controls.OfType<ListView>().First());
             return listOfTables;
+        }
+
+        private void фильтрыToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var form = new FiltersForm()
+            {
+                Geography = Stat.Geography.Keys.ToList(),
+                Sources = Stat.Sources.Keys.ToList(),
+                Types = Stat.Types.Keys.ToList(),
+                Journals = Stat.Journal.Keys.ToList(),
+                Years = Stat.Years.Keys.ToList(),
+                Conference = Stat.Conference.Keys.ToList()
+            })
+            {
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    LoadLibItems();
+                }
+            }
         }
     }
 }
