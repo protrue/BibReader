@@ -239,7 +239,7 @@ namespace BibReader
             if (reader != null)
             {
                 libItems.AddRange(univReader.Read(reader));
-                // LoadFilters();
+                LoadFilters();
                 AddLibItemsInLvItems();
                 btFirst.Enabled = false;
                 btUnique.Enabled = true;
