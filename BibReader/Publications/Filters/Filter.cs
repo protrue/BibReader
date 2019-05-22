@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BibReader
 {
-    class Filters
+    class Filter
     {
         public static List<string> Years = new List<string>();
         public static List<string> Types = new List<string>();
@@ -17,7 +17,7 @@ namespace BibReader
         public static List<string> Geography = new List<string>();
         public static List<string> Source = new List<string>();
 
-        public static List<LibItem> Filter(List<LibItem> libItems)
+        public static List<LibItem> FilterOut(List<LibItem> libItems)
         {
             return libItems
                 .Where(item => 

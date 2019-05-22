@@ -66,7 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BibReference\AuthorsParser.cs" />
-    <Compile Include="Filters.cs" />
+    <Compile Include="Publications\Filters\Filter.cs" />
     <Compile Include="FiltersForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -75,7 +75,7 @@
     </Compile>
     <Compile Include="Finder\Finder.cs" />
     <Compile Include="Publications\Tags.cs" />
-    <Compile Include="Readers\BibReaderClasses.cs" />
+    <Compile Include="Readers\BibReaders\UniversalBibReader.cs" />
     <Compile Include="ClassificationForm.cs">
       <SubType>Form</SubType>
     </Compile>

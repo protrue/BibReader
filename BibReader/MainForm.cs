@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -105,7 +105,7 @@ namespace BibReader
         private void AddLibItemsInLvItems()
         {
             lvLibItems.Items.Clear();
-            foreach (var item in Filters.Filter(libItems))
+            foreach (var item in Filter.FilterOut(libItems))
             {
                 var lvItem = new ListViewItem(new string[]
                 {
@@ -223,13 +223,13 @@ namespace BibReader
         private void LoadFilters()
         {
             UpdateStatistic();
-            Filters.Clear();
-            Filters.Conferences.AddRange(Stat.Conference.Keys.Select(key => key));
-            Filters.Years.AddRange(Stat.Years.Keys.Select(key => key));
-            Filters.Geography.AddRange(Stat.Geography.Keys.Select(key => key));
-            Filters.Journals.AddRange(Stat.Journal.Keys.Select(key => key));
-            Filters.Types.AddRange(Stat.Types.Keys.Select(key => key));
-            Filters.Source.AddRange(Stat.Sources.Keys.Select(key => key));
+            Filter.Clear();
+            Filter.Conferences.AddRange(Stat.Conference.Keys.Select(key => key));
+            Filter.Years.AddRange(Stat.Years.Keys.Select(key => key));
+            Filter.Geography.AddRange(Stat.Geography.Keys.Select(key => key));
+            Filter.Journals.AddRange(Stat.Journal.Keys.Select(key => key));
+            Filter.Types.AddRange(Stat.Types.Keys.Select(key => key));
+            Filter.Source.AddRange(Stat.Sources.Keys.Select(key => key));
         }
 
         private void добавитьToolStripMenuItem_Click(object sender, EventArgs e)

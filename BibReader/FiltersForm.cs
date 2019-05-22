@@ -39,12 +39,12 @@ namespace BibReader
 
         private void btOk_Click(object sender, EventArgs e)
         {
-            Filters.Source = lvSourceStat.CheckedItems.Cast<ListViewItem>().Select(item => item.SubItems[0].Text).ToList();
-            Filters.Conferences = lvConferenceStat.CheckedItems.Cast<ListViewItem>().Select(item => item.SubItems[0].Text).ToList();
-            Filters.Journals = lvJournalStat.CheckedItems.Cast<ListViewItem>().Select(item => item.SubItems[0].Text).ToList();
-            Filters.Types = lvTypeStat.CheckedItems.Cast<ListViewItem>().Select(item => item.SubItems[0].Text).ToList();
-            Filters.Years = lvYearStat.CheckedItems.Cast<ListViewItem>().Select(item => item.SubItems[0].Text).ToList();
-            Filters.Geography = lvGeographyStat.CheckedItems.Cast<ListViewItem>().Select(item => item.SubItems[0].Text).ToList();
+            Filter.Source = lvSourceStat.CheckedItems.Cast<ListViewItem>().Select(item => item.SubItems[0].Text).ToList();
+            Filter.Conferences = lvConferenceStat.CheckedItems.Cast<ListViewItem>().Select(item => item.SubItems[0].Text).ToList();
+            Filter.Journals = lvJournalStat.CheckedItems.Cast<ListViewItem>().Select(item => item.SubItems[0].Text).ToList();
+            Filter.Types = lvTypeStat.CheckedItems.Cast<ListViewItem>().Select(item => item.SubItems[0].Text).ToList();
+            Filter.Years = lvYearStat.CheckedItems.Cast<ListViewItem>().Select(item => item.SubItems[0].Text).ToList();
+            Filter.Geography = lvGeographyStat.CheckedItems.Cast<ListViewItem>().Select(item => item.SubItems[0].Text).ToList();
         }
 
         private void BtCancel_Click(object sender, EventArgs e)
@@ -90,17 +90,17 @@ namespace BibReader
             switch(name)
             {
                 case "lvConferenceStat":
-                    return Filters.Conferences.Contains(text);
+                    return Filter.Conferences.Contains(text);
                 case "lvGeographyStat":
-                    return Filters.Geography.Contains(text);
+                    return Filter.Geography.Contains(text);
                 case "lvJournalStat":
-                    return Filters.Journals.Contains(text);
+                    return Filter.Journals.Contains(text);
                 case "lvSourceStat":
-                    return Filters.Source.Contains(text);
+                    return Filter.Source.Contains(text);
                 case "lvTypeStat":
-                    return Filters.Types.Contains(text);
+                    return Filter.Types.Contains(text);
                 case "lvYearStat":
-                    return Filters.Years.Contains(text);
+                    return Filter.Years.Contains(text);
                 default:
                     return false;
             }
