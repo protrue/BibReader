@@ -25,7 +25,6 @@ namespace BibReader
                     && Types.Contains(item.Type) 
                     && Source.Contains(item.Sourсe) 
                     && (item.Type == "journal" && Journals.Contains(item.JournalName) ||
-                    item.Type == "conference" && Conferences.Contains(item.Booktitle) ||
                     item.Type == "conference" && Conferences.Contains(item.JournalName) ||
                     item.Type == "book")
                     && (Geography.Count == 0 || Geography.Contains(item.Affiliation, new GeographyComparer()))

@@ -94,7 +94,7 @@ namespace BibReader.Statistic
         {
             if (libItem.Type == "conference")
             {
-                var title = libItem.Booktitle == string.Empty ? libItem.JournalName : libItem.Booktitle;
+                var title = libItem.JournalName;
                 if (Conference.ContainsKey(title))
                     Conference[title]++;
                 else

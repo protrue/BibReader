@@ -12,7 +12,6 @@ namespace BibReader.Publications
         public string Authors { get; set; }
         public string Doi {get; set; }
         public string Year {get; set; }
-        public string Booktitle {get; set; }
         public string Title { get; set; }
         public string JournalName {get; set; }
         public string Volume {get; set; }
@@ -35,7 +34,6 @@ namespace BibReader.Publications
             Authors = authors;
             Doi = doi;
             Year = year;
-            Booktitle = booktitle;
             Title = title;
             JournalName = journalName;
             Volume = volume;
@@ -57,7 +55,6 @@ namespace BibReader.Publications
             Authors = dict["authors"];
             Doi = dict["doi"];
             Year = dict["year"];
-            Booktitle = dict["booktitle"];
             Title = dict["title"];
             JournalName = dict["journal"];
             Volume = dict["volume"];

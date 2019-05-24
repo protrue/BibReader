@@ -183,9 +183,7 @@ namespace BibReader
                 tbAffiliation.Text = item.Affiliation;
                 tbAuthors.Text = item.Authors;
                 tbDoi.Text = item.Doi;
-                tbJournalName.Text = item.JournalName != string.Empty
-                    ? item.JournalName
-                    : item.Booktitle;
+                tbJournalName.Text = item.JournalName;
                 tbKeywords.Text = item.Keywords;
                 tbNumber.Text = item.Number;
                 tbPages.Text = item.Pages;

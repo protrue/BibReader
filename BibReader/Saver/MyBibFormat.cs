@@ -28,7 +28,6 @@ namespace BibReader.Saver
                             writer.WriteLine("author={" + item.Authors + "},");
                             writer.WriteLine("abstract={" + item.Abstract + "},");
                             writer.WriteLine("affiliation={" + item.Affiliation + "},");
-                            writer.WriteLine("booktitle={" + item.Booktitle + "},");
                             writer.WriteLine("doi={" + item.Doi + "},");
                             writer.WriteLine("journal={" + item.JournalName + "},");
                             writer.WriteLine("keywords={" + item.Keywords + "},");
