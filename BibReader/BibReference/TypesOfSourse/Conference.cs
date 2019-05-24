@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BibReader.Publications;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -10,163 +11,154 @@ namespace BibReader.BibReference.TypesOfSourse
 {
     public class Conference
     {
-        string Town;
-        string NameOfConf;
+        string City;
+        string ConferenceName;
         string[] Authors;
-        string Report;
+        string Title;
         string Publisher;
+        int Volume = 0;
+        int Number = 0;
         string Pages;
         int Year;
 
-        public Conference(string[] authors, string report, string publisher, string pages, int year, string town, string nameOfConf)
+        Font f = new Font(SystemFonts.DefaultFont, FontStyle.Italic);
+        const string PointSpace = ". ";
+        const string Point = ".";
+        const string Spase = " ";
+        const string DoublePointSpace = ": ";
+        const string DoublePoint = ":";
+        const string Page = "p. ";
+        const string PPage = "pp. ";
+        const string CommaSpace = ", ";
+        const string Comma = ",";
+        const string Space = " ";
+        const string DoubleSlash = " // ";
+        const string IN = "In";
+        const string In = "in ";
+        const string Lparenthesis = "(";
+        const string Rparenthesis = ")";
+        const string Num = "no. ";
+        const string Vol = "vol. ";
+
+        public Conference(string[] authors, string title, string publisher, string pages, int year, string city, string conferenceName, int number, int volume)
         {
             Authors = authors.ToArray();
-            Report = report;
+            Title = title;
             Publisher = publisher;
             Pages = pages;
             Year = year;
-            Town = town;
-            NameOfConf = nameOfConf;
+            City = city;
+            Number = number;
+            Volume = volume;
+            ConferenceName = conferenceName;
         }
 
-        public void MakeGOST(ref RichTextBox rtb)
+        public Conference(LibItem libItem)
         {
-            Font f = new Font(SystemFonts.DefaultFont, FontStyle.Italic);
-            const string PointSpace = ". ";
-            const string Point = ".";
-            const string Spase = " ";
-            const string DoublePointSpace = ": ";
-            const string Page = "p. ";
-            const string PPage = "C. ";
-            const string CommaSpace = ", ";
-            const string DoubleSlash = " // ";
-            var result = string.Empty;
+            Int32.TryParse(libItem.Year, out int year);
+            Int32.TryParse(libItem.Number, out int number);
+            Int32.TryParse(libItem.Volume, out int volume);
+            Authors = AuthorsParser.ParseAuthors(libItem.Authors, libItem.Sourсe);
+            Title = libItem.Title;
+            Publisher = libItem.Publisher;
+            Pages = libItem.Pages;
+            Year = year;
+            City = libItem.Address;
+            Number = number;
+            Volume = volume;
+            ConferenceName = libItem.JournalName;
+        }
 
+        public void MakeGOST(RichTextBox rtb)
+        {
+            var result = string.Empty;
             Authors = AuthorsParser.MakeAuthorsForGOST(Authors);
             result += string.Join(", ", Authors) + Spase;
-
-            result += Report + PointSpace;
-            result += NameOfConf + PointSpace;
-            if (Town != string.Empty)
-                result += Town + DoublePointSpace;
-            if (Publisher != string.Empty)
-                result += Publisher + CommaSpace;
-
+            result += Title + PointSpace;
+            result += ConferenceName + PointSpace;
+            if (City != string.Empty)
+                result += City + DoublePointSpace;
+            result += Publisher + CommaSpace;
             result += Year + PointSpace;
-            result += PPage + Pages + Point;
+            result += Int32.TryParse(Pages, out int a) ? Page : PPage;
+            result += Pages + Point;
             rtb.Text += result + "\n\n";
         }
 
-        public void MakeHarvard(ref RichTextBox rtb)
+        public void MakeHarvard(RichTextBox rtb)
         {
-            Font f = new Font(SystemFonts.DefaultFont, FontStyle.Italic);
-            const string PointSpace = ". ";
-            const string Point = ".";
-            const string Space = " ";
-            const string DoublePointSpace = ": ";
-            const string Page = "p. ";
-            const string PPage = "pp. ";
-            const string CommaSpace = ", ";
-            const string Lparenthesis = "(";
-            const string Rparenthesis = ")";
-            const string In = "In: ";
-
-
-            //MakeAuthorsForHarvard(Authors);
-            //rtb.Text += string.Join(" и ", Authors);
             rtb.Select(rtb.TextLength, 0);
             rtb.SelectedText = AuthorsParser.MakeAuthorsForHarvard(Authors);
             rtb.SelectedText = Space;
-
             rtb.SelectedText = Lparenthesis + Year + Rparenthesis + PointSpace;
-
-            rtb.SelectedText = Report + PointSpace;
-            rtb.SelectedText = In;
-
+            rtb.SelectedText = Title + PointSpace;
+            rtb.SelectedText = IN + DoublePointSpace;
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
-            rtb.SelectedText = NameOfConf + PointSpace;
+            rtb.SelectedText = ConferenceName + PointSpace;
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = SystemFonts.DefaultFont;
-
-
-            rtb.SelectedText = Town + DoublePointSpace;
+            if (City != string.Empty)
+                rtb.SelectedText = City + DoublePointSpace;
             rtb.SelectedText = Publisher + CommaSpace;
-            int a = 0;
-            if (Int32.TryParse(Pages, out a))
-                rtb.SelectedText = Page + Pages + Point + "\n\n";
-            else
-                rtb.SelectedText = PPage + Pages + Point + "\n\n";
+            rtb.SelectedText = Int32.TryParse(Pages, out int a) ? Page : PPage;
+            rtb.SelectedText = Pages + Point + "\n\n";
         }
 
-        public void MakeAPA(ref RichTextBox rtb)
+        public void MakeAPA(RichTextBox rtb)
         {
-            Font f = new Font(SystemFonts.DefaultFont, FontStyle.Italic);
-            const string Space = " ";
-            const string PointSpace = ". ";
-            const string Point = ".";
-            const string Page = "p. ";
-            const string PPage = "pp. ";
-            const string CommaSpace = ", ";
-            const string Lparenthesis = "(";
-            const string Rparenthesis = ")";
-            const string DoublePoint = ": ";
-            const string In = "In ";
 
-            //MakeAuthorsForAPA(Authors);
-            //rtb.Text += string.Join("", Authors);
+            // like a journal
             rtb.Select(rtb.TextLength, 0);
             rtb.SelectedText = AuthorsParser.MakeAuthorsForAPA(Authors);
             rtb.SelectedText = Space;
             rtb.SelectedText = Lparenthesis + Year + Rparenthesis + PointSpace;
-            rtb.SelectedText = Report + PointSpace + In;
+            rtb.SelectedText = Title + PointSpace;
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
-            rtb.SelectedText = NameOfConf + Space;
+            rtb.SelectedText = ConferenceName + CommaSpace;
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = SystemFonts.DefaultFont;
+            rtb.SelectedText =
+                (Volume != 0 && Number != 0)
+                ? Volume + Lparenthesis + Number + Rparenthesis + CommaSpace
+                : (Volume != 0 && Number == 0)
+                    ? rtb.SelectedText = Volume + CommaSpace
+                    : rtb.SelectedText = Number + CommaSpace;
+            rtb.SelectedText = Pages + Point;
+            rtb.SelectedText = "\n\n";
 
-            int a = 0;
-            if (Int32.TryParse(Pages, out a))
-                rtb.SelectedText = Lparenthesis + Page;
-            else
-                rtb.SelectedText = Lparenthesis + PPage;
+            // like a book
+            rtb.Select(rtb.TextLength, 0);
+            rtb.SelectedText = AuthorsParser.MakeAuthorsForAPA(Authors);
+            rtb.SelectedText = Space;
+            rtb.SelectedText = Lparenthesis + Year + Rparenthesis + PointSpace;
+            if (Title != string.Empty)
+                rtb.SelectedText = Title + PointSpace;
+            rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
+            rtb.SelectedText = ConferenceName + Space;
+            rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = SystemFonts.DefaultFont;
+            rtb.SelectedText = Lparenthesis;
+            if (Volume != 0)
+                rtb.SelectedText += Vol + Volume + CommaSpace;
+            rtb.SelectedText = Int32.TryParse(Pages, out int a) ? Page : PPage;
             rtb.SelectedText = Pages + Rparenthesis + PointSpace;
-            if (Town != string.Empty)
-                rtb.SelectedText = Town + DoublePoint;
-            rtb.SelectedText = Publisher + Point + "\n\n";
-
+            rtb.SelectedText = City + DoublePoint;
+            rtb.SelectedText = Publisher + Point;
+            rtb.SelectedText = "\n\n";
         }
 
-        public void MakeIEEE(ref RichTextBox rtb)
+        public void MakeIEEE(RichTextBox rtb)
         {
-            Font f = new Font(SystemFonts.DefaultFont, FontStyle.Italic);
-            const string Point = ".";
-            const string Page = "p. ";
-            const string PPage = "pp. ";
-            const string CommaSpace = ", ";
-            const string Space = " ";
-            const string Comma = ",";
-            const string In = "in ";
-
-
-            //MakeAuthorsForIEEE(Authors);
-            //rtb.Text += string.Join("", Authors);
-            //rtb.Text += CommaSpace;
             rtb.Select(rtb.TextLength, 0);
             rtb.SelectedText = AuthorsParser.MakeAuthorsForIEEE(Authors) + CommaSpace;
-
-            rtb.SelectedText = "\"" + Report + Comma + "\"" + Space + In;
-
+            rtb.SelectedText = "“" + Title + "”" + CommaSpace + In;
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
-            rtb.SelectedText = NameOfConf + CommaSpace;
+            rtb.SelectedText = ConferenceName + CommaSpace;
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = SystemFonts.DefaultFont;
-            if (Town != string.Empty)
-                rtb.SelectedText = Town + CommaSpace;
+            if (City != string.Empty)
+                rtb.SelectedText = City + CommaSpace;
             rtb.SelectedText = Year + CommaSpace;
-
-            int a = 0;
-            if (Int32.TryParse(Pages, out a))
-                rtb.SelectedText = Page + Pages + Point + "\n\n";
-            else
-                rtb.SelectedText = PPage + Pages + Point + "\n\n";
-
+            rtb.SelectedText = Vol + Volume + CommaSpace;
+            rtb.SelectedText = Num + Number + CommaSpace;
+            rtb.SelectedText = Int32.TryParse(Pages, out int a) ? Page : PPage;
+            rtb.SelectedText = Pages + Point + "\n\n";
         }
 
     }

@@ -36,8 +36,8 @@ namespace BibReader.BibReference
                             .Select(
                                 (part, i) => 
                                 part = i != 0 
-                                //? string.Join(". ", part.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries)) + "." 
-                                ? part.Replace(".", ". ").Remove(part.Length - 2)
+                                ? string.Join(". ", part.Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries)) + "." 
+                                //? part.Replace(".", ". ").Remove(part.Length - 2)
                                 : part
                             )
                         )
@@ -105,12 +105,21 @@ namespace BibReader.BibReference
                         )
                     )
                     .Select(
-                        (author, i) => author +=
+                        (author, i) => 
+                        authors.Count() < 8
+                        ?
+                        author +=
                             i != authors.Length - 1 && i != authors.Length - 2
                             ? ", "
                             : i != authors.Length - 1 ? " & " : ""
+                        :
+                        author =
+                            i <= 6
+                            ? i < 6 
+                            ? author + ", " 
+                            : author + " ... "
+                            : i == authors.Length - 1 ? author : ""
                     )
-                    .ToArray()
                 );
         }
 

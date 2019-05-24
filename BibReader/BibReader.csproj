@@ -103,7 +103,6 @@
     <Compile Include="BibReference\TypesOfSourse\Book.cs" />
     <Compile Include="BibReference\TypesOfSourse\Conference.cs" />
     <Compile Include="BibReference\TypesOfSourse\Journal.cs" />
-    <Compile Include="BibReference\TypesOfSourse\Enternet.cs" />
     <EmbeddedResource Include="ClassificationForm.resx">
       <DependentUpon>ClassificationForm.cs</DependentUpon>
     </EmbeddedResource>

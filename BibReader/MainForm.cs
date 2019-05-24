@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -21,8 +21,6 @@ namespace BibReader
 {
     public partial class MainForm : Form
     {
-        // Сущности journalName и BookTitle разделить
-
         List<ListViewItem> deletedLibItems = new List<ListViewItem>();
         List<LibItem> libItems = new List<LibItem>();
         string lastOpenedFileName = string.Empty;
@@ -253,54 +251,44 @@ namespace BibReader
             foreach (ListViewItem item in lvLibItems.Items)
             {
                 var libItem = (LibItem)item.Tag;
-                //var parser = new AuthorsParser();
-                //parser.Authors = libItem.Authors;
-                Int32.TryParse(libItem.Volume, out int volume);
-                Int32.TryParse(libItem.Number, out int number);
-                Int32.TryParse(libItem.Year, out int year);
-                var authors = AuthorsParser.ParseAuthors(libItem.Authors, libItem.Sourсe);
                 switch (((LibItem)item.Tag).Type)
                 {
                     case "conference":
-                        var conf = new Conference(authors, libItem.Title, libItem.Publisher, libItem.Pages,
-                            year, libItem.Address, libItem.Booktitle);
+                        var conference = new Conference(libItem);
                         if (cbBibStyles.Text == "APA")
-                            conf.MakeAPA(ref rtbBib);
+                            conference.MakeAPA(rtbBib);
                         else if (cbBibStyles.Text == "Harvard")
-                            conf.MakeHarvard(ref rtbBib);
+                            conference.MakeHarvard(rtbBib);
                         else if (cbBibStyles.Text == "IEEE")
-                            conf.MakeIEEE(ref rtbBib);
+                            conference.MakeIEEE(rtbBib);
                         else
-                            conf.MakeGOST(ref rtbBib);
+                            conference.MakeGOST(rtbBib);
                         break;
 
                     case "book":
                         {
-                            var book = new Book(authors, libItem.Title, "libItem.Address", libItem.Publisher,
-                                year, volume, libItem.Pages, "",
-                                DateTime.Parse(DateTime.Now.ToShortDateString()));
+                            var book = new Book(libItem);
                             if (cbBibStyles.Text == "APA")
-                                book.MakeAPA(ref rtbBib);
+                                book.MakeAPA(rtbBib);
                             else if (cbBibStyles.Text == "Harvard")
-                                book.MakeHarvard(ref rtbBib);
+                                book.MakeHarvard(rtbBib);
                             else if (cbBibStyles.Text == "IEEE")
-                                book.MakeIEEE(ref rtbBib);
+                                book.MakeIEEE(rtbBib);
                             else
-                                book.MakeGOST(ref rtbBib);
+                                book.MakeGOST(rtbBib);
                             break;
                         }
+
                     case "journal":
-                        var journal = new Journal(authors, libItem.Title, libItem.JournalName, libItem.Pages,
-                            year, number, volume,
-                            "", DateTime.Parse(DateTime.Now.ToShortDateString()));
+                        var journal = new Journal(libItem);
                         if (cbBibStyles.Text == "APA")
-                            journal.MakeAPA(ref rtbBib);
+                            journal.MakeAPA(rtbBib);
                         else if (cbBibStyles.Text == "Harvard")
-                            journal.MakeHarvard(ref rtbBib);
+                            journal.MakeHarvard(rtbBib);
                         else if (cbBibStyles.Text == "IEEE")
-                            journal.MakeIEEE(ref rtbBib);
+                            journal.MakeIEEE(rtbBib);
                         else
-                            journal.MakeGOST(ref rtbBib);
+                            journal.MakeGOST(rtbBib);
                         break;
                 }
             }
