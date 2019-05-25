@@ -94,6 +94,7 @@
             this.названияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ключевыеСловаToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.аннотацииToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.фильтрыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.lbCurrSelectedItem = new System.Windows.Forms.Label();
             this.btFirst = new System.Windows.Forms.Button();
             this.btUnique = new System.Windows.Forms.Button();
@@ -110,7 +111,6 @@
             this.cbSearchCriterion = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.labelFindedItemsCount = new System.Windows.Forms.Label();
-            this.фильтрыToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.groupBox1.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tpData.SuspendLayout();
@@ -130,8 +130,7 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.tabControl);
             this.groupBox1.Location = new System.Drawing.Point(848, 33);
@@ -143,8 +142,7 @@
             // 
             // tabControl
             // 
-            this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.tabControl.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl.Controls.Add(this.tpData);
             this.tabControl.Controls.Add(this.tpBib);
@@ -472,6 +470,7 @@
             // 
             // btSaveBibRef
             // 
+            this.btSaveBibRef.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btSaveBibRef.Location = new System.Drawing.Point(7, 626);
             this.btSaveBibRef.Name = "btSaveBibRef";
             this.btSaveBibRef.Size = new System.Drawing.Size(124, 52);
@@ -492,6 +491,7 @@
             // 
             // cbBibStyles
             // 
+            this.cbBibStyles.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbBibStyles.FormattingEnabled = true;
             this.cbBibStyles.Items.AddRange(new object[] {
             "ГОСТ",
@@ -528,6 +528,7 @@
             // 
             // btSaveStatistic
             // 
+            this.btSaveStatistic.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btSaveStatistic.Location = new System.Drawing.Point(17, 630);
             this.btSaveStatistic.Name = "btSaveStatistic";
             this.btSaveStatistic.Size = new System.Drawing.Size(107, 48);
@@ -538,6 +539,9 @@
             // 
             // tabControlForStatistic
             // 
+            this.tabControlForStatistic.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControlForStatistic.Controls.Add(this.tpYearStat);
             this.tabControlForStatistic.Controls.Add(this.tpSourses);
             this.tabControlForStatistic.Controls.Add(this.tabPage1);
@@ -679,8 +683,9 @@
             // 
             // lvLibItems
             // 
-            this.lvLibItems.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.lvLibItems.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lvLibItems.FullRowSelect = true;
             this.lvLibItems.Location = new System.Drawing.Point(12, 189);
             this.lvLibItems.MultiSelect = false;
@@ -799,6 +804,13 @@
             this.аннотацииToolStripMenuItem.Text = "Аннотации";
             this.аннотацииToolStripMenuItem.Click += new System.EventHandler(this.аннотацииToolStripMenuItem_Click);
             // 
+            // фильтрыToolStripMenuItem
+            // 
+            this.фильтрыToolStripMenuItem.Name = "фильтрыToolStripMenuItem";
+            this.фильтрыToolStripMenuItem.Size = new System.Drawing.Size(83, 24);
+            this.фильтрыToolStripMenuItem.Text = "Фильтры";
+            this.фильтрыToolStripMenuItem.Click += new System.EventHandler(this.фильтрыToolStripMenuItem_Click);
+            // 
             // lbCurrSelectedItem
             // 
             this.lbCurrSelectedItem.AutoSize = true;
@@ -855,7 +867,8 @@
             // 
             // pbLoadUniqueData
             // 
-            this.pbLoadUniqueData.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.pbLoadUniqueData.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.pbLoadUniqueData.Location = new System.Drawing.Point(12, 750);
             this.pbLoadUniqueData.Name = "pbLoadUniqueData";
             this.pbLoadUniqueData.Size = new System.Drawing.Size(776, 23);
@@ -945,13 +958,6 @@
             this.labelFindedItemsCount.Size = new System.Drawing.Size(0, 17);
             this.labelFindedItemsCount.TabIndex = 16;
             // 
-            // фильтрыToolStripMenuItem
-            // 
-            this.фильтрыToolStripMenuItem.Name = "фильтрыToolStripMenuItem";
-            this.фильтрыToolStripMenuItem.Size = new System.Drawing.Size(83, 24);
-            this.фильтрыToolStripMenuItem.Text = "Фильтры";
-            this.фильтрыToolStripMenuItem.Click += new System.EventHandler(this.фильтрыToolStripMenuItem_Click);
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -974,7 +980,7 @@
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.MinimumSize = new System.Drawing.Size(1550, 800);
+            this.MinimumSize = new System.Drawing.Size(1554, 848);
             this.Name = "MainForm";
             this.Text = "BibReader";
             this.groupBox1.ResumeLayout(false);

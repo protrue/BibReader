@@ -54,6 +54,9 @@
             // 
             // tabControlForStatistic
             // 
+            this.tabControlForStatistic.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControlForStatistic.Controls.Add(this.tpYearStat);
             this.tabControlForStatistic.Controls.Add(this.tpSourses);
             this.tabControlForStatistic.Controls.Add(this.tabPage1);
@@ -195,6 +198,7 @@
             // 
             // btOk
             // 
+            this.btOk.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btOk.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btOk.Location = new System.Drawing.Point(12, 446);
             this.btOk.Name = "btOk";
@@ -206,6 +210,7 @@
             // 
             // BtCancel
             // 
+            this.BtCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.BtCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.BtCancel.Location = new System.Drawing.Point(418, 446);
             this.BtCancel.Name = "BtCancel";
@@ -223,6 +228,7 @@
             this.Controls.Add(this.BtCancel);
             this.Controls.Add(this.btOk);
             this.Controls.Add(this.tabControlForStatistic);
+            this.MinimumSize = new System.Drawing.Size(550, 539);
             this.Name = "FiltersForm";
             this.Text = "FiltersForm";
             this.Load += new System.EventHandler(this.FiltersForm_Load);

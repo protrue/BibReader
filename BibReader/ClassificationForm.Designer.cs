@@ -59,8 +59,9 @@
             // 
             // tbInfo
             // 
-            this.tbInfo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left)));
+            this.tbInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tbInfo.Location = new System.Drawing.Point(6, 6);
             this.tbInfo.Multiline = true;
             this.tbInfo.Name = "tbInfo";
@@ -80,6 +81,9 @@
             // 
             // tabControl1
             // 
+            this.tabControl1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.tabControl1.Controls.Add(this.tpText);
             this.tabControl1.Controls.Add(this.tpFreqs);
             this.tabControl1.Location = new System.Drawing.Point(12, 13);
@@ -87,7 +91,6 @@
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(776, 505);
             this.tabControl1.TabIndex = 2;
-            //this.tabControl1.Selected += new System.Windows.Forms.TabControlEventHandler(this.tabControl1_Selected);
             // 
             // tpText
             // 
@@ -116,6 +119,7 @@
             // 
             // tbSaveFreqsInExcel
             // 
+            this.tbSaveFreqsInExcel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.tbSaveFreqsInExcel.Location = new System.Drawing.Point(7, 428);
             this.tbSaveFreqsInExcel.Name = "tbSaveFreqsInExcel";
             this.tbSaveFreqsInExcel.Size = new System.Drawing.Size(144, 42);
@@ -126,6 +130,7 @@
             // 
             // btDeleteItems
             // 
+            this.btDeleteItems.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.btDeleteItems.Location = new System.Drawing.Point(7, 390);
             this.btDeleteItems.Name = "btDeleteItems";
             this.btDeleteItems.Size = new System.Drawing.Size(144, 28);
@@ -136,6 +141,9 @@
             // 
             // lvFreqs
             // 
+            this.lvFreqs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lvFreqs.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2});
@@ -159,6 +167,7 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.btPrevFindedLibItem);
             this.groupBox1.Controls.Add(this.btNextFindedLibItem);
             this.groupBox1.Controls.Add(this.tbFind);
@@ -198,6 +207,7 @@
             // 
             // tbRedraw
             // 
+            this.tbRedraw.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.tbRedraw.Location = new System.Drawing.Point(794, 437);
             this.tbRedraw.Name = "tbRedraw";
             this.tbRedraw.Size = new System.Drawing.Size(120, 32);
@@ -208,6 +218,7 @@
             // 
             // btSaveImage
             // 
+            this.btSaveImage.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btSaveImage.Location = new System.Drawing.Point(794, 475);
             this.btSaveImage.Name = "btSaveImage";
             this.btSaveImage.Size = new System.Drawing.Size(120, 43);
@@ -226,6 +237,7 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox2.Controls.Add(this.checkBoxImageIsBlack);
             this.groupBox2.Controls.Add(this.nudWordsCount);
             this.groupBox2.Location = new System.Drawing.Point(938, 437);
@@ -247,6 +259,7 @@
             // 
             // checkBoxFreq
             // 
+            this.checkBoxFreq.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.checkBoxFreq.AutoSize = true;
             this.checkBoxFreq.Location = new System.Drawing.Point(1139, 447);
             this.checkBoxFreq.Name = "checkBoxFreq";
@@ -266,6 +279,7 @@
             this.Controls.Add(this.tbRedraw);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.pictBox);
+            this.MinimumSize = new System.Drawing.Size(1473, 577);
             this.Name = "ClassificationForm";
             this.Text = "Classification";
             this.Load += new System.EventHandler(this.ClusterizationForm_Load);
