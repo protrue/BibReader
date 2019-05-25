@@ -35,6 +35,7 @@ namespace BibReader.BibReference.TypesOfSourse
         const string DoublePointSpace = ": ";
         const string DoublePoint = ":";
         const string DoubleSlash = "//";
+        const string Slash = "/";
         const string URL = "URL: ";
         const string Lparenthesis = "(";
         const string Rparenthesis = ")";
@@ -44,7 +45,7 @@ namespace BibReader.BibReference.TypesOfSourse
         const string Rpar = "]";
         const string Retrieved = "Retrieved ";
         const string From = "from ";
-        const string EtAl = "et. al. ";
+        const string EtAl = " et. al. ";
         const string In = "in ";
         const string IN = "In";
 
@@ -70,7 +71,7 @@ namespace BibReader.BibReference.TypesOfSourse
             Authors = AuthorsParser.ParseAuthors(libItem.Authors, libItem.Sourсe);
             Title = libItem.Title;
             Name = libItem.JournalName;
-            City = "UNKNOWN_CITY";
+            City = string.Empty;
             Publisher = libItem.Publisher;
             Year = year;
             Pages = libItem.Pages;
@@ -82,23 +83,25 @@ namespace BibReader.BibReference.TypesOfSourse
         public void MakeGOST(RichTextBox rtb)
         {
             string result = string.Empty;
-            Authors = AuthorsParser.MakeAuthorsForGOST(Authors);
             if (Authors.Length < 4)
             {
-                result += string.Join(", ", Authors);
+                result += AuthorsParser.MakeAuthorsForGOST(Authors);
                 result += Space;
+                result += Title;
             }
             else
             {
-                for (int i = 0; i < 2; i++)
-                    result += Authors[i] + CommaSpace;
-                result += Authors[2] + EtAl;
+                result += Title;
+                result += Space + Slash + Space;
+                result += AuthorsParser.MakeAuthorsForGOST(Authors);
             }
-            result += Title + PointSpace;
+            result += Space + DoubleSlash + Space;
+            result += Name + PointSpace;
             // TODO 
-            result += City + DoublePointSpace;
+            if (City != string.Empty)
+                result += City + DoublePointSpace;
             result += Publisher + CommaSpace;
-            result += Year + Point;
+            result += Year + PointSpace;
             if (Volume != 0)
                 result += Space + Vol + Volume + Point;
             result += PPage + Pages + Point;
@@ -146,7 +149,8 @@ namespace BibReader.BibReference.TypesOfSourse
                 rtb.SelectedText += Vol + Volume + CommaSpace;
             rtb.SelectedText = Int32.TryParse(Pages, out int a) ? Page : PPage;
             rtb.SelectedText = Pages + Rparenthesis + PointSpace;
-            rtb.SelectedText = City + DoublePoint;
+            if (City != string.Empty)
+                rtb.SelectedText = City + DoublePoint;
             rtb.SelectedText = Publisher + Point;
             if (Link != "")
                 rtb.SelectedText = Space + Retrieved + Date.ToString("dd MMMM yyyy") + CommaSpace + From + Link;
@@ -163,7 +167,8 @@ namespace BibReader.BibReference.TypesOfSourse
             rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = SystemFonts.DefaultFont;
             if (Volume != 0)
                 rtb.SelectedText = Vol + Volume + CommaSpace;
-            rtb.SelectedText = City + CommaSpace;
+            if (City != string.Empty)
+                rtb.SelectedText = City + CommaSpace;
             rtb.SelectedText = Publisher + CommaSpace + Year;
            
             if (Pages != "")

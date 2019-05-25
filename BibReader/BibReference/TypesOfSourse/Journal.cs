@@ -42,6 +42,8 @@ namespace BibReader.BibReference.TypesOfSourse
         const string Rpar = "]";
         const string Retrieved = "Retrieved ";
         const string From = "from ";
+        const string EtAl = " et. al. ";
+        const string Slash = "/";
 
         public Journal(string[] authors, string title, string journalName, string pages, int year, int number, int vol, string link, DateTime date)
         {
@@ -76,10 +78,18 @@ namespace BibReader.BibReference.TypesOfSourse
         public void MakeGOST(RichTextBox rtb)
         {
             string result = string.Empty;
-
-            result += string.Join(", ", AuthorsParser.MakeAuthorsForGOST(Authors));
-            result += Space;
-            result += Title;
+            if (Authors.Length < 4)
+            {
+                result += AuthorsParser.MakeAuthorsForGOST(Authors);
+                result += Space;
+                result += Title;
+            }
+            else
+            {
+                result += Title;
+                result += Space + Slash + Space;
+                result += AuthorsParser.MakeAuthorsForGOST(Authors);
+            }
             result += Space + DoubleSlash + Space;
             result += JournalName + PointSpace;
             result += Year + PointSpace;

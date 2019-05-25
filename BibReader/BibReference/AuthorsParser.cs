@@ -147,7 +147,6 @@ namespace BibReader.BibReference
                         ? ", "
                         : i != authors.Length - 1 ? " and " : ""
                     )
-                    .ToArray()
                 );
         }
 
@@ -166,7 +165,6 @@ namespace BibReader.BibReference
                             .Substring(author.IndexOf(" ") + 1)
                             .Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)
                             .Select(init => init[0] + ".")
-                            .ToArray()
                         )
                         + " " + author.Substring(0, author.IndexOf(" "))
                         : author
@@ -179,22 +177,53 @@ namespace BibReader.BibReference
                             ? (i==0 ? " and " : ", and ") 
                             : ""
                     )
-                    .ToArray()
                 );
         }
 
-        public static string[] MakeAuthorsForGOST(string[] authors)
+        public static string MakeAuthorsForGOST(string[] authors)
         {
-            return authors
-                .Select(author => 
-                    string.Join(
-                        " ",
-                        author
-                        .Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)
-                        .Select((part, index) => part = index == 0 ? part : part[0] + ".")
+            return
+                authors.Length < 4
+                ?
+                string.Join(
+                    ", ",
+                    authors.Select(author =>
+                        string.Join(
+                            " ",
+                            author
+                            .Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)
+                            .Select((part, index) => part = index == 0 ? part : part[0] + ".")
+                        )
                     )
                 )
-                .ToArray();
+                :
+                string.Join(
+                    "",
+                    authors
+                    .Select(
+                        author =>
+                        author.IndexOf(" ") != -1
+                        ? string.Join(
+                            " ",
+                            author
+                            .Substring(author.IndexOf(" ") + 1)
+                            .Split(new string[] { " " }, StringSplitOptions.RemoveEmptyEntries)
+                            .Select(init => init[0] + ".")
+                        )
+                        + " " + author.Substring(0, author.IndexOf(" "))
+                        : author
+                    )
+                    .Select(
+                        (author, i) =>
+                        author =
+                            i < 3
+                            ?
+                                i == 2
+                                ? author + " et. al."
+                                : author + ", "
+                            : string.Empty
+                    )
+                );
         }
 
     }

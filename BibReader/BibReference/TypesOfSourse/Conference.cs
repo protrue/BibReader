@@ -39,6 +39,8 @@ namespace BibReader.BibReference.TypesOfSourse
         const string Rparenthesis = ")";
         const string Num = "no. ";
         const string Vol = "vol. ";
+        const string EtAl = " et. al. ";
+        const string Slash = "/";
 
         public Conference(string[] authors, string title, string publisher, string pages, int year, string city, string conferenceName, int number, int volume)
         {
@@ -72,9 +74,19 @@ namespace BibReader.BibReference.TypesOfSourse
         public void MakeGOST(RichTextBox rtb)
         {
             var result = string.Empty;
-            Authors = AuthorsParser.MakeAuthorsForGOST(Authors);
-            result += string.Join(", ", Authors) + Spase;
-            result += Title + PointSpace;
+            if (Authors.Length < 4)
+            {
+                result += AuthorsParser.MakeAuthorsForGOST(Authors);
+                result += Space;
+                result += Title;
+            }
+            else
+            {
+                result += Title;
+                result += Space + Slash + Space;
+                result += AuthorsParser.MakeAuthorsForGOST(Authors);
+            }
+            result += Space + DoubleSlash + Space;
             result += ConferenceName + PointSpace;
             if (City != string.Empty)
                 result += City + DoublePointSpace;
@@ -139,7 +151,8 @@ namespace BibReader.BibReference.TypesOfSourse
                 rtb.SelectedText += Vol + Volume + CommaSpace;
             rtb.SelectedText = Int32.TryParse(Pages, out int a) ? Page : PPage;
             rtb.SelectedText = Pages + Rparenthesis + PointSpace;
-            rtb.SelectedText = City + DoublePoint;
+            if (City != string.Empty)
+                rtb.SelectedText = City + DoublePoint;
             rtb.SelectedText = Publisher + Point;
             rtb.SelectedText = "\n\n";
         }
