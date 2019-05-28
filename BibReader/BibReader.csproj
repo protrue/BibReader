@@ -66,6 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BibReference\AuthorsParser.cs" />
+    <Compile Include="Log\Log.cs" />
     <Compile Include="Publications\Filters\Filter.cs" />
     <Compile Include="FiltersForm.cs">
       <SubType>Form</SubType>

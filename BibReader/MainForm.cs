@@ -26,6 +26,7 @@ namespace BibReader
         string lastOpenedFileName = string.Empty;
         int currIndex = -1;
         Finder.Finder finder = new Finder.Finder();
+        Log.Log log = new Log.Log();
 
         private StreamReader[] GetStreamReaders()
         {
@@ -128,6 +129,11 @@ namespace BibReader
             var libItemsCount = lvLibItems.Items.Count;
             double step = libItemsCount / 100;
             pbLoadUniqueData.Step = (int)step;
+
+            var time = DateTime.Now;
+            log.Write($"{ time.ToString() }");
+            log.Write($"> Find unique where libItems count = {lvLibItems.Items.Count} ");
+          
             var unique = new Unique(lvLibItems.Items.Cast<ListViewItem>().Select(item => (LibItem)item.Tag).ToList());
             int i = 0;
             foreach (var item in unique.LibItemIndexesForDeleting)
@@ -137,6 +143,10 @@ namespace BibReader
                 i++;
             }
             libItems = unique.UniqueLibItems;
+
+            log.Write($"{ (DateTime.Now - time).TotalSeconds.ToString() } sec.");
+            log.Write("____________________");
+
             pbLoadUniqueData.Value = 100;
             MessageBox.Show("Готово!");
             pbLoadUniqueData.Value = 0;
@@ -146,6 +156,11 @@ namespace BibReader
         {
             var libItemsCount = lvLibItems.Items.Count;
             double step = libItemsCount / 100;
+
+            var time = DateTime.Now;
+            log.Write($"{ time.ToString() }");
+            log.Write($"> Find relevance where libItems count = {lvLibItems.Items.Count} ");
+            
             foreach (ListViewItem item in lvLibItems.Items)
             {
                 var pages = ((LibItem)item.Tag).Pages;
@@ -161,6 +176,10 @@ namespace BibReader
                 if (pbLoadUniqueData.Value + step <= 100)
                     pbLoadUniqueData.Value += (int)step;
             }
+
+            log.Write($"{ (DateTime.Now - time).TotalSeconds.ToString() } sec.");
+            log.Write("____________________");
+
             pbLoadUniqueData.Value = 100;
             MessageBox.Show("Готово!");
             pbLoadUniqueData.Value = 0;
@@ -206,7 +225,15 @@ namespace BibReader
                 libItems.Clear();
                 libItems.AddRange(univReader.Read(readers));
                 LoadFilters();
+
+                var time = DateTime.Now;
+                log.Write($"{ time.ToString() }");
+                log.Write($"> Open file");
                 LoadLibItems();
+                log.Write($"> Add new LibItem(s): count = { lvLibItems.Items.Count }");
+                log.Write($"{ (DateTime.Now - time).TotalSeconds.ToString() } sec.");
+                log.Write("____________________");
+
                 toolStripStatusLabel1.Text = "Last opened file name: " + lastOpenedFileName;
                 btFirst.Enabled = false;
                 btUnique.Enabled = true;
@@ -234,9 +261,16 @@ namespace BibReader
             var reader = GetStreamReaders();
             if (reader != null)
             {
-                libItems.AddRange(univReader.Read(reader));
+                List<LibItem> newitems;
+                var time = DateTime.Now;
+                log.Write($"{ time.ToString() }");
+                log.Write($"> Add new LibItem(s): count = { (newitems = univReader.Read(reader)).Count }");
+                libItems.AddRange(newitems);
                 LoadFilters();
                 AddLibItemsInLvItems();
+                log.Write($"{ (DateTime.Now - time).TotalSeconds.ToString() } sec.");
+                log.Write("____________________");
+               
                 btFirst.Enabled = false;
                 btUnique.Enabled = true;
                 btRelevance.Enabled = false;
