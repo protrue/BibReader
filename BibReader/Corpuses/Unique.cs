@@ -11,25 +11,32 @@ namespace BibReader.Corpuses
     {
         const int distance = 5;
         Dictionary<string, int> UniqueTitles = new Dictionary<string, int>();
-        public HashSet<int> LibItemIndexesForDeleting { get; private set; } = new HashSet<int>();
-        public List<LibItem> UniqueLibItems { get; private set; } = new List<LibItem>();
+        List<LibItem> UniqueLibItems { get; set; } = new List<LibItem>();
 
         public Unique(List<LibItem> libItems)
         {
             UniqueLibItems = libItems.ToList();
+        }
+
+        public List<LibItem> GetUnique()
+        {
             int position, i = 0;
-            foreach (var item in libItems)
+            var items = new List<LibItem>();
+
+            foreach (var item in UniqueLibItems)
             {
                 if ((position = FindCopyPosition(item)) == -1)
+                {
                     UniqueTitles.Add(Normalize(item.Title), i);
+                    items.Add(item);
+                }
                 else
                 {
-                    LibItemIndexesForDeleting.Add(i);
-                    FindImportantData(libItems[position], item);
-                    UniqueLibItems.Remove(item);
+                    FindImportantData(UniqueLibItems[position], item);
                 }
                 i++;
             }
+            return items;
         }
 
         private int FindCopyPosition(LibItem item)

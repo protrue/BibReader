@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BibReader.Publications;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,9 +9,31 @@ namespace BibReader.Corpuses
 {
     class Relevance
     {
-        public static bool isRelevance(string pages, string authors) => isRelevancePages(pages) && authors != "";
+        List<LibItem> RelevanceItems = new List<LibItem>(); 
 
-        private static bool isRelevancePages(string pages)
+        public Relevance(List<LibItem> libItems)
+        {
+            RelevanceItems = libItems.ToList();
+        }
+
+        public List<LibItem> GetRelevance()
+        {
+            var items = new List<LibItem>();
+
+            foreach (var item in RelevanceItems)
+            {
+                var pages = item.Pages;
+                var authors = item.Authors;
+
+                if (IsRelevance(pages, authors))
+                    items.Add(item);
+            }
+            return items;
+        }
+
+        private static bool IsRelevance(string pages, string authors) => IsRelevancePages(pages) && authors != "";
+
+        private static bool IsRelevancePages(string pages)
         {
             if (pages == "" || pages == string.Empty)
                 return false;

@@ -21,7 +21,7 @@ namespace BibReader
 {
     public partial class MainForm : Form
     {
-        List<ListViewItem> deletedLibItems = new List<ListViewItem>();
+        List<LibItem> deletedLibItems = new List<LibItem>();
         List<LibItem> libItems = new List<LibItem>();
         string lastOpenedFileName = string.Empty;
         int currIndex = -1;
@@ -135,14 +135,17 @@ namespace BibReader
             log.Write($"> Find unique where libItems count = {lvLibItems.Items.Count} ");
           
             var unique = new Unique(lvLibItems.Items.Cast<ListViewItem>().Select(item => (LibItem)item.Tag).ToList());
-            int i = 0;
-            foreach (var item in unique.LibItemIndexesForDeleting)
-            {
-                deletedLibItems.Add(lvLibItems.Items[item - i]);
-                lvLibItems.Items.RemoveAt(item - i);
-                i++;
-            }
-            libItems = unique.UniqueLibItems;
+            //int i = 0;
+            //foreach (var item in unique.LibItemIndexesForDeleting)
+            //{
+            //    deletedLibItems.Add(lvLibItems.Items[item - i]);
+            //    lvLibItems.Items.RemoveAt(item - i);
+            //    i++;
+            //}
+            var uniqueItems = unique.GetUnique();
+            deletedLibItems.AddRange(libItems.Except(uniqueItems).ToList());
+            libItems = uniqueItems;
+            LoadLibItems();
 
             log.Write($"{ (DateTime.Now - time).TotalSeconds.ToString() } sec.");
             log.Write("____________________");
@@ -161,21 +164,27 @@ namespace BibReader
             log.Write($"{ time.ToString() }");
             log.Write($"> Find relevance where libItems count = {lvLibItems.Items.Count} ");
             
-            foreach (ListViewItem item in lvLibItems.Items)
-            {
-                var pages = ((LibItem)item.Tag).Pages;
-                var authors = ((LibItem)item.Tag).Authors;
+            //foreach (ListViewItem item in lvLibItems.Items)
+            //{
+            //    var pages = ((LibItem)item.Tag).Pages;
+            //    var authors = ((LibItem)item.Tag).Authors;
 
-                if (!Relevance.isRelevance(pages, authors))
-                {
-                    deletedLibItems.Add(item);
-                    item.Remove();
-                    libItems.Remove((LibItem)item.Tag);
-                }
+            //    if (!Relevance.IsRelevance(pages, authors))
+            //    {
+            //        deletedLibItems.Add(item);
+            //        item.Remove();
+            //        libItems.Remove((LibItem)item.Tag);
+            //    }
 
-                if (pbLoadUniqueData.Value + step <= 100)
-                    pbLoadUniqueData.Value += (int)step;
-            }
+            //    if (pbLoadUniqueData.Value + step <= 100)
+            //        pbLoadUniqueData.Value += (int)step;
+            //}
+
+            var relevance = new Relevance(lvLibItems.Items.Cast<ListViewItem>().Select(item => (LibItem)item.Tag).ToList());
+            var relevanceItems = relevance.GetRelevance();
+            deletedLibItems.AddRange(libItems.Except(relevanceItems).ToList());
+            libItems = relevanceItems;
+            LoadLibItems();
 
             log.Write($"{ (DateTime.Now - time).TotalSeconds.ToString() } sec.");
             log.Write("____________________");
@@ -189,7 +198,7 @@ namespace BibReader
         {
             lvLibItems.Items.Clear();
             currIndex = -1;
-            deletedLibItems.Clear();
+            // deletedLibItems.Clear();
             AddLibItemsInLvItems();
         }
 
@@ -223,9 +232,9 @@ namespace BibReader
             if (readers != null)
             {
                 libItems.Clear();
+                deletedLibItems.Clear();
                 libItems.AddRange(univReader.Read(readers));
                 LoadFilters();
-
                 var time = DateTime.Now;
                 log.Write($"{ time.ToString() }");
                 log.Write($"> Open file");
@@ -328,7 +337,22 @@ namespace BibReader
 
         private void btFirst_Click(object sender, EventArgs e)
         {
-            lvLibItems.Items.AddRange(deletedLibItems.ToArray());
+            lvLibItems.Items.AddRange(
+                deletedLibItems
+                .Select(
+                    item => new ListViewItem(
+                        new string[]
+                        {
+                            item.Title,
+                            item.Authors
+                        }
+                    )
+                    {
+                        Tag = item
+                    }
+                )
+                .ToArray()
+            );
             deletedLibItems.Clear();
             lvLibItems.Sorting = SortOrder.Ascending;
             lvLibItems.Sort();
