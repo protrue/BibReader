@@ -128,7 +128,9 @@
             // 
             // lvTypeStat
             // 
-            this.lvTypeStat.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.lvTypeStat.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lvTypeStat.Location = new System.Drawing.Point(6, 6);
             this.lvTypeStat.Name = "lvTypeStat";
             this.lvTypeStat.Size = new System.Drawing.Size(490, 386);
@@ -149,6 +151,9 @@
             // 
             // lvJournalStat
             // 
+            this.lvJournalStat.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lvJournalStat.Location = new System.Drawing.Point(7, 4);
             this.lvJournalStat.Name = "lvJournalStat";
             this.lvJournalStat.Size = new System.Drawing.Size(489, 388);
@@ -169,6 +174,9 @@
             // 
             // lvGeographyStat
             // 
+            this.lvGeographyStat.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lvGeographyStat.Location = new System.Drawing.Point(7, 7);
             this.lvGeographyStat.Name = "lvGeographyStat";
             this.lvGeographyStat.Size = new System.Drawing.Size(489, 385);
@@ -189,6 +197,9 @@
             // 
             // lvConferenceStat
             // 
+            this.lvConferenceStat.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.lvConferenceStat.Location = new System.Drawing.Point(7, 7);
             this.lvConferenceStat.Name = "lvConferenceStat";
             this.lvConferenceStat.Size = new System.Drawing.Size(489, 385);
