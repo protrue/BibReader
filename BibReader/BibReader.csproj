@@ -84,7 +84,7 @@
       <DependentUpon>ClassificationForm.cs</DependentUpon>
     </Compile>
     <Compile Include="ColumnSorting\Sorting.cs" />
-    <Compile Include="Corpuses\Relevance.cs" />
+    <Compile Include="Publications\Corpuses\Relevance.cs" />
     <Compile Include="Saver\ExcelSaver.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -100,7 +100,7 @@
     <Compile Include="Saver\DocSaver.cs" />
     <Compile Include="Statistic\FormStatistic.cs" />
     <Compile Include="Statistic\Statistic.cs" />
-    <Compile Include="Corpuses\Unique.cs" />
+    <Compile Include="Publications\Corpuses\Unique.cs" />
     <Compile Include="BibReference\TypesOfSourse\Book.cs" />
     <Compile Include="BibReference\TypesOfSourse\Conference.cs" />
     <Compile Include="BibReference\TypesOfSourse\Journal.cs" />
