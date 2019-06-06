@@ -66,6 +66,5 @@ namespace BibReader
                 return obj.GetHashCode();
             }
         }
-       
     }
 }

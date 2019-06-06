@@ -184,5 +184,4 @@ namespace BibReader.BibReference.TypesOfSourse
             rtb.SelectedText = "\n\n";
         }
     }
-
 }

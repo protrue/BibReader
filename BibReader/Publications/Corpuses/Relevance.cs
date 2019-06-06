@@ -53,10 +53,8 @@ namespace BibReader.Corpuses
             while (i < pages.Length)
             { pageEnd += pages[i]; i++; }
 
-            int intPageBegin;
-            Int32.TryParse(pageBegin, out intPageBegin);
-            int intPageEnd;
-            Int32.TryParse(pageEnd, out intPageEnd);
+            Int32.TryParse(pageBegin, out int intPageBegin);
+            Int32.TryParse(pageEnd, out int intPageEnd);
 
             return intPageEnd - intPageBegin > 3 ? true : false;
         }

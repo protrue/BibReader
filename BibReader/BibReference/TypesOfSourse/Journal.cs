@@ -162,11 +162,10 @@ namespace BibReader.BibReference.TypesOfSourse
             if (Number != 0)
                 rtb.SelectedText = Num + Number + CommaSpace;
             rtb.SelectedText = Int32.TryParse(Pages, out int a) ? Page : PPage;
-            rtb.SelectedText = Pages + CommaSpace;
+            rtb.SelectedText = Pages + Point;
             if (Link != "")
                 rtb.SelectedText = Space + Avaliable + Link + Point + Space + Access + Date.ToString("MMM. dd, yyyy.");
             rtb.SelectedText = "\n\n";
         }
     }
-
 }

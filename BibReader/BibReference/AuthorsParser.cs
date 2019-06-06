@@ -225,6 +225,5 @@ namespace BibReader.BibReference
                     )
                 );
         }
-
     }
 }

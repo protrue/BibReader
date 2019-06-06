@@ -173,7 +173,5 @@ namespace BibReader.BibReference.TypesOfSourse
             rtb.SelectedText = Int32.TryParse(Pages, out int a) ? Page : PPage;
             rtb.SelectedText = Pages + Point + "\n\n";
         }
-
     }
-
 }
