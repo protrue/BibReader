@@ -10,12 +10,12 @@ using System.Windows.Forms;
 using BibReader.Saver;
 using Sparc.TagCloud;
 using BibReader.Finder;
+using Collection = BibReader.Finder.Collection.Collection;
 
 namespace BibReader
 {
     public partial class ClassificationForm : Form
     {
-        int currIndex = -1;
         List<string> BlackList = new List<string>();
         TagCloudSetting TagCloudSetting = new TagCloudSetting();
         Finder.Finder finder = new Finder.Finder();
@@ -102,23 +102,22 @@ namespace BibReader
 
         private void numericUpDown1_ValueChanged(object sender, EventArgs e) => LoadWordAndFreqs(GetCloudTags());
 
-
         private void btPrevFindedLibItem_Click(object sender, EventArgs e)
         {
-            currIndex = finder.GetIndex(
-                Finder.Finder.MakeListOfIndexes(tbFind.Text, lvFreqs, 0),
-                Finder.Finder.Prev
+            var currIndex = finder.GetIndex(
+                Collection.MakeListOfIndexes(tbFind.Text, lvFreqs, 0),
+                Functions.Prev
             );
-            Finder.Finder.SelectItem(lvFreqs, currIndex);
+            Collection.SelectItem(lvFreqs, currIndex);
         }
 
         private void btNextFindedLibItem_Click(object sender, EventArgs e)
         {
-            currIndex = finder.GetIndex(
-                Finder.Finder.MakeListOfIndexes(tbFind.Text, lvFreqs, 0),
-                Finder.Finder.Next
+            var currIndex = finder.GetIndex(
+                Collection.MakeListOfIndexes(tbFind.Text, lvFreqs, 0),
+                Functions.Next
             );
-            Finder.Finder.SelectItem(lvFreqs, currIndex);
+            Collection.SelectItem(lvFreqs, currIndex);
         }
 
         private void tbSaveFreqsInExcel_Click(object sender, EventArgs e) => ExcelSaver.Save(new List<ListView>() { lvFreqs });

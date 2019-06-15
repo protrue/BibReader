@@ -16,6 +16,7 @@ using BibReader.Publications;
 using BibReader.BibReference;
 using BibReader.BibReference.TypesOfSourse;
 using System.Reflection;
+using Collection = BibReader.Finder.Collection.Collection;
 
 namespace BibReader
 {
@@ -24,7 +25,6 @@ namespace BibReader
         List<LibItem> deletedLibItems = new List<LibItem>();
         List<LibItem> libItems = new List<LibItem>();
         string lastOpenedFileName = string.Empty;
-        int currIndex = -1;
         Finder.Finder finder = new Finder.Finder();
         Log.Log log = new Log.Log();
 
@@ -177,7 +177,7 @@ namespace BibReader
         private void LoadLibItems()
         {
             lvLibItems.Items.Clear();
-            currIndex = -1;
+            finder = new Finder.Finder();
             // deletedLibItems.Clear();
             AddLibItemsInLvItems();
         }
@@ -224,6 +224,7 @@ namespace BibReader
                 log.Write("____________________");
 
                 toolStripStatusLabel1.Text = "Last opened file name: " + lastOpenedFileName;
+                labelFindedItemsCount.Text = string.Empty;
                 btFirst.Enabled = false;
                 btUnique.Enabled = true;
                 btRelevance.Enabled = false;
@@ -259,7 +260,8 @@ namespace BibReader
                 AddLibItemsInLvItems();
                 log.Write($"{ (DateTime.Now - time).TotalSeconds.ToString() } sec.");
                 log.Write("____________________");
-               
+
+                labelFindedItemsCount.Text = string.Empty;
                 btFirst.Enabled = false;
                 btUnique.Enabled = true;
                 btRelevance.Enabled = false;
@@ -317,24 +319,6 @@ namespace BibReader
 
         private void btFirst_Click(object sender, EventArgs e)
         {
-            //lvLibItems.Items.AddRange(
-            //    Filter.FilterOut(deletedLibItems)
-            //    .Select(
-            //        item => new ListViewItem(
-            //            new string[]
-            //            {
-            //                item.Title,
-            //                item.Authors
-            //            }
-            //        )
-            //        {
-            //            Tag = item
-            //        }
-            //    )
-            //    .ToArray()
-            //);
-            //lvLibItems.Sorting = SortOrder.Ascending;
-            //lvLibItems.Sort();
             libItems.AddRange(deletedLibItems);// = lvLibItems.Items.Cast<ListViewItem>().Select(item => (LibItem)item.Tag).ToList();
             deletedLibItems.Clear();
             LoadFilters();
@@ -428,87 +412,56 @@ namespace BibReader
             SelectFstLibItem();
         }
 
-        //private void tbTitle_TextChanged(object sender, EventArgs e)
-        //{
-        //    if (lvLibItems.Items.Count != 0) { 
-        //    ((LibItem)lvLibItems.SelectedItems[0].Tag).Title = tbTitle.Text;
-        //    lvLibItems.SelectedItems[0].SubItems[0].Text = tbTitle.Text;
-        //    }
-        //}
-
-        //private void tbAuthors_TextChanged(object sender, EventArgs e)
-        //{
-        //    if (lvLibItems.Items.Count != 0)
-        //    {
-        //        ((LibItem)lvLibItems.SelectedItems[0].Tag).Authors = tbAuthors.Text;
-        //        lvLibItems.SelectedItems[0].SubItems[1].Text = tbAuthors.Text;
-        //    }
-        //}
-
-        private void btNextFindedLibItem_Click(object sender, EventArgs e)
+        private void tbTitle_TextChanged(object sender, EventArgs e)
         {
+            if (lvLibItems.Items.Count != 0)
+            {
+                ((LibItem)lvLibItems.SelectedItems[0].Tag).Title = tbTitle.Text;
+                lvLibItems.SelectedItems[0].SubItems[0].Text = tbTitle.Text;
+            }
+        }
+
+        private void tbAuthors_TextChanged(object sender, EventArgs e)
+        {
+            if (lvLibItems.Items.Count != 0)
+            {
+                ((LibItem)lvLibItems.SelectedItems[0].Tag).Authors = tbAuthors.Text;
+                lvLibItems.SelectedItems[0].SubItems[1].Text = tbAuthors.Text;
+            }
+        }
+
+        private int GetNextIndex(Func<List<int>, int, int> func)
+        {
+            List<int> indexes;
             switch (cbSearchCriterion.SelectedIndex)
             {
                 case 0:
-                    currIndex = finder.GetIndex(
-                        Finder.Finder.MakeListOfIndexes(tbFind.Text, lvLibItems, 0),
-                        Finder.Finder.Prev
-                    );
+                    indexes = Collection.MakeListOfIndexes(tbFind.Text, lvLibItems, 0);
                     break;
                 case 1:
-                    currIndex = finder.GetIndex(
-                        Finder.Finder.MakeListOfIndexes(
-                            tbFind.Text, 
+                    indexes = Collection.MakeListOfIndexes(
+                            tbFind.Text,
                             lvLibItems.Items.Cast<ListViewItem>().Select(item => ((LibItem)item.Tag).Abstract).ToList()
-                        ),
-                        Finder.Finder.Prev
                     );
                     break;
                 case 2:
-                    currIndex = finder.GetIndex(
-                        Finder.Finder.MakeListOfIndexes(tbFind.Text, lvLibItems, 1),
-                        Finder.Finder.Prev
-                    );
+                    indexes = Collection.MakeListOfIndexes(tbFind.Text, lvLibItems, 1);
                     break;
+                default:
+                    return 0;
             }
-            Finder.Finder.SelectItem(lvLibItems, currIndex);
+            labelFindedItemsCount.Text = indexes.Count.ToString();
+            return finder.GetIndex(indexes, func);
+        }
+
+        private void btNextFindedLibItem_Click(object sender, EventArgs e)
+        {
+            Collection.SelectItem(lvLibItems, GetNextIndex(Finder.Functions.Next));
         }
 
         private void btPrevFindedLibItem_Click(object sender, EventArgs e)
         {
-            var indexesOfLibItems = new List<int>();
-            foreach (ListViewItem libItem in lvLibItems.Items)
-            {
-                switch (cbSearchCriterion.SelectedIndex)
-                {
-                    case 0:
-                        if (libItem.SubItems[0].Text.ToLower().IndexOf(tbFind.Text.ToLower()) >= 0)
-                            indexesOfLibItems.Add(libItem.Index);
-                        break;
-                    case 1:
-                        if (((LibItem)libItem.Tag).Affiliation.ToLower().IndexOf(tbFind.Text.ToLower()) >= 0)
-                            indexesOfLibItems.Add(libItem.Index);
-                        break;
-                    case 2:
-                        if (libItem.SubItems[1].Text.ToLower().IndexOf(tbFind.Text.ToLower()) >= 0)
-                            indexesOfLibItems.Add(libItem.Index);
-                        break;
-                }
-            }
-            labelFindedItemsCount.Text = indexesOfLibItems.Count.ToString();
-
-            if (indexesOfLibItems.Count > 0)
-            {
-                lvLibItems.Select();
-                currIndex = 
-                    currIndex <= indexesOfLibItems.First() || currIndex == -1
-                    ? indexesOfLibItems.Last() 
-                    : indexesOfLibItems.Last(x => x < currIndex);
-                lvLibItems.Items[currIndex].Selected = true;
-                lvLibItems.EnsureVisible(currIndex);
-            }
-            else
-                MessageBox.Show("Элементы не найдены!");
+            Collection.SelectItem(lvLibItems, GetNextIndex(Finder.Functions.Prev));
         }
 
         private void btPrintBib_Click(object sender, EventArgs e)
@@ -550,7 +503,7 @@ namespace BibReader
             form.Show();
         }
 
-        private void cbSearchCriterion_SelectedIndexChanged(object sender, EventArgs e) => currIndex = -1;
+        private void cbSearchCriterion_SelectedIndexChanged(object sender, EventArgs e) => finder = new Finder.Finder();
 
         private void btSaveStatistic_Click(object sender, EventArgs e) => ExcelSaver.Save(GetStatisticListViews());
 

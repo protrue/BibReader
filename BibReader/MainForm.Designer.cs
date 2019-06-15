@@ -133,7 +133,7 @@
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox1.Controls.Add(this.tabControl);
-            this.groupBox1.Location = new System.Drawing.Point(848, 33);
+            this.groupBox1.Location = new System.Drawing.Point(865, 33);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(676, 740);
             this.groupBox1.TabIndex = 1;
@@ -316,6 +316,7 @@
             this.tbTitle.Name = "tbTitle";
             this.tbTitle.Size = new System.Drawing.Size(471, 22);
             this.tbTitle.TabIndex = 15;
+            this.tbTitle.TextChanged += new System.EventHandler(this.tbTitle_TextChanged);
             // 
             // tbAuthors
             // 
@@ -327,6 +328,7 @@
             this.tbAuthors.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbAuthors.Size = new System.Drawing.Size(471, 84);
             this.tbAuthors.TabIndex = 14;
+            this.tbAuthors.TextChanged += new System.EventHandler(this.tbAuthors_TextChanged);
             // 
             // lbNumber
             // 
@@ -690,7 +692,7 @@
             this.lvLibItems.Location = new System.Drawing.Point(12, 189);
             this.lvLibItems.MultiSelect = false;
             this.lvLibItems.Name = "lvLibItems";
-            this.lvLibItems.Size = new System.Drawing.Size(776, 555);
+            this.lvLibItems.Size = new System.Drawing.Size(793, 555);
             this.lvLibItems.TabIndex = 2;
             this.lvLibItems.UseCompatibleStateImageBehavior = false;
             this.lvLibItems.View = System.Windows.Forms.View.Details;
@@ -706,7 +708,7 @@
             this.фильтрыToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1536, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1553, 28);
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -871,7 +873,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pbLoadUniqueData.Location = new System.Drawing.Point(12, 750);
             this.pbLoadUniqueData.Name = "pbLoadUniqueData";
-            this.pbLoadUniqueData.Size = new System.Drawing.Size(776, 23);
+            this.pbLoadUniqueData.Size = new System.Drawing.Size(793, 23);
             this.pbLoadUniqueData.TabIndex = 8;
             // 
             // statusStrip1
@@ -881,7 +883,7 @@
             this.toolStripStatusLabel1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 776);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1536, 25);
+            this.statusStrip1.Size = new System.Drawing.Size(1553, 25);
             this.statusStrip1.TabIndex = 9;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -944,7 +946,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(776, 40);
+            this.label2.Location = new System.Drawing.Point(793, 40);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(66, 17);
             this.label2.TabIndex = 15;
@@ -962,7 +964,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1536, 801);
+            this.ClientSize = new System.Drawing.Size(1553, 801);
             this.Controls.Add(this.labelFindedItemsCount);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.cbSearchCriterion);
