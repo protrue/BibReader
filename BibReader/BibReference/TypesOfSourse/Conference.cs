@@ -137,24 +137,24 @@ namespace BibReader.BibReference.TypesOfSourse
             rtb.SelectedText = "\n\n";
 
             // like a book
-            rtb.Select(rtb.TextLength, 0);
-            rtb.SelectedText = AuthorsParser.MakeAuthorsForAPA(Authors);
-            rtb.SelectedText = Space;
-            rtb.SelectedText = Lparenthesis + Year + Rparenthesis + PointSpace;
-            if (Title != string.Empty)
-                rtb.SelectedText = Title + PointSpace;
-            rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
-            rtb.SelectedText = ConferenceName + Space;
-            rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = SystemFonts.DefaultFont;
-            rtb.SelectedText = Lparenthesis;
-            if (Volume != 0)
-                rtb.SelectedText += Vol + Volume + CommaSpace;
-            rtb.SelectedText = Int32.TryParse(Pages, out int a) ? Page : PPage;
-            rtb.SelectedText = Pages + Rparenthesis + PointSpace;
-            if (City != string.Empty)
-                rtb.SelectedText = City + DoublePoint;
-            rtb.SelectedText = Publisher + Point;
-            rtb.SelectedText = "\n\n";
+            //rtb.Select(rtb.TextLength, 0);
+            //rtb.SelectedText = AuthorsParser.MakeAuthorsForAPA(Authors);
+            //rtb.SelectedText = Space;
+            //rtb.SelectedText = Lparenthesis + Year + Rparenthesis + PointSpace;
+            //if (Title != string.Empty)
+            //    rtb.SelectedText = Title + PointSpace;
+            //rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
+            //rtb.SelectedText = ConferenceName + Space;
+            //rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = SystemFonts.DefaultFont;
+            //rtb.SelectedText = Lparenthesis;
+            //if (Volume != 0)
+            //    rtb.SelectedText += Vol + Volume + CommaSpace;
+            //rtb.SelectedText = Int32.TryParse(Pages, out int a) ? Page : PPage;
+            //rtb.SelectedText = Pages + Rparenthesis + PointSpace;
+            //if (City != string.Empty)
+            //    rtb.SelectedText = City + DoublePoint;
+            //rtb.SelectedText = Publisher + Point;
+            //rtb.SelectedText = "\n\n";
         }
 
         public void MakeIEEE(RichTextBox rtb)
