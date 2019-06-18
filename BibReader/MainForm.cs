@@ -454,15 +454,11 @@ namespace BibReader
             return finder.GetIndex(indexes, func);
         }
 
-        private void btNextFindedLibItem_Click(object sender, EventArgs e)
-        {
+        private void btNextFindedLibItem_Click(object sender, EventArgs e) =>
             Collection.SelectItem(lvLibItems, GetNextIndex(Finder.Functions.Next));
-        }
 
-        private void btPrevFindedLibItem_Click(object sender, EventArgs e)
-        {
+        private void btPrevFindedLibItem_Click(object sender, EventArgs e) =>
             Collection.SelectItem(lvLibItems, GetNextIndex(Finder.Functions.Prev));
-        }
 
         private void btPrintBib_Click(object sender, EventArgs e)
         {

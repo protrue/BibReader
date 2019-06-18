@@ -94,7 +94,7 @@ namespace BibReader.Statistic
             lvJournalStat.Items.AddRange(
                 Stat.Journal.OrderBy(i => i.Key).
                 Select(item => new ListViewItem(
-                    new string[] { item.Key == "" ? "Неизвестный тип" : item.Key, item.Value.ToString() }
+                    new string[] { item.Key == "" ? "Без названия" : item.Key, item.Value.ToString() }
                     )
                 )
                 .ToArray()
@@ -114,7 +114,7 @@ namespace BibReader.Statistic
             lvConferenceStat.Items.AddRange(
                 Stat.Conference.OrderBy(i => i.Key)
                 .Select(item => new ListViewItem(
-                    new string[] { item.Key == "" ? "Неизвестный тип" : item.Key, item.Value.ToString() }
+                    new string[] { item.Key == "" ? "Без названия" : item.Key, item.Value.ToString() }
                     )
                 )
                 .ToArray()
@@ -135,7 +135,7 @@ namespace BibReader.Statistic
             lvGeography.Items.AddRange(
                 Stat.Geography.OrderBy(i => i.Key).
                 Select(item => new ListViewItem(
-                    new string[] { item.Key == "" ? "Неизвестный тип" : item.Key, item.Value.ToString() }
+                    new string[] { item.Key == "" ? "Без географии" : item.Key, item.Value.ToString() }
                     )
                 )
                 .ToArray()
