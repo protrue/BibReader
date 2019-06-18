@@ -20,6 +20,7 @@ namespace BibReader.BibReference.TypesOfSourse
         int Number = 0;
         string Pages;
         int Year;
+        string  Doi;
 
         Font f = new Font(SystemFonts.DefaultFont, FontStyle.Italic);
         const string PointSpace = ". ";
@@ -41,8 +42,9 @@ namespace BibReader.BibReference.TypesOfSourse
         const string Vol = "vol. ";
         const string EtAl = " et. al. ";
         const string Slash = "/";
+        const string DOI = "doi:";
 
-        public Conference(string[] authors, string title, string publisher, string pages, int year, string city, string conferenceName, int number, int volume)
+        public Conference(string[] authors, string title, string publisher, string pages, int year, string city, string conferenceName, int number, int volume, string doi)
         {
             Authors = authors.ToArray();
             Title = title;
@@ -53,6 +55,7 @@ namespace BibReader.BibReference.TypesOfSourse
             Number = number;
             Volume = volume;
             ConferenceName = conferenceName;
+            Doi = doi;
         }
 
         public Conference(LibItem libItem)
@@ -69,6 +72,7 @@ namespace BibReader.BibReference.TypesOfSourse
             Number = number;
             Volume = volume;
             ConferenceName = libItem.JournalName;
+            Doi = libItem.Doi;
         }
 
         public void MakeGOST(RichTextBox rtb)
@@ -117,44 +121,49 @@ namespace BibReader.BibReference.TypesOfSourse
 
         public void MakeAPA(RichTextBox rtb)
         {
-
-            // like a journal
-            rtb.Select(rtb.TextLength, 0);
-            rtb.SelectedText = AuthorsParser.MakeAuthorsForAPA(Authors);
-            rtb.SelectedText = Space;
-            rtb.SelectedText = Lparenthesis + Year + Rparenthesis + PointSpace;
-            rtb.SelectedText = Title + PointSpace;
-            rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
-            rtb.SelectedText = ConferenceName + CommaSpace;
-            rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = SystemFonts.DefaultFont;
-            rtb.SelectedText =
-                (Volume != 0 && Number != 0)
-                ? Volume + Lparenthesis + Number + Rparenthesis + CommaSpace
-                : (Volume != 0 && Number == 0)
-                    ? rtb.SelectedText = Volume + CommaSpace
-                    : rtb.SelectedText = Number + CommaSpace;
-            rtb.SelectedText = Pages + Point;
-            rtb.SelectedText = "\n\n";
-
-            // like a book
-            //rtb.Select(rtb.TextLength, 0);
-            //rtb.SelectedText = AuthorsParser.MakeAuthorsForAPA(Authors);
-            //rtb.SelectedText = Space;
-            //rtb.SelectedText = Lparenthesis + Year + Rparenthesis + PointSpace;
-            //if (Title != string.Empty)
-            //    rtb.SelectedText = Title + PointSpace;
-            //rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
-            //rtb.SelectedText = ConferenceName + Space;
-            //rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = SystemFonts.DefaultFont;
-            //rtb.SelectedText = Lparenthesis;
-            //if (Volume != 0)
-            //    rtb.SelectedText += Vol + Volume + CommaSpace;
-            //rtb.SelectedText = Int32.TryParse(Pages, out int a) ? Page : PPage;
-            //rtb.SelectedText = Pages + Rparenthesis + PointSpace;
-            //if (City != string.Empty)
-            //    rtb.SelectedText = City + DoublePoint;
-            //rtb.SelectedText = Publisher + Point;
-            //rtb.SelectedText = "\n\n";
+            if (Doi != string.Empty)
+            {
+                // like a journal
+                rtb.Select(rtb.TextLength, 0);
+                rtb.SelectedText = AuthorsParser.MakeAuthorsForAPA(Authors);
+                rtb.SelectedText = Space;
+                rtb.SelectedText = Lparenthesis + Year + Rparenthesis + PointSpace;
+                rtb.SelectedText = Title + PointSpace;
+                rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
+                rtb.SelectedText = ConferenceName + CommaSpace;
+                rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = SystemFonts.DefaultFont;
+                rtb.SelectedText =
+                    (Volume != 0 && Number != 0)
+                    ? Volume + Lparenthesis + Number + Rparenthesis + CommaSpace
+                    : (Volume != 0 && Number == 0)
+                        ? rtb.SelectedText = Volume + CommaSpace
+                        : rtb.SelectedText = Number + CommaSpace;
+                rtb.SelectedText = Pages + Point;
+                rtb.SelectedText = Space + DOI + Space + Doi;
+                rtb.SelectedText = "\n\n";
+            }
+            else
+            {
+                // like a book
+                rtb.Select(rtb.TextLength, 0);
+                rtb.SelectedText = AuthorsParser.MakeAuthorsForAPA(Authors);
+                rtb.SelectedText = Space;
+                rtb.SelectedText = Lparenthesis + Year + Rparenthesis + PointSpace;
+                if (Title != string.Empty)
+                    rtb.SelectedText = Title + PointSpace;
+                rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = f;
+                rtb.SelectedText = ConferenceName + Space;
+                rtb.Select(rtb.TextLength, 0); rtb.SelectionFont = SystemFonts.DefaultFont;
+                rtb.SelectedText = Lparenthesis;
+                if (Volume != 0)
+                    rtb.SelectedText += Vol + Volume + CommaSpace;
+                rtb.SelectedText = Int32.TryParse(Pages, out int a) ? Page : PPage;
+                rtb.SelectedText = Pages + Rparenthesis + PointSpace;
+                if (City != string.Empty)
+                    rtb.SelectedText = City + DoublePoint;
+                rtb.SelectedText = Publisher + Point;
+                rtb.SelectedText = "\n\n";
+            }
         }
 
         public void MakeIEEE(RichTextBox rtb)
