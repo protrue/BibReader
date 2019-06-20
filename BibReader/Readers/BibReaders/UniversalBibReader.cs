@@ -27,6 +27,18 @@ namespace BibReader.Readers
             return "";
         }
 
+        private void FindSource(string key, string value, string tagString)
+        {
+            if (key == "title" || key == "Title" || key == "source")
+            {
+                value = PretreatTitle(value);
+                if (tags.TagValues["source"] == "")
+                    tags.TagValues["source"] = FindSource(tagString);
+                if (key == "source")
+                    tags.TagValues["source"] = value;
+            }
+        }
+
         private string PretreatTitle(string title)
         {
             string[] codesForRemove = new string[] {
@@ -89,6 +101,10 @@ namespace BibReader.Readers
             currstr.Substring(currstr.Length - 3, 3) == "}, " ||
             currstr.Substring(currstr.Length - 2, 2) == "\",");
 
+        private bool IsEndOfLibItem(string currstr) => 
+            currstr.Length > 2 && currstr != "}" 
+            && currstr.Substring(currstr.Length - 2, 2) != ",}";
+
         private List<LibItem> GetLibItems(StreamReader reader)
         {
             List<LibItem> Items = new List<LibItem>();
@@ -110,7 +126,7 @@ namespace BibReader.Readers
             while (!reader.EndOfStream)
             {
                 newLine = reader.ReadLine();
-                while (newLine == "" || newLine != "}" && (newLine.Length > 2 && newLine.Substring(newLine.Length - 2, 2) != ",}"))
+                while (newLine == "" || IsEndOfLibItem(newLine))
                 {
                     if (newLine != "")
                     {
@@ -123,14 +139,7 @@ namespace BibReader.Readers
                         {
                             var key = regex.Match(tagString).Groups[1].Value;
                             var value = regex.Match(tagString).Groups[3].Value;
-                            if (key == "title" || key == "Title" || key == "source")
-                            {
-                                value = PretreatTitle(value);
-                                if (tags.TagValues["source"] == "")
-                                    tags.TagValues["source"] = FindSource(tagString);
-                                if (key == "source")
-                                    tags.TagValues["source"] = value;
-                            }
+                            FindSource(key, value, tagString);
                             if (tags.TagRework.ContainsKey(key))
                                 tags.TagValues[tags.TagRework[key]] = value;
                             tagString = "";
