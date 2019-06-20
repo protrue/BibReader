@@ -60,7 +60,16 @@ namespace BibReader.Statistic
         {
             if (libItem.Affiliation != string.Empty)
             {
-                var affs = libItem.Affiliation.Split(';').ToList();
+                List<string> affs = new List<string>();
+                if(libItem.Sourсe == "Web of Science")
+                {
+                    affs = libItem.Affiliation
+                        .Split(new string[] { "." }, StringSplitOptions.RemoveEmptyEntries)
+                        .Where(text => text[text.Length-2] != ' ')
+                        .ToList();
+                }
+                else
+                    affs = libItem.Affiliation.Split(';').ToList();
                 foreach (var aff in affs)
                 {
                     var infoArray = aff.Split(',');

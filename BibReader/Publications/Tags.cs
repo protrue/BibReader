@@ -35,6 +35,7 @@ namespace BibReader.Publications
                 {"DOI", "doi"},
                 {"url", "url"},
                 {"affiliation", "affiliation"},
+                {"Affiliation", "affiliation"},
                 {"abstract", "abstract"},
                 {"Abstract", "abstract"},
                 {"keywords", "keywords"},
