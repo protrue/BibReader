@@ -48,8 +48,6 @@ namespace BibReader.Statistic
             lvYearStatistic.Clear();
             lvYearStatistic.Columns.Add("Год");
             lvYearStatistic.Columns.Add("Количество");
-            lvYearStatistic.Columns[0].Width = lvYearStatistic.Width / 2;
-            lvYearStatistic.Columns[1].Width = lvYearStatistic.Width / 2;
             lvYearStatistic.Items.AddRange(
                 Stat.Years.OrderBy(i => i.Key).
                 Select(i => new ListViewItem(
@@ -61,6 +59,8 @@ namespace BibReader.Statistic
             lvYearStatistic.Items.Add(new ListViewItem(new string[] { "ИТОГО",
                 Stat.Years.Sum(i => i.Value).ToString(),
             }));
+            lvYearStatistic.Columns[1].TextAlign = HorizontalAlignment.Right;
+            lvYearStatistic.Columns[1].AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
         public static void LoadTypeStatistic(ListView lvTypeOfDoc)
@@ -68,8 +68,6 @@ namespace BibReader.Statistic
             lvTypeOfDoc.Clear();
             lvTypeOfDoc.Columns.Add("Тип документа");
             lvTypeOfDoc.Columns.Add("Количество");
-            lvTypeOfDoc.Columns[0].Width = lvTypeOfDoc.Width / 2;
-            lvTypeOfDoc.Columns[1].Width = lvTypeOfDoc.Width / 2;
             lvTypeOfDoc.Items.AddRange(
                 Stat.Types.OrderBy(i => i.Key).
                 Select(item => new ListViewItem(
@@ -81,7 +79,9 @@ namespace BibReader.Statistic
             lvTypeOfDoc.Items.Add(new ListViewItem(new string[] { "ИТОГО",
                 Stat.Types.Sum(i => i.Value).ToString(),
             }));
-
+            lvTypeOfDoc.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.HeaderSize);
+            lvTypeOfDoc.Columns[1].TextAlign = HorizontalAlignment.Right;
+            lvTypeOfDoc.Columns[1].AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
 
         public static void LoadJournalStatistic(ListView lvJournalStat)
@@ -102,6 +102,10 @@ namespace BibReader.Statistic
             lvJournalStat.Items.Add(new ListViewItem(new string[] { "ИТОГО",
                 Stat.Journal.Sum(i => i.Value).ToString(),
             }));
+            lvJournalStat.Columns[1].AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
+            lvJournalStat.Columns[1].TextAlign = HorizontalAlignment.Right;
+            lvJournalStat.Columns[1].Width = lvJournalStat.Width / 6;
+            lvJournalStat.Columns[0].Width = (int)((lvJournalStat.Width - lvJournalStat.Columns[1].Width) * 0.94);
         }
 
         public static void LoadConferenceStatistic(ListView lvConferenceStat)
@@ -122,6 +126,10 @@ namespace BibReader.Statistic
             lvConferenceStat.Items.Add(new ListViewItem(new string[] { "ИТОГО",
                 Stat.Conference.Sum(i => i.Value).ToString(),
             }));
+            lvConferenceStat.Columns[1].AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
+            lvConferenceStat.Columns[1].TextAlign = HorizontalAlignment.Right;
+            lvConferenceStat.Columns[1].Width = lvConferenceStat.Width / 6;
+            lvConferenceStat.Columns[0].Width = (int)((lvConferenceStat.Width - lvConferenceStat.Columns[1].Width)*0.94);
         }
 
         public static void LoadGeographyStatistic(ListView lvGeography)
@@ -144,6 +152,9 @@ namespace BibReader.Statistic
                 new string[] { "ИТОГО",
                 Stat.Geography.Sum(i => i.Value).ToString(),
             }));
+            lvGeography.AutoResizeColumn(0, ColumnHeaderAutoResizeStyle.ColumnContent);
+            lvGeography.Columns[1].TextAlign = HorizontalAlignment.Right;
+            lvGeography.Columns[1].AutoResize(ColumnHeaderAutoResizeStyle.HeaderSize);
         }
     }
 }
