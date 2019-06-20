@@ -27,7 +27,7 @@ namespace BibReader
                     && (item.Type == "journal" && Journals.Contains(item.JournalName) ||
                     item.Type == "conference" && Conferences.Contains(item.JournalName) ||
                     item.Type == "book")
-                    && (Geography.Count == 0 || Geography.Contains(item.Affiliation, new GeographyComparer() { IsWoS = item.Sourсe == "Web of Science" }))
+                     && (Geography.Count == 0 || Geography.Contains(item.Affiliation, new GeographyComparer()))
                 )
                 .ToList();
         }
@@ -44,13 +44,14 @@ namespace BibReader
 
         private class GeographyComparer : IEqualityComparer<string>
         {
-            public bool IsWoS;
+            private bool IsWoS;
 
             public bool Equals(string x, string y)
             {
                 string affiliation = y;
-                if (affiliation!= string.Empty)
+                if (affiliation != string.Empty)
                 {
+                    IsWoS = affiliation.Last() == '.';
                     var affs = !IsWoS 
                             ? affiliation.Split(';').ToList()
                             : affiliation

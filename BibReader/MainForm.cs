@@ -177,7 +177,6 @@ namespace BibReader
         private void LoadLibItems()
         {
             lvLibItems.Items.Clear();
-            finder = new Finder.Finder();
             // deletedLibItems.Clear();
             AddLibItemsInLvItems();
         }
@@ -218,6 +217,7 @@ namespace BibReader
                 var time = DateTime.Now;
                 log.Write($"{ time.ToString() }");
                 log.Write($"> Open file");
+                finder = new Finder.Finder();
                 LoadLibItems();
                 log.Write($"> Add new LibItem(s): count = { lvLibItems.Items.Count }");
                 log.Write($"{ (DateTime.Now - time).TotalSeconds.ToString() } sec.");
