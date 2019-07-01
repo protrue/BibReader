@@ -1,4 +1,4 @@
-﻿using BibReader.Publications;
+using BibReader.Publications;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,8 +11,6 @@ namespace BibReader.Readers
 {
     public class UniversalBibReader
     {
-        Tags tags = new Tags();
-
         private string FindSource(string str)
         {
             switch(str.Substring(0, "title".Length))
@@ -32,10 +30,10 @@ namespace BibReader.Readers
             if (key == "title" || key == "Title" || key == "source")
             {
                 value = PretreatTitle(value);
-                if (tags.TagValues["source"] == "")
-                    tags.TagValues["source"] = FindSource(tagString);
+                if (Tags.TagValues["source"] == "")
+                    Tags.TagValues["source"] = FindSource(tagString);
                 if (key == "source")
-                    tags.TagValues["source"] = value;
+                    Tags.TagValues["source"] = value;
             }
         }
 
@@ -65,13 +63,9 @@ namespace BibReader.Readers
             var template = @".*\[(.+)\].*";
             var regex = new Regex(template);
 
-            var value = regex.Match(title).Groups[1].Value;
-            if (value != "")
-            {
-                tags.TagValues["originalTitle"] = value;
-                var index = title.IndexOf(value);
-                title = title.Remove(index - 1, value.Length + 2);
-            }
+            Tags.TagValues["originalTitle"] = regex.Match(title).Groups[1].Value;
+            return Tags.TagValues["originalTitle"] != "";
+        }
             return title;
         }
 
@@ -85,15 +79,21 @@ namespace BibReader.Readers
            
             var key = regex.Match(str).Groups[1].Value;
             var value = regex.Match(str).Groups[2].Value;
-            if (tags.TagRework.ContainsKey(key) && tags.TagValues.ContainsKey(tags.TagRework[key]))
-                tags.TagValues[tags.TagRework[key]] = value;
+            if (Tags.TagRework.ContainsKey(key) && Tags.TagValues.ContainsKey(Tags.TagRework[key]))
+                Tags.TagValues[Tags.TagRework[key]] = value;
         }
 
-        private void SetTypeOfLibItem(string str)
-        {
-            var index = str.IndexOf('{');
-            tags.TagValues["type"] = tags.TagRework[str.Substring(1, index - 1).ToLower()];
-        }
+        private void SetType(string str) => 
+            Tags.TagValues["type"] =
+                Tags.TagRework
+                [
+                    str
+                    .Substring(
+                        1,
+                        str.IndexOf('{') - 1
+                    )
+                    .ToLower()
+                ];
 
         private bool IsEndOfTag(string currstr) =>
             currstr.Length >= 3 &&
@@ -111,7 +111,7 @@ namespace BibReader.Readers
             var template = @"\s?(.+?)\s?=\s?(""|{{|{)(.+?)(""|}}|}),";
             var regex = new Regex(template);
             string tagString = "", newLine = "";
-            tags = new Tags();
+            Tags.NewTags();
 
             if (reader == null)
                 return Items;
@@ -140,8 +140,8 @@ namespace BibReader.Readers
                             var key = regex.Match(tagString).Groups[1].Value;
                             var value = regex.Match(tagString).Groups[3].Value;
                             FindSource(key, value, tagString);
-                            if (tags.TagRework.ContainsKey(key))
-                                tags.TagValues[tags.TagRework[key]] = value;
+                            if (Tags.TagRework.ContainsKey(key))
+                                Tags.TagValues[Tags.TagRework[key]] = value;
                             tagString = "";
                         }
                     }
@@ -154,9 +154,9 @@ namespace BibReader.Readers
                 if (newLine == null)
                     break;
                 tagString = string.Empty;
-                var newItem = new LibItem(tags.TagValues);
+                var newItem = new LibItem(Tags.TagValues);
                 Items.Add(newItem);
-                tags = new Tags();
+                Tags.NewTags();
             }
             reader.Close();
             return Items;

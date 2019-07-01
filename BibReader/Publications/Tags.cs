@@ -8,10 +8,10 @@ namespace BibReader.Publications
 {
     public class Tags
     {
-        public Dictionary<string, string> TagRework;
-        public Dictionary<string, string> TagValues;
+        public static Dictionary<string, string> TagRework;
+        public static Dictionary<string, string> TagValues;
 
-        public Tags()
+        public static void NewTags()
         {
             TagRework = new Dictionary<string, string>
             {
@@ -55,6 +55,7 @@ namespace BibReader.Publications
                 {"book", "book"},
                 {"inbook", "book"},
             };
+
             TagValues = new Dictionary<string, string>
             {
                 { "authors", ""},
