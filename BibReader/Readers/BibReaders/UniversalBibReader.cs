@@ -1,4 +1,4 @@
-using BibReader.Publications;
+﻿using BibReader.Publications;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -25,7 +25,7 @@ namespace BibReader.Readers
             return "";
         }
 
-        private void FindSource(string key, string value, string tagString)
+        private void SetSource(string key, string value, string tagString)
         {
             if (key == "title" || key == "Title" || key == "source")
             {
@@ -55,10 +55,10 @@ namespace BibReader.Readers
                         title = title.Insert(index, "”");
                 }
             }
-            return FindOriginalTitle(title);
+            return RemoveOriginalTitle(title);
         }
 
-        private string FindOriginalTitle(string title)
+        private bool SetOriginalTitle(string title)
         {
             var template = @".*\[(.+)\].*";
             var regex = new Regex(template);
@@ -66,11 +66,18 @@ namespace BibReader.Readers
             Tags.TagValues["originalTitle"] = regex.Match(title).Groups[1].Value;
             return Tags.TagValues["originalTitle"] != "";
         }
+
+        private string RemoveOriginalTitle(string title)
+        {
+            if (SetOriginalTitle(title))
+                title = 
+                    title
+                    .Remove(
+                        title.IndexOf(Tags.TagValues["originalTitle"]) - 1,
+                        Tags.TagValues["originalTitle"].Length + 2
+                    );
             return title;
         }
-
-        private bool IsScienceDirectEnd(string str) =>
-            (str.Length >= "abstract = ".Length + 1 && str.Substring(0, "abstract = ".Length + 1) == "abstract = \"");
 
         private void FixScienceDirect(string str)
         {
@@ -122,7 +129,7 @@ namespace BibReader.Readers
                     return Items;
                 newLine = reader.ReadLine();
             }
-            SetTypeOfLibItem(newLine);
+            SetType(newLine);
             while (!reader.EndOfStream)
             {
                 newLine = reader.ReadLine();
@@ -133,13 +140,13 @@ namespace BibReader.Readers
                         if (newLine[0] != '@')
                             tagString += newLine;
                         else
-                            SetTypeOfLibItem(newLine);
+                            SetType(newLine);
 
                         if (IsEndOfTag(newLine))
                         {
                             var key = regex.Match(tagString).Groups[1].Value;
                             var value = regex.Match(tagString).Groups[3].Value;
-                            FindSource(key, value, tagString);
+                            SetSource(key, value, tagString);
                             if (Tags.TagRework.ContainsKey(key))
                                 Tags.TagValues[Tags.TagRework[key]] = value;
                             tagString = "";
