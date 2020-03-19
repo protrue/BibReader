@@ -408,8 +408,16 @@ namespace BibReader
 
         private void contextMenuStrip1_Click(object sender, EventArgs e)
         {
-            lvLibItems.SelectedItems[0].Remove();
-            SelectFstLibItem();
+            try
+            {
+                libItems.Remove(libItems.First(li => li.Title == lvLibItems.SelectedItems[0].SubItems[0].Text));
+                lvLibItems.SelectedItems[0].Remove();
+                SelectFstLibItem();
+            }
+            catch
+            {
+                MessageBox.Show("Ошибка при удалении");
+            }
         }
 
         private void tbTitle_TextChanged(object sender, EventArgs e)
