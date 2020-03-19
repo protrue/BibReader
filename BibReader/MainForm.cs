@@ -104,7 +104,7 @@ namespace BibReader
         private void AddLibItemsInLvItems()
         {
             lvLibItems.Items.Clear();
-            foreach (var item in Filter.FilterOut(libItems))
+            foreach (var item in libItems)
             {
                 var lvItem = new ListViewItem(new string[]
                 {
